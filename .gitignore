@@ -1,0 +1,10 @@
+# production
+client/build
+
+# dependencies
+client/node_modules
+server/node_modules
+
+# misc
+client/.vscode
+client/.fttemplates
