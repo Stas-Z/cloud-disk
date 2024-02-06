@@ -1,0 +1,13 @@
+{
+  "extends": "stylelint-config-standard-scss",
+
+  "rules": {
+    "selector-class-pattern": null,
+    "value-no-vendor-prefix": [
+      true,
+      {
+        "ignoreValues": ["box"]
+      }
+    ]
+  }
+}
