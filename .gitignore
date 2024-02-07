@@ -8,3 +8,6 @@ server/node_modules
 # misc
 client/.vscode
 client/.fttemplates
+
+# env
+server/config.env

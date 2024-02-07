@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/", // место куда производится сборка.
+    "noImplicitAny": true, // Подсвечивает все места где не указан тип.
+    "module": "ESNext", // Указываем модульную систему. Различные способы модульной сборки
+    "target": "es5", // В какую спецификацию компилируем: для поддержки большинства браузеров
+    "allowJs": true, // Компилятор будет обрабатывать не только TS файлы, но и JS файлы
+    "strict": true,
+    "moduleResolution": "node", // Определяет какие импорты будут (node или classic), 99% случаях используется node
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] }, // Все абсолютные импорты будут из папки src
+    "esModuleInterop": true, // esModuleInterop позволяет работать с пакетами, которые используют common js
+    // как с обычными пакетами с помощью import requier() module.export = common.js
+    "allowSyntheticDefaultImports": true, // Если какая-либо библиотека не имеет default import,
+    // лоадеры вроде ts-loader или babel-loader автоматически создают их.
+    // Вместо такого импорта "import * as React from 'react';" можно писать "import React from 'react';"
+    "isolatedModules": true
+  },
+  "ts-node": {
+    // нужно для работы tsconfig'а с "module": "ESNext"
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
+  "strictBindCallApply": true,
+  "exclude": ["node_modules"]
+}
