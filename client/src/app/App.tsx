@@ -1,6 +1,6 @@
 import { memo } from 'react'
 
-import { Counter } from './Counter'
+import { Counter } from '@/entities/Counter'
 
 interface AppProps {
     className?: string

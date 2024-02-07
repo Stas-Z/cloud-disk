@@ -69,7 +69,10 @@ module.exports = {
         'no-undef': 'off',
         'fsd-pathcheker/path-checker': ['error', { alias: '@' }],
         'fsd-pathcheker/public-api-imports': ['error', { alias: '@' }],
-        'fsd-pathcheker/layer-imports': ['error', { alias: '@' }],
+        'fsd-pathcheker/layer-imports': [
+            'error',
+            { alias: '@', ignoreImportPatterns: ['**/StoreProvider'] },
+        ],
         'import/order': [
             'error',
             {
