@@ -1,1 +1,13 @@
-{}
+{
+  "Search my Disk": "Search my Disk",
+  "lng": "EN",
+  "Language": "English",
+  "Authorization": "Authorization",
+  "Username": "Enter your username",
+  "Password": "Enter your password",
+  "Login": "Login",
+  "Enter your email": "Enter your email",
+  "Profile created successfully": "Profile created successfully",
+  "Incorrect password or email": "Incorrect email or password ",
+  "Registration": "Registration"
+}

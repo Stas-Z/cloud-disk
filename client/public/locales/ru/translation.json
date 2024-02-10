@@ -1,1 +1,13 @@
-{}
+{
+  "Search my Disk": "Поиск в моём Диске",
+  "lng": "RU",
+  "Language": "Русский",
+  "Authorization": "Авторизация",
+  "Username": "Введите имя пользователя",
+  "Password": "Введите ваш пароль",
+  "Login": "Войти",
+  "Enter your email": "Введите ваш email",
+  "Profile created successfully": "Профиль успешно создан",
+  "Incorrect password or email": "Неправильный электронной адрес или пароль",
+  "Registration": "Регистрация"
+}

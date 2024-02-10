@@ -1,6 +1,9 @@
-import { memo } from 'react'
+import { memo, useCallback, useState } from 'react'
 
-import { Counter } from '@/entities/Counter'
+import { LoginModal } from '@/features/AuthorizationForm'
+import { ContentLayout } from '@/shared/layouts/ContentLayout'
+import { classNames } from '@/shared/lib/classNames/classNames'
+import { Navbar } from '@/widgets/Navbar'
 
 interface AppProps {
     className?: string
@@ -8,12 +11,24 @@ interface AppProps {
 
 export const App = memo((props: AppProps) => {
     const { className } = props
+    const [isAuthModal, setIsAuthModal] = useState(false)
+    const onCloseModal = useCallback(() => {
+        setIsAuthModal(false)
+    }, [])
+    const authData = false
 
-    return (
-        <div className="app">
-            <Counter />
-        </div>
-    )
+    if (authData) {
+        return (
+            <div id="app" className={classNames('app', {}, [])}>
+                <Navbar />
+                <ContentLayout
+                    sidebar={<div>sidebar</div>}
+                    content={<div>content</div>}
+                />
+            </div>
+        )
+    }
+    return <LoginModal isOpen onClose={onCloseModal} />
 })
 
 App.displayName = 'App'

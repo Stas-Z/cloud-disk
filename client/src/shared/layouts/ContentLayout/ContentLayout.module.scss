@@ -1,0 +1,24 @@
+.contentLayout {
+    margin-bottom: 28px;
+    min-height: calc(100vh - var(--navbar-height) - 28px);
+    border-radius: var(--border-radius);
+    padding-top: 0;
+    margin: 0 20px;
+    box-shadow: var(--shadow-color);
+}
+
+.sidebar {
+    width: 272px;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    background: var(--side-bar-color);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.content {
+    background: var(--light-bg);
+    flex-grow: 1;
+    max-width: 100%;
+    padding: 8px;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}

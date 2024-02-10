@@ -1,2 +1,12 @@
-@import "reset";
-@import "variables/global";
+@import 'reset';
+@import 'variables/global';
+@import 'themes/normal';
+
+body {
+    background: var(--bg-color);
+}
+.app {
+    font: var(--font-m);
+
+    min-height: 100vh;
+}

@@ -14,21 +14,19 @@ export function createReducerManager(
 
     let combinedReducer = combineReducers(reducers) // Комбинирует редьюсеры
 
-    let keysToRemove: Array<StateSchemaKey> = [] // Редьюсеры которые мы хотим удалить
+    let keysToRemove: StateSchemaKey[] = [] // Редьюсеры которые мы хотим удалить
 
-    return {
+    return <ReducerManager>{
         getReducerMap: () => reducers,
         // По ключу удаляем редьюсер
-        reduce: (state: StateSchema | undefined, action: UnknownAction) => {
+        reduce: (state: StateSchema, action: UnknownAction) => {
             if (keysToRemove.length > 0 && state) {
                 state = { ...state }
                 keysToRemove.forEach((key) => {
-                    // @ts-ignore
                     delete state?.[key]
                 })
                 keysToRemove = []
             }
-
             return combinedReducer(state, action)
         },
         // По ключу добавляет редьюсер
@@ -45,7 +43,6 @@ export function createReducerManager(
             if (!key || !reducers[key]) {
                 return
             }
-            // @ts-ignore
             delete reducers[key]
             keysToRemove.push(key)
             combinedReducer = combineReducers(reducers)
