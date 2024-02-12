@@ -2,10 +2,11 @@ import { memo, useCallback, useState } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
+import { AvatarDropdown } from '@/features/AvatarDropdown'
 import SearchIcon from '@/shared/assets/icons/search.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { AppLogo } from '@/shared/ui/AppLogo'
-import { Avatar } from '@/shared/ui/Avatar'
 import { Icon } from '@/shared/ui/Icon'
 import { Input } from '@/shared/ui/Input'
 import { HStack } from '@/shared/ui/Stack'
@@ -16,8 +17,11 @@ export interface NavbarProps {
     className?: string
 }
 
-export const Navbar = memo(({ className }: NavbarProps) => {
+export const Navbar = memo((props: NavbarProps) => {
+    const { className } = props
     const { t } = useTranslation('translation')
+    const dispatch = useAppDispatch()
+
     const [isAuthModal, setIsAuthModal] = useState(false)
 
     const onCloseModal = useCallback(() => {
@@ -52,7 +56,7 @@ export const Navbar = memo(({ className }: NavbarProps) => {
                     />
                 </HStack>
                 <HStack justify="end">
-                    <Avatar size={34} />
+                    <AvatarDropdown />
                 </HStack>
             </HStack>
         </header>

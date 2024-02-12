@@ -45,7 +45,7 @@
     border-radius: 34px;
 
     &.normal {
-        background: var(--light-bg);
+        background: var(--input-bg);
     }
 
     &.save {
@@ -60,6 +60,9 @@
         transition: background-color 0.15s linear;
 
         box-shadow: 0 8px 14px rgba(255, 204, 0, 0.25);
+    }
+    &.transaprent {
+        background-color: transparent;
     }
 }
 

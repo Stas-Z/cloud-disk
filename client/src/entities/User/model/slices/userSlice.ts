@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { UserSchema } from '../types/userSchema'
+import { User, UserSchema } from '../types/userSchema'
 
 const initialState: UserSchema = {
-    currentUser: {},
     isAuth: false,
 }
 
@@ -11,22 +10,14 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        template: (state, action: PayloadAction<string>) => {},
+        setUser: (state, action: PayloadAction<User>) => {
+            state.currentUser = action.payload
+            state.isAuth = true
+        },
+        logout: (state) => {
+            state.isAuth = false
+        },
     },
-    // extraReducers: (builder) => {
-    //     builder
-    //         .addCase(, (state) => {
-    //             state.error = undefined;
-    //             state.isLoading = true;
-    //         })
-    //         .addCase(, (state) => {
-    //             state.isLoading = false;
-    //         })
-    //         .addCase(, (state, action) => {
-    //             state.isLoading = false;
-    //             state.error = action.payload;
-    //         });
-    // },
 })
 
 export const { actions: userActions } = userSlice

@@ -2,8 +2,10 @@ import bcrypt from 'bcryptjs'
 import config from 'config'
 import Router, { Request, Response } from 'express'
 import { check, validationResult } from 'express-validator'
-import jwt, { Secret } from 'jsonwebtoken'
+import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
 
+import { MappedErrors, filterMessages } from '../helpers/errorFilterMessage'
+import authMiddleware from '../middleware/auth.middleware'
 import User from '../models/User'
 
 const SECRET_KEY: Secret = config.get('secretKey')
@@ -14,10 +16,10 @@ const router = Router()
 
 // Валидируем данные
 const validate = [
-    check('email', 'Uncorrect email').isEmail(),
+    check('email', 'Invalid email address').isEmail(),
     check(
         'password',
-        'Password must be longer than 3 and shorter than 12',
+        'Password must be longer than 3 and shorter than 12 characters in length',
     ).isLength({ min: 3, max: 12 }),
 ]
 
@@ -26,9 +28,11 @@ router.post('/registration', validate, async (req: Request, res: Response) => {
         // Получаем результат валидации
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            return res
-                .status(400)
-                .json({ message: 'Uncorrect request', errors })
+            const mapedErrors = filterMessages(errors.mapped() as MappedErrors)
+
+            console.log(mapedErrors)
+
+            return res.status(400).json({ message: mapedErrors, errors })
         }
 
         // Получим email и пароль из тела запроса
@@ -40,14 +44,14 @@ router.post('/registration', validate, async (req: Request, res: Response) => {
         if (candidate) {
             return res
                 .status(400)
-                .json({ message: `User with email ${email} already exist` })
+                .json({ message: `Error: This email is already registered` })
         }
 
         // Создаём нового пользователя
         const hashPassword = await bcrypt.hash(password, 8)
         const user = new User({ email, password: hashPassword })
         await user.save()
-        return res.json({ message: 'User was created' })
+        return res.json({ message: 'Profile created successfully' })
     } catch (e) {
         console.log(e)
         res.send({ message: 'Server error' })
@@ -62,7 +66,7 @@ router.post('/login', async (req, res) => {
         // Проверяем если есть такой пользователь в базе
         const user = await User.findOne({ email })
         if (!user) {
-            return res.status(404).json({ message: 'User not found' })
+            return res.status(404).json({ message: 'Email not found' })
         }
 
         // Сравниваем пароли
@@ -72,6 +76,30 @@ router.post('/login', async (req, res) => {
         )
         if (!isPassValid) {
             return res.status(400).json({ message: 'Invalid password' })
+        }
+
+        const token = jwt.sign({ id: user }, SECRET_KEY, { expiresIn: '1h' })
+        return res.json({
+            token,
+            user: {
+                id: user.id,
+                email: user.email,
+                diskSpace: user.diskSpace,
+                usedSpace: user.usedSpace,
+                avatar: user.avatar,
+            },
+        })
+    } catch (e) {
+        console.log(e)
+        res.send({ message: 'Server error' })
+    }
+})
+
+router.get('/auth', authMiddleware, async (req: JwtPayload, res: Response) => {
+    try {
+        const user = await User.findOne({ _id: req.user.id })
+        if (!user) {
+            return
         }
 
         const token = jwt.sign({ id: user }, SECRET_KEY, { expiresIn: '1h' })

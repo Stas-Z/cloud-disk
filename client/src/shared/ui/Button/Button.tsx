@@ -11,7 +11,12 @@ import cls from './Button.module.scss'
 
 export type ButtonVariant = 'clear' | 'outline' | 'filled'
 
-export type ButtonColor = 'normal' | 'save' | 'cancel' | 'yellow'
+export type ButtonColor =
+    | 'normal'
+    | 'save'
+    | 'cancel'
+    | 'yellow'
+    | 'transaprent'
 
 export type ButtonSize = 'm' | 'l' | 'xl'
 

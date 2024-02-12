@@ -5,9 +5,18 @@
   "Authorization": "Авторизация",
   "Username": "Введите имя пользователя",
   "Password": "Введите ваш пароль",
-  "Login": "Войти",
+  "Sign in": "Войти",
   "Enter your email": "Введите ваш email",
   "Profile created successfully": "Профиль успешно создан",
-  "Incorrect password or email": "Неправильный электронной адрес или пароль",
-  "Registration": "Регистрация"
+  "Incorrect password or email": "Неправильный электронной адрес или пароль!",
+  "Registration": "Регистрация",
+  "Sign up": "Создать аккаунт",
+  "Logout": "Выход",
+  "Email not found": "Email не найден",
+  "Invalid password": "Неверный пароль",
+  "Error: This email is already registered": "Ошибка: Этот адрес электронной почты уже зарегистрирован",
+  "Invalid email address": "Неверный формат почты",
+  "Password must be longer than 3 and shorter than 12 characters in length": "Пароль должен быть длиннее 3 и короче 12 символов.",
+  "Server error": "Ошибка сервера",
+  "Sign out": "Выйти"
 }

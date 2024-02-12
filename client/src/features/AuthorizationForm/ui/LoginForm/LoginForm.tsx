@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { MutableRefObject, memo, useCallback, useEffect, useRef } from 'react'
 
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -16,14 +16,15 @@ import { VStack } from '@/shared/ui/Stack'
 import { Text } from '@/shared/ui/Text'
 
 import cls from './LoginForm.module.scss'
+import { AuthType } from '../../model/consts/authConsts'
 import { getLoginState } from '../../model/selectors/getLoginState/getLoginState'
+import { authByEmail } from '../../model/services/authByEmail/authByEmail'
 import { regByEmail } from '../../model/services/regByEmail/regByEmail'
 import { regActions, regReducer } from '../../model/slice/regSlice'
+import { AuthTypeTabs } from '../AuthTypeTabs/AuthTypeTabs'
 
 export interface LoginFormProps {
     className?: string
-    isOpen?: boolean
-    onSuccess?: () => void
 }
 
 const initialReducers: ReducersList = {
@@ -32,11 +33,14 @@ const initialReducers: ReducersList = {
 
 const LoginForm = (props: LoginFormProps) => {
     const { t } = useTranslation()
-    const { className, isOpen, onSuccess } = props
+    const { className } = props
 
     const dispatch = useAppDispatch()
-    const { email, password, isLoading, error, succes } =
+
+    const { email, password, isLoading, error, succes, view } =
         useSelector(getLoginState)
+
+    const timerRef = useRef() as MutableRefObject<ReturnType<typeof setTimeout>>
 
     const onChangeEmail = useCallback(
         (value: string) => {
@@ -52,9 +56,41 @@ const LoginForm = (props: LoginFormProps) => {
         [dispatch],
     )
 
-    const onLoginClick = useCallback(async () => {
-        await dispatch(regByEmail({ password, email }))
-    }, [dispatch, password, email])
+    const onButtonClickHandler = useCallback(async () => {
+        if (view === AuthType.REG) {
+            await dispatch(regByEmail({ password, email }))
+            timerRef.current = setTimeout(() => {
+                dispatch(authByEmail({ password, email }))
+            }, 1000)
+        }
+        if (view === AuthType.AUTH) {
+            await dispatch(authByEmail({ password, email }))
+        }
+    }, [view, dispatch, password, email])
+
+    const onChangeHandler = (view: AuthType) => {
+        dispatch(regActions.setView(view))
+    }
+
+    const onKeyDown = useCallback(
+        (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+                onButtonClickHandler()
+            }
+        },
+        [onButtonClickHandler],
+    )
+    useEffect(() => {
+        window.addEventListener('keydown', onKeyDown)
+
+        return () => {
+            window.removeEventListener('keydown', onKeyDown)
+        }
+    }, [onKeyDown])
+
+    const errorMessage = <Text text={t(error as string)} variant="error" />
+    const succesMessage = <Text text={t(succes as string)} variant="accent" />
+    const buttonText = view === AuthType.AUTH ? t('Sign in') : t('Sign up')
 
     return (
         <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount>
@@ -63,22 +99,13 @@ const LoginForm = (props: LoginFormProps) => {
                 align="center"
                 className={classNames(cls.loginForm, {}, [className])}
             >
-                <VStack gap="8" max align="center">
+                <VStack gap="16" max align="center">
                     <AppLogo width={100} height={49} />
-                    <Text title={t('Registration')} size="m" />
+
+                    <AuthTypeTabs value={view} onChangeType={onChangeHandler} />
                 </VStack>
-                {error && (
-                    <Text
-                        text={t('Incorrect password or email')}
-                        variant="error"
-                    />
-                )}
-                {succes && (
-                    <Text
-                        text={t('Profile created successfully')}
-                        variant="accent"
-                    />
-                )}
+                {error && errorMessage}
+                {succes && succesMessage}
                 <VStack gap="8" max>
                     <Input
                         autoFocus
@@ -100,7 +127,7 @@ const LoginForm = (props: LoginFormProps) => {
                 </VStack>
 
                 <Button
-                    onClick={onLoginClick}
+                    onClick={onButtonClickHandler}
                     variant="filled"
                     color="yellow"
                     className={cls.loginBtn}
@@ -108,7 +135,7 @@ const LoginForm = (props: LoginFormProps) => {
                     size="l"
                     disabled={isLoading}
                 >
-                    {t('Login')}
+                    {buttonText}
                 </Button>
             </VStack>
         </DynamicModuleLoader>

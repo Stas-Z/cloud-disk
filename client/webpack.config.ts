@@ -16,7 +16,7 @@ function getApiUrl(mode: BuildMode, apiUrl?: string) {
     if (mode === 'production') {
         return '/api'
     }
-    return 'http://localhost:5000'
+    return 'http://localhost:5000/api'
 }
 
 export default (env: BuildEnv) => {

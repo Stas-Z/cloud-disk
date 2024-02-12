@@ -3,6 +3,7 @@ import { Reducer, ReducersMapObject, configureStore } from '@reduxjs/toolkit'
 import { counterReducer } from '@/entities/Counter'
 import { fileReducer } from '@/entities/File'
 import { userReducer } from '@/entities/User'
+import { authMiddleware } from '@/features/AuthorizationForm'
 import { $api } from '@/shared/api/api'
 import { ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
 
@@ -37,7 +38,7 @@ export function createReduxStore(
                 thunk: {
                     extraArgument: extraArg,
                 },
-            }),
+            }).concat(authMiddleware),
     })
 
     // @ts-ignore

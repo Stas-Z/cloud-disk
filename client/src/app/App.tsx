@@ -1,8 +1,12 @@
-import { memo, useCallback, useState } from 'react'
+import { Suspense, memo, useEffect } from 'react'
 
+import { useSelector } from 'react-redux'
+
+import { getUserAuthData, initAuthData } from '@/entities/User'
 import { LoginModal } from '@/features/AuthorizationForm'
 import { ContentLayout } from '@/shared/layouts/ContentLayout'
 import { classNames } from '@/shared/lib/classNames/classNames'
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { Navbar } from '@/widgets/Navbar'
 
 interface AppProps {
@@ -11,24 +15,31 @@ interface AppProps {
 
 export const App = memo((props: AppProps) => {
     const { className } = props
-    const [isAuthModal, setIsAuthModal] = useState(false)
-    const onCloseModal = useCallback(() => {
-        setIsAuthModal(false)
-    }, [])
-    const authData = false
+    const dispatch = useAppDispatch()
+    const authData = useSelector(getUserAuthData)
+
+    useEffect(() => {
+        dispatch(initAuthData())
+    }, [dispatch])
 
     if (authData) {
         return (
             <div id="app" className={classNames('app', {}, [])}>
-                <Navbar />
-                <ContentLayout
-                    sidebar={<div>sidebar</div>}
-                    content={<div>content</div>}
-                />
+                <Suspense fallback="">
+                    <Navbar />
+                    <ContentLayout
+                        sidebar={<div>sidebar</div>}
+                        content={<div>content</div>}
+                    />
+                </Suspense>
             </div>
         )
     }
-    return <LoginModal isOpen onClose={onCloseModal} />
+    return (
+        <Suspense fallback="">
+            <LoginModal />
+        </Suspense>
+    )
 })
 
 App.displayName = 'App'

@@ -4,7 +4,6 @@ import { Mods, classNames } from '@/shared/lib/classNames/classNames'
 import { useModal } from '@/shared/lib/hooks/useModal/useModal'
 
 import cls from './Modal.module.scss'
-import { Overlay } from '../Overlay'
 import { Portal } from '../Portal'
 
 interface ModalProps {
@@ -33,7 +32,7 @@ interface ModalProps {
 export const Modal = (props: ModalProps) => {
     const { className, children, isOpen, onClose, lazy } = props
 
-    const { close, isMounted } = useModal({
+    const { isMounted } = useModal({
         animationDelay: 300,
         isOpen,
         onClose,
@@ -51,7 +50,6 @@ export const Modal = (props: ModalProps) => {
     return (
         <Portal element={document.getElementById('app') ?? document.body}>
             <div className={classNames(cls.modal, mods, [className])}>
-                <Overlay onClick={close} />
                 <div className={cls.content}>{children}</div>
             </div>
         </Portal>
