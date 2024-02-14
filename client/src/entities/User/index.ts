@@ -1,3 +1,5 @@
+export { getUserEmail } from './model/selectors/getUserEmail/getUserEmail'
+
 export { initAuthData } from './model/services/initAuthData'
 
 export { getUserAuthData } from './model/selectors/getUserAuthData/getUserAuthData'

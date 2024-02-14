@@ -4,9 +4,11 @@ import Router, { Request, Response } from 'express'
 import { check, validationResult } from 'express-validator'
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
 
-import { MappedErrors, filterMessages } from '../helpers/errorFilterMessage'
-import authMiddleware from '../middleware/auth.middleware'
-import User from '../models/User'
+import { MappedErrors, filterMessages } from '@/helpers/errorFilterMessage'
+import authMiddleware from '@/middleware/auth.middleware'
+import File from '@/models/File'
+import User from '@/models/User'
+import { FileService } from '@/services/fileService'
 
 const SECRET_KEY: Secret = config.get('secretKey')
 
@@ -51,6 +53,8 @@ router.post('/registration', validate, async (req: Request, res: Response) => {
         const hashPassword = await bcrypt.hash(password, 8)
         const user = new User({ email, password: hashPassword })
         await user.save()
+        // Создаём папку для пользователя с именем id пользователя
+        await FileService.createDir(new File({ user: user.id, name: '' }))
         return res.json({ message: 'Profile created successfully' })
     } catch (e) {
         console.log(e)
@@ -81,13 +85,11 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign({ id: user }, SECRET_KEY, { expiresIn: '1h' })
         return res.json({
             token,
-            user: {
-                id: user.id,
-                email: user.email,
-                diskSpace: user.diskSpace,
-                usedSpace: user.usedSpace,
-                avatar: user.avatar,
-            },
+            id: user.id,
+            email: user.email,
+            diskSpace: user.diskSpace,
+            usedSpace: user.usedSpace,
+            avatar: user.avatar,
         })
     } catch (e) {
         console.log(e)
@@ -105,13 +107,11 @@ router.get('/auth', authMiddleware, async (req: JwtPayload, res: Response) => {
         const token = jwt.sign({ id: user }, SECRET_KEY, { expiresIn: '1h' })
         return res.json({
             token,
-            user: {
-                id: user.id,
-                email: user.email,
-                diskSpace: user.diskSpace,
-                usedSpace: user.usedSpace,
-                avatar: user.avatar,
-            },
+            id: user.id,
+            email: user.email,
+            diskSpace: user.diskSpace,
+            usedSpace: user.usedSpace,
+            avatar: user.avatar,
         })
     } catch (e) {
         console.log(e)

@@ -37,10 +37,20 @@ interface DropdownProps {
      * @default 'bottom_right'
      */
     direction?: DropdownDirection
+    /**
+     * @description User info: avatar and email adress
+     */
+    userAvatar?: ReactNode
 }
 
 export const Dropdown = memo((props: DropdownProps) => {
-    const { className, items, trigger, direction = 'bottom_right' } = props
+    const {
+        className,
+        items,
+        trigger,
+        direction = 'bottom_right',
+        userAvatar,
+    } = props
 
     return (
         <Menu
@@ -59,6 +69,7 @@ export const Dropdown = memo((props: DropdownProps) => {
                     popupCls.menu,
                 ])}
             >
+                {userAvatar && userAvatar}
                 {items.map((item, index) => {
                     const content = ({ active }: { active: boolean }) => (
                         <button

@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import path, { resolve } from 'path'
 
 import { config } from 'dotenv'
 
@@ -9,3 +9,4 @@ config({
 export const serverPort = 5000
 export const dbUrl = process.env.DB_URL
 export const secretKey = process.env.SECRET_KEY
+export const filePath = path.resolve(__dirname, '../files')

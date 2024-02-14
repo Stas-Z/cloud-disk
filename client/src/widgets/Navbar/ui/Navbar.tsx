@@ -1,11 +1,12 @@
-import { memo, useCallback, useState } from 'react'
+import { memo } from 'react'
 
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
+import { getUserEmail } from '@/entities/User'
 import { AvatarDropdown } from '@/features/AvatarDropdown'
 import SearchIcon from '@/shared/assets/icons/search.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
-import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { AppLogo } from '@/shared/ui/AppLogo'
 import { Icon } from '@/shared/ui/Icon'
 import { Input } from '@/shared/ui/Input'
@@ -20,16 +21,8 @@ export interface NavbarProps {
 export const Navbar = memo((props: NavbarProps) => {
     const { className } = props
     const { t } = useTranslation('translation')
-    const dispatch = useAppDispatch()
 
-    const [isAuthModal, setIsAuthModal] = useState(false)
-
-    const onCloseModal = useCallback(() => {
-        setIsAuthModal(false)
-    }, [])
-    const onShowModal = useCallback(() => {
-        setIsAuthModal(true)
-    }, [])
+    const email = useSelector(getUserEmail)
 
     return (
         <header className={classNames(cls.navbar, {}, [className])}>
@@ -56,7 +49,7 @@ export const Navbar = memo((props: NavbarProps) => {
                     />
                 </HStack>
                 <HStack justify="end">
-                    <AvatarDropdown />
+                    <AvatarDropdown email={email} />
                 </HStack>
             </HStack>
         </header>

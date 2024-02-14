@@ -8,15 +8,18 @@ import LogoutIcon from '@/shared/assets/icons/logout.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { Avatar } from '@/shared/ui/Avatar'
 import { Dropdown } from '@/shared/ui/Popups'
+import { VStack } from '@/shared/ui/Stack'
+import { Text } from '@/shared/ui/Text'
 
 import cls from './AvatarDropdown.module.scss'
 
 interface AvatarDropdownProps {
     className?: string
+    email?: string
 }
 
 export const AvatarDropdown = memo((props: AvatarDropdownProps) => {
-    const { className } = props
+    const { className, email } = props
     const { t } = useTranslation()
     const dispatch = useDispatch()
 
@@ -33,13 +36,20 @@ export const AvatarDropdown = memo((props: AvatarDropdownProps) => {
         },
     ]
 
+    const userAvatar = (
+        <VStack align="center" className={cls.avatar} gap="8">
+            <Avatar size={64} />
+            <Text text={email} size="s" />
+        </VStack>
+    )
+
     return (
         <Dropdown
-            className={classNames(cls.avatarDropdown, {}, [className])}
+            className={classNames('', {}, [className])}
             items={items}
             trigger={<Avatar size={34} />}
             direction="bottom_left"
-            data-testid="AvatarDropdown"
+            userAvatar={userAvatar}
         />
     )
 })
