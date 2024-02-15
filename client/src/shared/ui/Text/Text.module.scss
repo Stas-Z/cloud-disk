@@ -25,6 +25,15 @@
         color: var(--accent);
     }
 }
+.grey {
+    .title {
+        color: var(--text-grey);
+    }
+
+    .text {
+        color: var(--text-grey);
+    }
+}
 
 .left {
     text-align: left;

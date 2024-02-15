@@ -11,10 +11,10 @@ export const regByEmail = createAsyncThunk<
     string,
     regByEmailProps,
     ThunkConfig<string>
->('registration/regByEmail', async (authData, thunkAPI) => {
+>('registration/regByEmail', async (regData, thunkAPI) => {
     const { extra, rejectWithValue } = thunkAPI
     try {
-        const response = await extra.api.post('auth/registration', authData)
+        const response = await extra.api.post('auth/registration', regData)
 
         if (!response.data) {
             throw new Error()

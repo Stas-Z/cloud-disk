@@ -1,11 +1,11 @@
-import { ElementType } from 'react'
+import { CSSProperties, ElementType, useMemo } from 'react'
 
 import { Mods, classNames } from '@/shared/lib/classNames/classNames'
 
 import cls from './Flex.module.scss'
 import { PolymorphicComponentProp } from '../../../types/polymorphic'
 
-export type FlexJustify = 'start' | 'center' | 'end' | 'between'
+export type FlexJustify = 'start' | 'center' | 'end' | 'between' | 'around'
 export type FlexAlign = 'start' | 'center' | 'end' | 'unset'
 export type FlexDirection = 'row' | 'column'
 export type FlexWrap = 'nowrap' | 'wrap'
@@ -16,6 +16,7 @@ const justifyClasses: Record<FlexJustify, string> = {
     center: cls.justifyCenter,
     end: cls.justifyEnd,
     between: cls.justifyBetween,
+    around: cls.justifyAround,
 }
 
 const alignClasses: Record<FlexAlign, string> = {
@@ -72,6 +73,16 @@ export interface FlexProps {
      * @default 'nowrap'
      */
     wrap?: FlexWrap
+    /**
+     * @description Flag to inline-flex ;
+     * @default 'nowrap'
+     */
+    inline?: boolean
+    /**
+     * @description Flex-grow css property;
+     * @default 'nowrap'
+     */
+    flexGrow?: number
 }
 
 export const defaultFlexTag = 'div'
@@ -90,6 +101,8 @@ export const Flex = <E extends ElementType = typeof defaultFlexTag>(
         maxHeight,
         wrap = 'nowrap',
         as,
+        inline = false,
+        flexGrow,
         ...otherProps
     } = props
 
@@ -105,11 +118,22 @@ export const Flex = <E extends ElementType = typeof defaultFlexTag>(
     const mods: Mods = {
         [cls.max]: max,
         [cls.maxHeight]: maxHeight,
+        [cls.inline]: inline,
     }
     const Tag = as ?? defaultFlexTag
+    const styles = useMemo<CSSProperties>(
+        () => ({
+            flexGrow,
+        }),
+        [flexGrow],
+    )
 
     return (
-        <Tag className={classNames(cls.flex, mods, classes)} {...otherProps}>
+        <Tag
+            className={classNames(cls.flex, mods, classes)}
+            {...otherProps}
+            style={styles}
+        >
             {children}
         </Tag>
     )

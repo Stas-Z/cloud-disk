@@ -1,0 +1,28 @@
+.fileListItem {
+    border-radius: 8px;
+    padding: 6px 16px;
+    flex-shrink: 0;
+
+    &:hover {
+        background: var(--input-bg);
+    }
+}
+.iconFolder {
+    flex-shrink: 0;
+}
+.listInfo {
+    flex-grow: 1;
+}
+.title,
+.info {
+    white-space: nowrap;
+    width: 100%;
+}
+
+.shareLink {
+    flex-shrink: 0;
+
+    .icon {
+        color: #222426;
+    }
+}

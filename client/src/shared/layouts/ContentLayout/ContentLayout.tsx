@@ -9,20 +9,25 @@ interface ContentLayoutProps {
     className?: string
     content: ReactNode
     sidebar: ReactNode
+    switchOn?: boolean
 }
 
 export const ContentLayout = (props: ContentLayoutProps) => {
-    const { className, content, sidebar } = props
+    const { className, content, sidebar, switchOn = false } = props
 
-    return (
-        <HStack
-            align="unset"
-            className={classNames(cls.contentLayout, {}, [className])}
-        >
-            <VStack className={cls.sidebar}>{sidebar}</VStack>
-            <VStack max className={cls.content}>
-                {content}
-            </VStack>
-        </HStack>
-    )
+    if (switchOn) {
+        return (
+            <HStack
+                align="unset"
+                className={classNames(cls.contentLayout, {}, [className])}
+            >
+                <VStack className={cls.sidebar}>{sidebar}</VStack>
+                <VStack max className={cls.content}>
+                    {content}
+                </VStack>
+            </HStack>
+        )
+    }
+
+    return content
 }

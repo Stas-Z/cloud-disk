@@ -18,5 +18,10 @@
   "Invalid email address": "Invalid email address",
   "Password must be longer than 3 and shorter than 12 characters in length": "Password must be longer than 3 and shorter than 12 characters in length.",
   "Server error": "Server error",
-  "Sign out": "Sign out"
+  "Sign out": "Sign out",
+  "Network Error": "Network Error",
+  "An error occurred": "An error occurred",
+  "Reload": "Reload",
+  "You do not have permission to this page": "You do not have permission to this page",
+  "Page not found": "Page not found"
 }

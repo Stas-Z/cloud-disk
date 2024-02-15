@@ -2,9 +2,10 @@ import { EnhancedStore, Reducer, ReducersMapObject } from '@reduxjs/toolkit'
 import { AxiosInstance } from 'axios'
 
 import { CounterSchema } from '@/entities/Counter'
-import { FileSchema } from '@/entities/File'
 import { UserSchema } from '@/entities/User'
 import { AuthSchema } from '@/features/AuthorizationForm'
+import { ScrollSaveSchema } from '@/features/ScrollSave'
+import { filePageSchema } from '@/pages/FilesPage'
 
 import { createReduxStore } from './store'
 
@@ -15,8 +16,9 @@ export interface AsyncReducers {
 export interface StateSchema {
     counter: CounterSchema
     user: UserSchema
-    file: FileSchema
+    filesPage: filePageSchema
     authForm: AuthSchema
+    scrollSave: ScrollSaveSchema
 }
 
 export type StateSchemaKey = keyof StateSchema
