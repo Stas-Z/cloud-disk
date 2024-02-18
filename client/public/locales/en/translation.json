@@ -23,5 +23,13 @@
   "An error occurred": "An error occurred",
   "Reload": "Reload",
   "You do not have permission to this page": "You do not have permission to this page",
-  "Page not found": "Page not found"
+  "Page not found": "Page not found",
+  "New Folder": "New Folder",
+  "File already exists": "File already exists",
+  "File «{{name}}» already exists": "File «{{name}}» already exists",
+  "Save": "Save",
+  "Enter the folder name": "Enter the folder name",
+  "Create folder": "Create folder",
+  "There is already a file with the same name in this folder": "There is already a file with the same name in this folder",
+  "Files": "Files"
 }

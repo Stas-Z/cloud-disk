@@ -23,5 +23,13 @@
   "An error occurred": "Произошла непредвиденная ошибка",
   "Reload": "Обновить страницу",
   "You do not have permission to this page": "У вас нет доступа к этой странице",
-  "Page not found": "Страница не найдена"
+  "Page not found": "Страница не найдена",
+  "New Folder": "Новая папка",
+  "File already exists": "Папка с именем уже существует",
+  "File «{{name}}» already exists": "Папка с именем «{{name}}» уже существует",
+  "Save": "Сохранить",
+  "Enter the folder name": "Укажите название папки",
+  "Create folder": "Создать",
+  "There is already a file with the same name in this folder": "Выберите другое имя — это уже занято другой папкой или файлом",
+  "Files": "Файлы"
 }

@@ -1,8 +1,3 @@
-.addonLeft svg,
-.addonRight svg {
-    color: var(--hint);
-}
-
 .button {
     cursor: pointer;
     color: var(--text);
@@ -13,10 +8,6 @@
     justify-content: center;
 
     &:hover {
-        .addonLeft svg,
-        .addonRight svg {
-            color: var(--hint);
-        }
         &.yellow {
             background-color: var(--button-yellow-accent);
         }
@@ -26,10 +17,12 @@
 .addonLeft,
 .addonRight {
     display: flex;
+    position: absolute;
+    left: 10px;
 }
 
 .withAddon {
-    padding: 0 16px;
+    padding: 8px;
 }
 
 .clear {
@@ -58,8 +51,6 @@
     &.yellow {
         background-color: var(--button-yellow);
         transition: background-color 0.15s linear;
-
-        box-shadow: 0 8px 14px rgba(255, 204, 0, 0.25);
     }
     &.transaprent {
         background-color: transparent;
@@ -85,6 +76,9 @@
     &.cancel {
         border: 1px solid var(--cancel);
     }
+}
+.shadow {
+    box-shadow: 0 8px 14px rgba(255, 204, 0, 0.25);
 }
 
 .square {

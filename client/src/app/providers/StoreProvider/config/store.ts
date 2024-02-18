@@ -1,10 +1,10 @@
 import { Reducer, ReducersMapObject, configureStore } from '@reduxjs/toolkit'
 
 import { counterReducer } from '@/entities/Counter'
+import { fileReducer } from '@/entities/File'
 import { userReducer } from '@/entities/User'
 import { authMiddleware } from '@/features/AuthorizationForm'
 import { scrollSaveReducer } from '@/features/ScrollSave'
-import { fileReducer } from '@/pages/FilesPage'
 import { $api } from '@/shared/api/api'
 import { ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
 
@@ -19,8 +19,8 @@ export function createReduxStore(
         ...asyncReducers,
         counter: counterReducer,
         user: userReducer,
-        filesPage: fileReducer,
         scrollSave: scrollSaveReducer,
+        file: fileReducer,
     }
 
     const reducerManager = createReducerManager(

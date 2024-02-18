@@ -134,6 +134,7 @@ const LoginForm = (props: LoginFormProps) => {
                     fullWidth
                     size="l"
                     disabled={isLoading}
+                    shadow
                 >
                     {buttonText}
                 </Button>

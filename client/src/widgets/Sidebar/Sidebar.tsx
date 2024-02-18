@@ -1,8 +1,11 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
+import { CreateNewDirModal, createFileDir } from '@/features/UserFilesList'
 import { classNames } from '@/shared/lib/classNames/classNames'
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
+import { HStack, VStack } from '@/shared/ui/Stack'
 
 import cls from './Sidebar.module.scss'
 
@@ -13,10 +16,30 @@ interface SidebarProps {
 export const Sidebar = memo((props: SidebarProps) => {
     const { className } = props
     const { t } = useTranslation()
+    const dispatch = useAppDispatch()
+
+    const createDirHandler = useCallback(
+        (name: string, parent: number) => {
+            dispatch(
+                createFileDir({
+                    name,
+                    parent,
+                    type: 'dir',
+                }),
+            )
+        },
+        [dispatch],
+    )
 
     return (
-        <div className={classNames(cls.sidebar, {}, [className])}>
-            <div />
-        </div>
+        <VStack
+            className={classNames(cls.sidebar, {}, [className])}
+            max
+            maxHeight
+        >
+            <HStack max justify="center">
+                <CreateNewDirModal onAccept={createDirHandler} />
+            </HStack>
+        </VStack>
     )
 })

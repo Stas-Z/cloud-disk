@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
@@ -29,6 +29,8 @@ export const FileListItem = memo((props: FileListItemProps) => {
 
     const date = file.date?.slice(0, 10)
     const time = file.date?.slice(11, 16)
+
+    const onClickHandler = useCallback(() => {}, [])
 
     return (
         <HStack
@@ -90,6 +92,8 @@ export const FileListItem = memo((props: FileListItemProps) => {
                     height={24}
                     width={24}
                     className={cls.icon}
+                    clickable
+                    onClick={onClickHandler}
                 />
             </HStack>
         </HStack>

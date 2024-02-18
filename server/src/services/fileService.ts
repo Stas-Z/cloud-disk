@@ -1,3 +1,5 @@
+/* eslint-disable prefer-promise-reject-errors */
+/* eslint-disable no-promise-executor-return */
 import fs from 'fs'
 
 import config from 'config'
@@ -14,11 +16,12 @@ export class FileService {
                 // Проверяем если такой файл существует
                 if (!fs.existsSync(filePath)) {
                     fs.mkdirSync(filePath) // создаём файл
-                    resolve({ message: 'File was created' })
-                } else {
-                    const error = new Error('File already exists')
-                    reject(error)
+                    return resolve({ message: 'File was created' })
                 }
+                return reject({
+                    message:
+                        'There is already a file with the same name in this folder',
+                })
             } catch (e) {
                 const error = new Error('File error')
                 reject(error)

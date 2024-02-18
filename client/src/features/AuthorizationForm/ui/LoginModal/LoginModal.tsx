@@ -14,7 +14,12 @@ export const LoginModal = (props: LoginModalProps) => {
     const { className } = props
 
     return (
-        <Modal className={classNames('', {}, [className])} isOpen lazy>
+        <Modal
+            className={classNames('', {}, [className])}
+            isOpen
+            lazy
+            overlay={false}
+        >
             <Suspense fallback="">
                 <Card>
                     <LoginFormAsync />
