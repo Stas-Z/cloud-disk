@@ -1,6 +1,11 @@
 export { fileReducer, fileActions } from './model/slices/fileSlice'
 
-export { getCurrentDir, getFileName } from './model/selectors/fileSelectors'
+export {
+    getCurrentDir,
+    getFileName,
+    getDirStack,
+    getCurrentFileName,
+} from './model/selectors/fileSelectors'
 
 export { FileList } from './ui/FileList/FileList'
 

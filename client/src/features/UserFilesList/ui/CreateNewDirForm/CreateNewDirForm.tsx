@@ -64,8 +64,9 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
         )
         if (result.meta.requestStatus === 'fulfilled') {
             onSuccess?.()
+            dispatch(fileActions.setFileName(t('New Folder')))
         }
-    }, [currenDir, dispatch, fileName, onSuccess, showErrorHandler])
+    }, [currenDir, dispatch, fileName, onSuccess, showErrorHandler, t])
 
     const onKeyDown = useCallback(
         (e: KeyboardEvent) => {

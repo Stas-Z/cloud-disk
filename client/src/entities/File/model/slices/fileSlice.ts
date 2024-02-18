@@ -4,7 +4,9 @@ import { FileSchema } from '../types/fileSchema'
 
 const initialState: FileSchema = {
     currentDir: null,
-    fileName: 'New Folder',
+    currentFileName: '',
+    fileName: 'Новая папка',
+    dirStack: [],
 }
 
 export const fileSlice = createSlice({
@@ -16,6 +18,15 @@ export const fileSlice = createSlice({
         },
         setCurrentDir: (state, action: PayloadAction<number>) => {
             state.currentDir = action.payload
+        },
+        setCurrentFileName: (state, action: PayloadAction<string>) => {
+            state.currentFileName = action.payload
+        },
+        pushToStack: (state, action: PayloadAction<number>) => {
+            state.dirStack = [...state.dirStack, action.payload]
+        },
+        popFromStack: (state, action: PayloadAction<number>) => {
+            state.dirStack = state.dirStack.slice(0, action.payload)
         },
     },
 })

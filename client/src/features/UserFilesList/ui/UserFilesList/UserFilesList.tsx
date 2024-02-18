@@ -42,7 +42,7 @@ export const UserFilesList = memo((props: UserFilesProps) => {
             removeAfterUnmount={false}
         >
             <div className={classNames(cls.userFiles, {}, [className])}>
-                <UserFilesListHeader />
+                <UserFilesListHeader files={files} />
                 <FileList files={files} />
             </div>
         </DynamicModuleLoader>
