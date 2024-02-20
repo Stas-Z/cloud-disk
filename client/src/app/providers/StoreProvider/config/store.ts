@@ -1,5 +1,6 @@
 import { Reducer, ReducersMapObject, configureStore } from '@reduxjs/toolkit'
 
+import { breadcrumbsReducer } from '@/entities/Breadcrumbs'
 import { counterReducer } from '@/entities/Counter'
 import { fileReducer } from '@/entities/File'
 import { userReducer } from '@/entities/User'
@@ -19,8 +20,9 @@ export function createReduxStore(
         ...asyncReducers,
         counter: counterReducer,
         user: userReducer,
-        scrollSave: scrollSaveReducer,
         file: fileReducer,
+        scrollSave: scrollSaveReducer,
+        breadcrumbs: breadcrumbsReducer,
     }
 
     const reducerManager = createReducerManager(

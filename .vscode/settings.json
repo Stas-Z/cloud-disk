@@ -1,12 +1,14 @@
 {
-  "cSpell.words": [
-    "Adapter",
-    "childs",
-    "layouts",
-    "props",
-    "Reducer",
-    "sidebar",
-    "Suspense",
-    "widgets"
-  ]
+    "cSpell.words": [
+        "Adapter",
+        "Breadcrumbs",
+        "childs",
+        "clickable",
+        "layouts",
+        "props",
+        "Reducer",
+        "sidebar",
+        "Suspense",
+        "widgets"
+    ]
 }

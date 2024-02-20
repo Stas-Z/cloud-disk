@@ -4,7 +4,8 @@ export {
     getCurrentDir,
     getFileName,
     getDirStack,
-    getCurrentFileName,
+    getFilesWithoutLast,
+    getLastFileId,
 } from './model/selectors/fileSelectors'
 
 export { FileList } from './ui/FileList/FileList'

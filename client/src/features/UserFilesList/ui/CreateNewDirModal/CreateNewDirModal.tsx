@@ -3,8 +3,10 @@ import { Suspense, memo, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
+import { fileActions } from '@/entities/File'
 import Plus from '@/shared/assets/icons/plus.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { Button } from '@/shared/ui/Button'
 import { Icon } from '@/shared/ui/Icon'
 import { Modal } from '@/shared/ui/Modal'
@@ -25,6 +27,7 @@ interface CreateNewDirProps {
 export const CreateNewDirModal = memo((props: CreateNewDirProps) => {
     const { className, onAccept } = props
     const { t } = useTranslation()
+    const dispatch = useAppDispatch()
     const [isAuthModal, setIsAuthModal] = useState(false)
     const [showError, setShowError] = useState(false)
 
@@ -35,7 +38,8 @@ export const CreateNewDirModal = memo((props: CreateNewDirProps) => {
 
     const onShowModal = useCallback(() => {
         setIsAuthModal(true)
-    }, [])
+        dispatch(fileActions.setFileName(t('New Folder')))
+    }, [dispatch, t])
 
     const showErrorHandler = useCallback(() => {
         setShowError(true)

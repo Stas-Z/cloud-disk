@@ -8,10 +8,10 @@ import { FileDoc } from '../models/File'
 
 export class FileService {
     // Функция для создания папки
-    static createDir(file: FileDoc) {
+    static createDir(file: FileDoc): Promise<{ message: string }> {
         // Путь к файлу который мы будем создавать: {хранилище}\{папка пользователя(id)}\{путь к файлу}
         const filePath = `${config.get('filePath')}\\${file.user}\\${file.path}`
-        return new Promise((resolve, reject) => {
+        return new Promise<{ message: string }>((resolve, reject) => {
             try {
                 // Проверяем если такой файл существует
                 if (!fs.existsSync(filePath)) {
@@ -20,7 +20,7 @@ export class FileService {
                 }
                 return reject({
                     message:
-                        'There is already a file with the same name in this folder',
+                        'A file or folder with the same name already exists in this directory',
                 })
             } catch (e) {
                 const error = new Error('File error')

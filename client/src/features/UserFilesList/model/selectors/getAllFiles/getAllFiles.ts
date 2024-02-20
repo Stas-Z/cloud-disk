@@ -15,7 +15,7 @@ const selectUserFilesState = (state: StateSchema) =>
 
 // Создаем мемоизированный селектор для получения всех файлов
 export const getAllFiles = createSelector(
-    selectUserFilesState,
+    [selectUserFilesState],
     (userFilesState: UserFilesSchema) =>
         filesAdapter.getSelectors().selectAll(userFilesState),
 )

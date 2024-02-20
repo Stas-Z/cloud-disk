@@ -1,14 +1,19 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 
 import File from '@/models/File'
-import { UserAuthRequest } from '@/models/User'
 import { FileService } from '@/services/fileService'
 
+interface CreateDirRequest {
+    name: string
+    type: string
+    parent: string
+}
+
 export class FileController {
-    static async createDir(req: UserAuthRequest, res: Response) {
+    static async createDir(req: Request, res: Response) {
         try {
             // Получаем данные из тела запроса
-            const { name, type, parent } = req.body
+            const { name, type, parent }: CreateDirRequest = req.body
             // Создаём новый фаил и передаём в него данные из запроса выше
             const file = new File({
                 name,
@@ -41,7 +46,7 @@ export class FileController {
         }
     }
 
-    static async getFiles(req: UserAuthRequest, res: Response) {
+    static async getFiles(req: Request, res: Response) {
         try {
             // Ищем фаилы по id пользователя(получаем из token'а) и id родительской папки(получаем параметром из строки запроса)
             const files = await File.find({

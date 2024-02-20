@@ -4,64 +4,81 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import {
-    MyFile,
+    breadcrumbsActions,
+    BreadcrumbsList,
+    getBreadcrumbsWithoutLast,
+    getLastBreadcrumbName,
+    defaultBreadcrumb,
+} from '@/entities/Breadcrumbs'
+import {
     fileActions,
     getCurrentDir,
-    getCurrentFileName,
-    getDirStack,
+    getFilesWithoutLast,
+    getLastFileId,
 } from '@/entities/File'
 import ArrowBack from '@/shared/assets/icons/arrow-back.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { Icon } from '@/shared/ui/Icon'
-import { HStack } from '@/shared/ui/Stack'
+import { HStack, VStack } from '@/shared/ui/Stack'
 import { Text } from '@/shared/ui/Text'
 
 import cls from './UserFilesListHeader.module.scss'
 
 interface UserFilesListHeaderProps {
     className?: string
-    files: MyFile[]
 }
 
 export const UserFilesListHeader = memo((props: UserFilesListHeaderProps) => {
-    const { className, files } = props
+    const { className } = props
     const { t } = useTranslation()
     const dispatch = useAppDispatch()
+
     const currentDir = useSelector(getCurrentDir)
-
-    const currentName = useSelector(getCurrentFileName)
-
-    const dirStack = useSelector(getDirStack)
-
-    const lastFolderId = dirStack[dirStack.length - 1]
+    const lastName = useSelector(getLastBreadcrumbName)
+    const lastFileId = useSelector(getLastFileId)
+    const filesWithoutLast = useSelector(getFilesWithoutLast)
+    const breadcrumbsWithoutLast = useSelector(getBreadcrumbsWithoutLast)
 
     const backClickHandler = useCallback(() => {
-        const index = dirStack.indexOf(lastFolderId)
+        dispatch(fileActions.setDirStack(filesWithoutLast))
+        dispatch(fileActions.setCurrentDir(lastFileId))
 
-        dispatch(fileActions.popFromStack(index))
-        dispatch(fileActions.setCurrentDir(lastFolderId))
-    }, [dirStack, dispatch, lastFolderId])
+        dispatch(breadcrumbsActions.setBreadcrumbs(breadcrumbsWithoutLast))
+    }, [breadcrumbsWithoutLast, dispatch, filesWithoutLast, lastFileId])
 
-    const titleName = currentName && currentDir ? currentName : t('Files')
+    const titleName =
+        lastName && currentDir ? lastName.name : t(defaultBreadcrumb.name)
+
+    const breadcrumbClickHandler = useCallback(
+        (id: number | null) => {
+            dispatch(fileActions.setCurrentDir(id))
+            dispatch(fileActions.sliceDirStackById(id as number))
+        },
+        [dispatch],
+    )
 
     return (
-        <HStack
+        <VStack
+            gap="16"
             max
             className={classNames(cls.createNewDirHeader, {}, [className])}
         >
-            {currentDir && (
-                <HStack className={cls.back}>
-                    <Icon
-                        Svg={ArrowBack}
-                        height={16}
-                        width={16}
-                        clickable
-                        onClick={backClickHandler}
-                    />
-                </HStack>
-            )}
-            <Text title={titleName} bold />
-        </HStack>
+            <BreadcrumbsList onClick={breadcrumbClickHandler} />
+            <HStack max className={cls.title}>
+                {currentDir && (
+                    <HStack className={cls.back}>
+                        <Icon
+                            Svg={ArrowBack}
+                            height={16}
+                            width={16}
+                            clickable
+                            onClick={backClickHandler}
+                        />
+                    </HStack>
+                )}
+                <Text title={titleName} bold />
+            </HStack>
+        </VStack>
     )
 })

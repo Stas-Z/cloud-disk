@@ -3,6 +3,7 @@ import { memo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
+import { breadcrumbsActions } from '@/entities/Breadcrumbs'
 import DownloadIcon from '@/shared/assets/icons/arrow-download.svg'
 import FileIcon from '@/shared/assets/icons/file.svg'
 import FolderIcon from '@/shared/assets/icons/folder.svg'
@@ -24,11 +25,10 @@ interface FileListItemProps {
     className?: string
     file: MyFile
     view?: FileView
-    index?: number
 }
 
 export const FileListItem = memo((props: FileListItemProps) => {
-    const { className, file, view, index } = props
+    const { className, file, view } = props
     const { t } = useTranslation()
     const dispatch = useAppDispatch()
     const currentDir = useSelector(getCurrentDir)
@@ -39,8 +39,13 @@ export const FileListItem = memo((props: FileListItemProps) => {
     const onClickHandler = useCallback(() => {}, [])
 
     const openDirHandler = useCallback(() => {
-        dispatch(fileActions.setCurrentFileName(file.name))
-        dispatch(fileActions.pushToStack(currentDir as number))
+        dispatch(
+            breadcrumbsActions.pushToStackBreadcrumbs({
+                name: file.name,
+                id: file._id,
+            }),
+        )
+        dispatch(fileActions.pushToDirStack(currentDir as number))
 
         if (file.type === 'dir') {
             dispatch(fileActions.setCurrentDir(file._id))
@@ -53,7 +58,7 @@ export const FileListItem = memo((props: FileListItemProps) => {
             className={classNames(cls.fileListItem, {}, [className])}
             gap="16"
             align="center"
-            onClick={openDirHandler}
+            onDoubleClick={openDirHandler}
         >
             <Icon
                 Svg={file.type === 'dir' ? FolderIcon : FileIcon}

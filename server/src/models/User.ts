@@ -1,11 +1,6 @@
-import { Request } from 'express'
 import mongoose, { Schema, model } from 'mongoose'
 
 export const { ObjectId } = mongoose.Types
-
-export interface UserAuthRequest extends Request {
-    user?: Record<string, any>
-}
 
 // Свойства необходимые для создания нового Пользователя (параметры, которые мы хотим сохранить в базе данных)
 export interface UserAttrs {
