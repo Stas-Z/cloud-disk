@@ -13,7 +13,7 @@ import { BreadcrumbItem } from '../../model/types/breadcrumbsSchema'
 interface BreadcrumbsListItemProps {
     className?: string
     breadcrumb: BreadcrumbItem
-    onClick?: (id: number | null) => void
+    onClick?: (id: string | null) => void
 }
 
 export const BreadcrumbsListItem = memo((props: BreadcrumbsListItemProps) => {

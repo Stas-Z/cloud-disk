@@ -6,7 +6,6 @@ import { CounterSchema } from '@/entities/Counter'
 import { FileSchema } from '@/entities/File'
 import { UserSchema } from '@/entities/User'
 import { AuthSchema } from '@/features/AuthorizationForm'
-import { ScrollSaveSchema } from '@/features/ScrollSave'
 import { UserFilesSchema } from '@/features/UserFilesList'
 
 import { createReduxStore } from './store'
@@ -23,7 +22,6 @@ export interface StateSchema {
     file: FileSchema
     breadcrumbs: BreadcrumbsSchema
     userFiles: UserFilesSchema
-    scrollSave: ScrollSaveSchema
 }
 
 export type StateSchemaKey = keyof StateSchema

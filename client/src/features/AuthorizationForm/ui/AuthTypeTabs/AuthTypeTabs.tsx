@@ -24,7 +24,7 @@ export const AuthTypeTabs = memo((props: AuthTypeTabsProps) => {
                 (accumulator: TabItem[], currentValue) => [
                     ...accumulator,
                     {
-                        value: currentValue as string,
+                        value: currentValue,
                         content: t(currentValue) as ReactNode,
                     },
                 ],

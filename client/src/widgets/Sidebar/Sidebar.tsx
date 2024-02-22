@@ -19,7 +19,7 @@ export const Sidebar = memo((props: SidebarProps) => {
     const dispatch = useAppDispatch()
 
     const createDirHandler = useCallback(
-        (name: string, parent: number) => {
+        (name: string, parent: string) => {
             dispatch(
                 createFileDir({
                     name,

@@ -1,7 +1,7 @@
 export type FileType = 'dir' | 'file'
 
 export interface MyFile {
-    _id: number
+    _id: string
     name: string
     type?: FileType
     accessLink?: string

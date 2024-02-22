@@ -10,6 +10,7 @@ export const initialState: AuthSchema = {
     password: '',
     email: '',
     succes: '',
+    error: '',
     view: AuthType.AUTH,
 }
 

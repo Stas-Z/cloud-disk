@@ -45,11 +45,17 @@ export const FileListItem = memo((props: FileListItemProps) => {
                 id: file._id,
             }),
         )
-        dispatch(fileActions.pushToDirStack(currentDir as number))
+        dispatch(fileActions.pushToDirStack(currentDir))
 
         if (file.type === 'dir') {
             dispatch(fileActions.setCurrentDir(file._id))
         }
+        dispatch(
+            fileActions.setLastDir({
+                path: currentDir,
+                position: file._id,
+            }),
+        )
     }, [currentDir, dispatch, file._id, file.name, file.type])
 
     return (
@@ -59,6 +65,7 @@ export const FileListItem = memo((props: FileListItemProps) => {
             gap="16"
             align="center"
             onDoubleClick={openDirHandler}
+            id={file._id.toString()}
         >
             <Icon
                 Svg={file.type === 'dir' ? FolderIcon : FileIcon}

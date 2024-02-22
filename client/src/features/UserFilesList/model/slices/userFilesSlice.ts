@@ -10,7 +10,7 @@ import { createFileDir } from '../services/createFileDir/createFileDir'
 import { fetchFilesList } from '../services/fetchFilesList/fetchFilesList'
 import { UserFilesSchema } from '../types/userFilesSchema'
 
-export const filesAdapter = createEntityAdapter<MyFile, number>({
+export const filesAdapter = createEntityAdapter<MyFile, string>({
     selectId: (file: MyFile) => file._id,
 })
 

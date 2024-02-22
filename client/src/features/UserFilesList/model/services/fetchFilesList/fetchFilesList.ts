@@ -6,7 +6,7 @@ import { USER_TOKEN_KEY } from '@/shared/const/localstorage'
 
 export const fetchFilesList = createAsyncThunk<
     MyFile[],
-    number | null,
+    string | null,
     ThunkConfig<string>
 >('filesPage/fetchFilesList', async (currentDir, thunkAPI) => {
     const { extra, rejectWithValue } = thunkAPI

@@ -6,6 +6,7 @@ const initialState: FileSchema = {
     currentDir: null,
     fileName: '',
     dirStack: [],
+    scroll: {},
 }
 
 export const fileSlice = createSlice({
@@ -15,17 +16,17 @@ export const fileSlice = createSlice({
         setFileName: (state, action: PayloadAction<string>) => {
             state.fileName = action.payload
         },
-        setCurrentDir: (state, action: PayloadAction<number | null>) => {
+        setCurrentDir: (state, action: PayloadAction<string | null>) => {
             state.currentDir = action.payload
         },
 
-        pushToDirStack: (state, action: PayloadAction<number>) => {
+        pushToDirStack: (state, action: PayloadAction<string>) => {
             state.dirStack = [...state.dirStack, action.payload]
         },
-        setDirStack: (state, action: PayloadAction<number[]>) => {
+        setDirStack: (state, action: PayloadAction<string[]>) => {
             state.dirStack = action.payload
         },
-        sliceDirStackById: (state, action: PayloadAction<number>) => {
+        sliceDirStackById: (state, action: PayloadAction<string>) => {
             const dirStackToDelete = state.dirStack.findIndex(
                 (dirStack) => dirStack === action.payload,
             )
@@ -34,6 +35,24 @@ export const fileSlice = createSlice({
             }
             if (dirStackToDelete !== -1) {
                 state.dirStack = [...state.dirStack.slice(0, dirStackToDelete)]
+            }
+        },
+
+        setLastDir: (
+            state,
+            action: PayloadAction<{ path: string; position: string }>,
+        ) => {
+            state.scroll[action.payload.path] = action.payload.position
+        },
+
+        deleteLastDir: (state) => {
+            const keys = Object.keys(state.scroll)
+            const lastKeyIndex = keys.length - 1
+            if (lastKeyIndex >= 0) {
+                const lastKey = keys[lastKeyIndex]
+                const newScroll = { ...state.scroll }
+                delete newScroll[lastKey]
+                state.scroll = newScroll
             }
         },
     },

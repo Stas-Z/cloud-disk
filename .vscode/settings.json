@@ -9,6 +9,7 @@
         "Reducer",
         "sidebar",
         "Suspense",
-        "widgets"
+        "widgets",
+        "wrapper"
     ]
 }

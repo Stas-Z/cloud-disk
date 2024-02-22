@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { MutableRefObject, memo, useCallback, useRef } from 'react'
 
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -33,6 +33,7 @@ export const UserFilesListHeader = memo((props: UserFilesListHeaderProps) => {
     const { className } = props
     const { t } = useTranslation()
     const dispatch = useAppDispatch()
+    const timerRef = useRef() as MutableRefObject<ReturnType<typeof setTimeout>>
 
     const currentDir = useSelector(getCurrentDir)
     const lastName = useSelector(getLastBreadcrumbName)
@@ -45,15 +46,20 @@ export const UserFilesListHeader = memo((props: UserFilesListHeaderProps) => {
         dispatch(fileActions.setCurrentDir(lastFileId))
 
         dispatch(breadcrumbsActions.setBreadcrumbs(breadcrumbsWithoutLast))
+
+        clearTimeout(timerRef.current)
+        timerRef.current = setTimeout(() => {
+            dispatch(fileActions.deleteLastDir())
+        }, 100)
     }, [breadcrumbsWithoutLast, dispatch, filesWithoutLast, lastFileId])
 
     const titleName =
         lastName && currentDir ? lastName.name : t(defaultBreadcrumb.name)
 
     const breadcrumbClickHandler = useCallback(
-        (id: number | null) => {
+        (id: string | null) => {
             dispatch(fileActions.setCurrentDir(id))
-            dispatch(fileActions.sliceDirStackById(id as number))
+            dispatch(fileActions.sliceDirStackById(id as string))
         },
         [dispatch],
     )

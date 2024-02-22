@@ -19,7 +19,7 @@ import { BreadcrumbsListItem } from '../BreadcrumbsListItem/BreadcrumbsListItem'
 
 interface BreadcrumbsProps {
     className?: string
-    onClick: (id: number | null) => void
+    onClick: (id: string | null) => void
 }
 
 export const BreadcrumbsList = memo((props: BreadcrumbsProps) => {

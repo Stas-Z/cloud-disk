@@ -6,6 +6,8 @@ export {
     getDirStack,
     getFilesWithoutLast,
     getLastFileId,
+    getScrollSaveByDir,
+    getScrollSave,
 } from './model/selectors/fileSelectors'
 
 export { FileList } from './ui/FileList/FileList'

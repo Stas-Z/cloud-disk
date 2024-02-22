@@ -20,7 +20,7 @@ export interface CreateNewDirFormProps {
     className?: string
     isOpen?: boolean
     onSuccess: () => void
-    onAccept?: (name: string, parent: number) => void
+    onAccept?: (name: string, parent: string) => void
     isLoading?: boolean
     error?: string
     showError?: boolean
@@ -58,7 +58,7 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
         const result = await dispatch(
             createFileDir({
                 name: fileName,
-                parent: currenDir as number,
+                parent: currenDir,
                 type: 'dir',
             }),
         )

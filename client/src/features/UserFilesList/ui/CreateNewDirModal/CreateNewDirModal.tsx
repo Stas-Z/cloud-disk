@@ -21,7 +21,7 @@ import { CreateNewDirFormAsync } from '../CreateNewDirForm/CreateNewDirForm.asyn
 
 interface CreateNewDirProps {
     className?: string
-    onAccept?: (name: string, parent: number) => void
+    onAccept?: (name: string, parent: string) => void
 }
 
 export const CreateNewDirModal = memo((props: CreateNewDirProps) => {

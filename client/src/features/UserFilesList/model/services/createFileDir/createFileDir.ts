@@ -8,7 +8,7 @@ import { fetchFilesList } from '../fetchFilesList/fetchFilesList'
 
 interface createFileDirProps {
     name: string
-    parent: number
+    parent: string
     type: FileType
 }
 

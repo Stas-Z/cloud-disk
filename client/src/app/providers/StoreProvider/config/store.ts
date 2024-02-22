@@ -5,7 +5,6 @@ import { counterReducer } from '@/entities/Counter'
 import { fileReducer } from '@/entities/File'
 import { userReducer } from '@/entities/User'
 import { authMiddleware } from '@/features/AuthorizationForm'
-import { scrollSaveReducer } from '@/features/ScrollSave'
 import { $api } from '@/shared/api/api'
 import { ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
 
@@ -21,7 +20,6 @@ export function createReduxStore(
         counter: counterReducer,
         user: userReducer,
         file: fileReducer,
-        scrollSave: scrollSaveReducer,
         breadcrumbs: breadcrumbsReducer,
     }
 

@@ -19,7 +19,7 @@ export const breadcrumbsSlice = createSlice({
         setBreadcrumbs: (state, action: PayloadAction<BreadcrumbItem[]>) => {
             state.breadcrumbs = action.payload
         },
-        sliceBreadcrumsById: (state, action: PayloadAction<number | null>) => {
+        sliceBreadcrumsById: (state, action: PayloadAction<string | null>) => {
             const breadcrumbsToDelete = state.breadcrumbs.findIndex(
                 (breadcrumb) => breadcrumb.id === action.payload,
             )

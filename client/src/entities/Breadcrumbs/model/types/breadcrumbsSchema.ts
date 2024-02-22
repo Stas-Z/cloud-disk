@@ -1,5 +1,5 @@
 export interface BreadcrumbItem {
-    id: number
+    id: string
     name: string
 }
 

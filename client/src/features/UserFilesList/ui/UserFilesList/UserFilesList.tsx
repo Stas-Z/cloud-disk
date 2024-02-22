@@ -36,6 +36,7 @@ export const UserFilesList = memo((props: UserFilesProps) => {
     }, [currentDir, dispatch])
 
     const files = useSelector(getAllFiles)
+
     return (
         <DynamicModuleLoader
             reducers={initialReducers}

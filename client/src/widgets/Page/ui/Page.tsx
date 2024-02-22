@@ -1,14 +1,10 @@
-import { MutableRefObject, ReactNode, UIEvent, useEffect, useRef } from 'react'
+import { MutableRefObject, ReactNode, useEffect, useRef } from 'react'
 
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 
 import { StateSchema } from '@/app/providers/StoreProvider'
-import { getScrollSaveByPath, scrollSaveActions } from '@/features/ScrollSave'
+import { getCurrentDir, getScrollSaveByDir } from '@/entities/File'
 import { classNames } from '@/shared/lib/classNames/classNames'
-import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
-import { useInfiniteScroll } from '@/shared/lib/hooks/useInfiniteScroll/useInfiniteScroll'
-import { useThrottle } from '@/shared/lib/hooks/useThrottle/useThrottle'
 
 import cls from './Page.module.scss'
 
@@ -16,58 +12,43 @@ interface PageProps {
     className?: string
     children: ReactNode
     onScrollEnd?: () => void
-    parentRef?: MutableRefObject<HTMLDivElement>
-    saveScroll?: boolean
+    restoreScroll?: boolean
 }
 
 export const Page = (props: PageProps) => {
-    const {
-        className,
-        children,
-        onScrollEnd,
-        parentRef,
-        saveScroll = false,
-    } = props
+    const { className, children, onScrollEnd, restoreScroll = false } = props
 
-    const { pathname } = useLocation()
-    const scrollPosition = useSelector((state: StateSchema) =>
-        getScrollSaveByPath(state, pathname),
-    )
-    const dispatch = useAppDispatch()
+    const currentDir = useSelector(getCurrentDir)
 
     const triggerRef = useRef() as MutableRefObject<HTMLDivElement>
     const wrapperRef = useRef() as MutableRefObject<HTMLDivElement>
 
+    const scrollPosition = useSelector((state: StateSchema) =>
+        getScrollSaveByDir(state, currentDir),
+    )
+
     useEffect(() => {
-        if (saveScroll) {
-            wrapperRef.current.scrollTop = scrollPosition
-        }
-    }, [saveScroll, scrollPosition])
+        if (restoreScroll) {
+            setTimeout(() => {
+                const target = document.getElementById(scrollPosition)
 
-    useInfiniteScroll({
-        triggerRef,
-        wrapperRef,
-        callback: onScrollEnd,
-    })
-
-    const onScroll = useThrottle((e: UIEvent<HTMLDivElement>) => {
-        if (saveScroll) {
-            dispatch(
-                scrollSaveActions.setScrollPosition({
-                    position: e.currentTarget.scrollTop,
-                    path: pathname,
-                }),
-            )
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center',
+                    })
+                }
+            }, 100)
         }
-    }, 500)
+    }, [currentDir, restoreScroll, scrollPosition])
 
     return (
         <main
             ref={wrapperRef}
             className={classNames(cls.page, {}, [className])}
-            onScroll={onScroll}
         >
             {children}
+
             {onScrollEnd ? (
                 <div className={cls.trigger} ref={triggerRef} />
             ) : null}
