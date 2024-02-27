@@ -1,12 +1,15 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-import { FileSchema } from '../types/fileSchema'
+import { deleteLastDirSroll } from '../services/deleteLastDirSroll'
+import { FileSchema, ScrollSave } from '../types/fileSchema'
 
 const initialState: FileSchema = {
     currentDir: null,
     fileName: '',
     dirStack: [],
     scroll: {},
+    isLoading: false,
+    error: '',
 }
 
 export const fileSlice = createSlice({
@@ -38,23 +41,30 @@ export const fileSlice = createSlice({
             }
         },
 
-        setLastDir: (
+        setLastDirScroll: (
             state,
             action: PayloadAction<{ path: string; position: string }>,
         ) => {
             state.scroll[action.payload.path] = action.payload.position
         },
-
-        deleteLastDir: (state) => {
-            const keys = Object.keys(state.scroll)
-            const lastKeyIndex = keys.length - 1
-            if (lastKeyIndex >= 0) {
-                const lastKey = keys[lastKeyIndex]
-                const newScroll = { ...state.scroll }
-                delete newScroll[lastKey]
-                state.scroll = newScroll
-            }
-        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(deleteLastDirSroll.pending, (state) => {
+                state.isLoading = true
+                state.error = undefined
+            })
+            .addCase(
+                deleteLastDirSroll.fulfilled,
+                (state, action: PayloadAction<ScrollSave>) => {
+                    state.isLoading = false
+                    state.scroll = action.payload
+                },
+            )
+            .addCase(deleteLastDirSroll.rejected, (state, action) => {
+                state.isLoading = false
+                state.error = action.payload
+            })
     },
 })
 

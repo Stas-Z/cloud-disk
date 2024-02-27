@@ -10,4 +10,4 @@ server/node_modules
 .fttemplates
 
 # env
-server/config.env
+server/config/config.env

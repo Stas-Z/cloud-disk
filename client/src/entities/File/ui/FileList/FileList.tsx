@@ -1,7 +1,5 @@
 import { memo } from 'react'
 
-import { useTranslation } from 'react-i18next'
-
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { VStack } from '@/shared/ui/Stack'
 
@@ -19,7 +17,6 @@ interface FileListProps {
 
 export const FileList = memo((props: FileListProps) => {
     const { className, files, isLoading, view } = props
-    const { t } = useTranslation()
 
     const renderFiles = (file: MyFile) => {
         return <FileListItem file={file} view={view} key={file._id} />

@@ -112,6 +112,7 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
                         onChange={onChangeFoldername}
                         placeholder={t('New Folder')}
                         variant="outlined"
+                        focus
                     />
                 </HStack>
                 <HStack max className={cls.error}>

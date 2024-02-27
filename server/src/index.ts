@@ -2,13 +2,12 @@ import config from 'config'
 import express from 'express'
 import mongoose from 'mongoose'
 
-import corsMiddleware from './middleware/cors.middleware'
-import authRouter from './routes/auth.routes'
-import fileRouter from './routes/file.routes'
+import authRouter from './application/routes/auth.routes'
+import fileRouter from './application/routes/file.routes'
+import corsMiddleware from './infrastructure/middleware/cors.middleware'
 
 const app = express()
 const PORT = config.get('serverPort')
-
 app.use(corsMiddleware)
 app.use(express.json())
 app.use('/api/auth', authRouter)

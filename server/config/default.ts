@@ -3,7 +3,7 @@ import path, { resolve } from 'path'
 import { config } from 'dotenv'
 
 config({
-    path: resolve(__dirname, '../config.env'),
+    path: resolve(__dirname, './config.env'),
 })
 
 export const serverPort = 5000

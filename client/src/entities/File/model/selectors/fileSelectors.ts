@@ -22,5 +22,5 @@ export const getScrollSave = (state: StateSchema) => state.file.scroll
 export const getScrollSaveByDir = createSelector(
     getScrollSave,
     (state: StateSchema, pathDir: string) => pathDir,
-    (scroll, pathDir) => scroll[pathDir] || '0',
+    (scroll, pathDir) => scroll[pathDir] || '',
 )

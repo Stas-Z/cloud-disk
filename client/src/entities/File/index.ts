@@ -1,3 +1,5 @@
+export { deleteLastDirSroll } from './model/services/deleteLastDirSroll'
+
 export { fileReducer, fileActions } from './model/slices/fileSlice'
 
 export {

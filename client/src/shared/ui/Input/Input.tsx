@@ -1,4 +1,12 @@
-import React, { InputHTMLAttributes, ReactNode, memo, useState } from 'react'
+import React, {
+    InputHTMLAttributes,
+    MutableRefObject,
+    ReactNode,
+    memo,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
 import { Mods, classNames } from '@/shared/lib/classNames/classNames'
 
@@ -61,6 +69,10 @@ interface InputProps extends HTMLInputProps {
      * @description design of input
      */
     variant?: VariantType
+    /**
+     * @description Flag to enable focus
+     */
+    focus?: boolean
 }
 
 export const Input = memo((props: InputProps) => {
@@ -75,10 +87,20 @@ export const Input = memo((props: InputProps) => {
         label,
         size = 'm',
         variant = 'filled',
+        focus = false,
         ...otherProps
     } = props
 
     const [isFocused, setIsFocused] = useState(false)
+
+    const inputRef = useRef() as MutableRefObject<HTMLInputElement>
+
+    useEffect(() => {
+        if (focus && inputRef.current) {
+            inputRef.current.focus()
+            inputRef.current.select()
+        }
+    }, [focus])
 
     const onBlur = () => {
         setIsFocused(false)
@@ -109,6 +131,7 @@ export const Input = memo((props: InputProps) => {
         >
             {addonLeft && <div className={cls.addonLeft}>{addonLeft}</div>}
             <input
+                ref={inputRef}
                 type={type}
                 value={value}
                 onChange={onChangeHandler}

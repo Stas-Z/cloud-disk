@@ -16,6 +16,7 @@
         // Вместо такого импорта "import * as React from 'react';" можно писать "import React from 'react';"
         "isolatedModules": true
     },
+
     "ts-node": {
         // нужно для работы tsconfig'а с "module": "ESNext"
         "compilerOptions": {
@@ -24,5 +25,5 @@
     },
     "strictBindCallApply": true,
     "exclude": ["node_modules"],
-    "typeRoots": ["./src/types", "./node_modules/@types"]
+    "typeRoots": ["./types", "./node_modules/@types"]
 }

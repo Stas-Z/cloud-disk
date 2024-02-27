@@ -5,4 +5,6 @@ export interface FileSchema {
     currentDir: string | null
     dirStack: string[]
     scroll: ScrollSave
+    isLoading?: boolean
+    error?: string
 }

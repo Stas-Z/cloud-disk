@@ -4,11 +4,11 @@ import Router, { Request, Response } from 'express'
 import { check, validationResult } from 'express-validator'
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
 
+import File from '@/core/models/File'
+import User from '@/core/models/User'
+import { FileService } from '@/core/services/fileService'
 import { MappedErrors, filterMessages } from '@/helpers/errorFilterMessage'
-import authMiddleware from '@/middleware/auth.middleware'
-import File from '@/models/File'
-import User from '@/models/User'
-import { FileService } from '@/services/fileService'
+import authMiddleware from '@/infrastructure/middleware/auth.middleware'
 
 const SECRET_KEY: Secret = config.get('secretKey')
 

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
-import File from '@/models/File'
-import { FileService } from '@/services/fileService'
+import File from '@/core/models/File'
+import { FileService } from '@/core/services/fileService'
 
 interface CreateDirRequest {
     name: string
