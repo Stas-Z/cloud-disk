@@ -1,5 +1,6 @@
 import config from 'config'
 import express from 'express'
+import fileUpload from 'express-fileupload'
 import mongoose from 'mongoose'
 
 import authRouter from './application/routes/auth.routes'
@@ -8,6 +9,8 @@ import corsMiddleware from './infrastructure/middleware/cors.middleware'
 
 const app = express()
 const PORT = config.get('serverPort')
+
+app.use(fileUpload({}))
 app.use(corsMiddleware)
 app.use(express.json())
 app.use('/api/auth', authRouter)
