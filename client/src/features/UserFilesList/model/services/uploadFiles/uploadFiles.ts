@@ -1,30 +1,43 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'
-import { MyFile, FileType } from '@/entities/File'
+import { MyFile } from '@/entities/File'
 import { USER_TOKEN_KEY } from '@/shared/const/localstorage'
 
 import { fetchFilesList } from '../fetchFilesList/fetchFilesList'
 
-interface createFileDirProps {
-    name: string
-    parent: string
-    type: FileType
+interface uploadFilesProps {
+    file: File
+    dirId: string
 }
 
-export const createFileDir = createAsyncThunk<
+export const uploadFiles = createAsyncThunk<
     MyFile,
-    createFileDirProps,
+    uploadFilesProps,
     ThunkConfig<string>
->('userFilesList/createFileDir', async ({ name, parent, type }, thunkAPI) => {
+>('userFilesList/uploadFiles', async ({ file, dirId }, thunkAPI) => {
     const { extra, rejectWithValue, dispatch } = thunkAPI
+
     try {
+        const formData = new FormData()
+        formData.append('file', file)
+        if (dirId) {
+            formData.append('parent', dirId)
+        }
         const response = await extra.api.post<MyFile>(
-            'files',
-            { name, parent, type },
+            'files/upload',
+            formData,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem(USER_TOKEN_KEY)}`,
+                },
+                onUploadProgress: (progressEvent) => {
+                    if (progressEvent.total) {
+                        const percentCompleted = Math.round(
+                            (progressEvent.loaded / progressEvent.total) * 100,
+                        )
+                        console.log(`Upload progress: ${percentCompleted}%`)
+                    }
                 },
             },
         )
@@ -33,7 +46,7 @@ export const createFileDir = createAsyncThunk<
             throw new Error()
         }
 
-        dispatch(fetchFilesList(parent))
+        dispatch(fetchFilesList(dirId))
 
         return response.data
     } catch (e: any) {

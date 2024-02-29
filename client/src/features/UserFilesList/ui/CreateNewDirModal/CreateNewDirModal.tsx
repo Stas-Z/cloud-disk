@@ -54,7 +54,7 @@ export const CreateNewDirModal = memo((props: CreateNewDirProps) => {
                 className={cls.addButton}
                 onClick={onShowModal}
                 variant="filled"
-                color="yellow"
+                color="white"
                 fullWidth
                 shadow
                 addonLeft={

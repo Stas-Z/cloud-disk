@@ -49,13 +49,14 @@ export const FileListItem = memo((props: FileListItemProps) => {
 
         if (file.type === 'dir') {
             dispatch(fileActions.setCurrentDir(file._id))
+
+            dispatch(
+                fileActions.setLastDirScroll({
+                    path: currentDir,
+                    position: file._id,
+                }),
+            )
         }
-        dispatch(
-            fileActions.setLastDirScroll({
-                path: currentDir,
-                position: file._id,
-            }),
-        )
     }, [currentDir, dispatch, file._id, file.name, file.type])
 
     return (

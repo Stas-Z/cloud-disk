@@ -2,7 +2,11 @@ import { memo, useCallback } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
-import { CreateNewDirModal, createFileDir } from '@/features/UserFilesList'
+import {
+    CreateNewDirModal,
+    createFileDir,
+    UploadFiles,
+} from '@/features/UserFilesList'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { HStack, VStack } from '@/shared/ui/Stack'
@@ -36,7 +40,9 @@ export const Sidebar = memo((props: SidebarProps) => {
             className={classNames(cls.sidebar, {}, [className])}
             max
             maxHeight
+            gap="8"
         >
+            <UploadFiles />
             <HStack max justify="center">
                 <CreateNewDirModal onAccept={createDirHandler} />
             </HStack>

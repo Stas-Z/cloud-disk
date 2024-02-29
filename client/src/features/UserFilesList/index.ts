@@ -1,3 +1,5 @@
+export { UploadFiles } from './ui/UploadFiles/UploadFiles'
+
 export { CreateNewDirModal } from './ui/CreateNewDirModal/CreateNewDirModal'
 
 export { createFileDir } from './model/services/createFileDir/createFileDir'

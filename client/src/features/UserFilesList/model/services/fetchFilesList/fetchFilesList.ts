@@ -8,7 +8,7 @@ export const fetchFilesList = createAsyncThunk<
     MyFile[],
     string | null,
     ThunkConfig<string>
->('filesPage/fetchFilesList', async (currentDir, thunkAPI) => {
+>('userFilesList/fetchFilesList', async (currentDir, thunkAPI) => {
     const { extra, rejectWithValue } = thunkAPI
     try {
         const response = await extra.api.get<MyFile[]>('files', {

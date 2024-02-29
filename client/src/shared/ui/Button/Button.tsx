@@ -16,6 +16,7 @@ export type ButtonColor =
     | 'save'
     | 'cancel'
     | 'yellow'
+    | 'white'
     | 'transaprent'
 
 export type ButtonSize = 'm' | 'l' | 'xl'
@@ -34,6 +35,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
      * @description Flag to make button squared.
      */
     square?: boolean
+    /**
+     * @description Flag to make border button round.
+     */
+    round?: boolean
     /**
      * @description Button size. Responsible for button's text size.
      * @default 'm'
@@ -80,6 +85,7 @@ export const Button = forwardRef(
             children,
             variant = 'outline',
             square,
+            round,
             size = 'm',
             disabled,
             fullWidth,
@@ -92,6 +98,7 @@ export const Button = forwardRef(
 
         const mods: Mods = {
             [cls.square]: square,
+            [cls.round]: round,
             [cls.disabled]: disabled,
             [cls.fullWidth]: fullWidth,
             [cls.withAddon]: Boolean(addonLeft) || Boolean(addonRight),

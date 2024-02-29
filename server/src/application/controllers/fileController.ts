@@ -69,7 +69,7 @@ export class FileController {
     static async uploadFile(req: Request, res: Response) {
         try {
             // Получаем файл из запроса
-            const file = req.files?.files as UploadedFile
+            const file = req.files?.file as UploadedFile
 
             const userId = req.user ? req.user.id : null
 

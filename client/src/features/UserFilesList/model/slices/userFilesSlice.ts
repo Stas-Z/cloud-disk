@@ -8,6 +8,7 @@ import { MyFile } from '@/entities/File'
 
 import { createFileDir } from '../services/createFileDir/createFileDir'
 import { fetchFilesList } from '../services/fetchFilesList/fetchFilesList'
+import { uploadFiles } from '../services/uploadFiles/uploadFiles'
 import { UserFilesSchema } from '../types/userFilesSchema'
 
 export const filesAdapter = createEntityAdapter<MyFile, string>({
@@ -48,6 +49,17 @@ export const userFilesSlice = createSlice({
                 state.isLoading = false
             })
             .addCase(createFileDir.rejected, (state, action) => {
+                state.isLoading = false
+                state.error = action.payload
+            })
+            .addCase(uploadFiles.pending, (state) => {
+                state.isLoading = true
+                state.error = undefined
+            })
+            .addCase(uploadFiles.fulfilled, (state) => {
+                state.isLoading = false
+            })
+            .addCase(uploadFiles.rejected, (state, action) => {
                 state.isLoading = false
                 state.error = action.payload
             })
