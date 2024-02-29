@@ -1,3 +1,7 @@
+export { uploadFiles } from './model/services/uploadFiles/uploadFiles'
+
+export { DragAndDrop } from './ui/DragAndDrop/DragAndDrop'
+
 export { UploadFiles } from './ui/UploadFiles/UploadFiles'
 
 export { CreateNewDirModal } from './ui/CreateNewDirModal/CreateNewDirModal'

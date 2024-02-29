@@ -1,0 +1,26 @@
+.dragAndDrop {
+    margin: 0 20px 20px;
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin-top: 20px;
+    z-index: 120;
+    box-shadow: none;
+    border: 5px dashed #fff;
+    cursor: pointer;
+}
+
+.title {
+    text-align: center;
+    font: 60px var(--font-family-header);
+    color: white;
+    line-height: 70px;
+    font-weight: 500;
+    width: 70%;
+    margin: 40px auto;
+}

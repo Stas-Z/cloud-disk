@@ -5,6 +5,10 @@ import { useSelector } from 'react-redux'
 
 import { breadcrumbsActions } from '@/entities/Breadcrumbs'
 import DownloadIcon from '@/shared/assets/icons/arrow-download.svg'
+import FileImgIcon from '@/shared/assets/icons/file-img.svg'
+import FileRarIcon from '@/shared/assets/icons/file-rar.svg'
+import FileTxtIcon from '@/shared/assets/icons/file-txt.svg'
+import FileZipIcon from '@/shared/assets/icons/file-zip.svg'
 import FileIcon from '@/shared/assets/icons/file.svg'
 import FolderIcon from '@/shared/assets/icons/folder.svg'
 import ShareIcon from '@/shared/assets/icons/share-link.svg'
@@ -59,6 +63,19 @@ export const FileListItem = memo((props: FileListItemProps) => {
         }
     }, [currentDir, dispatch, file._id, file.name, file.type])
 
+    const iconMap: {
+        [key: string]: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+    } = {
+        dir: FolderIcon,
+        file: FileIcon,
+        png: FileImgIcon,
+        jpg: FileImgIcon,
+        tif: FileImgIcon,
+        txt: FileTxtIcon,
+        rar: FileRarIcon,
+        zip: FileZipIcon,
+    }
+
     return (
         <HStack
             max
@@ -69,7 +86,7 @@ export const FileListItem = memo((props: FileListItemProps) => {
             id={file._id.toString()}
         >
             <Icon
-                Svg={file.type === 'dir' ? FolderIcon : FileIcon}
+                Svg={iconMap[file.type || 'file'] || FileIcon}
                 width={40}
                 height={40}
                 className={cls.iconFolder}

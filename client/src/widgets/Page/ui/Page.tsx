@@ -1,4 +1,10 @@
-import { MutableRefObject, ReactNode, useEffect, useRef } from 'react'
+import {
+    DragEvent,
+    MutableRefObject,
+    ReactNode,
+    useEffect,
+    useRef,
+} from 'react'
 
 import { useSelector } from 'react-redux'
 
@@ -13,10 +19,21 @@ interface PageProps {
     children: ReactNode
     onScrollEnd?: () => void
     restoreScroll?: boolean
+    onDragEnter?: (e: DragEvent<HTMLDivElement>) => void
+    onDragLeave?: (e: DragEvent<HTMLDivElement>) => void
+    onDragOver?: (e: DragEvent<HTMLDivElement>) => void
 }
 
 export const Page = (props: PageProps) => {
-    const { className, children, onScrollEnd, restoreScroll = false } = props
+    const {
+        className,
+        children,
+        onScrollEnd,
+        restoreScroll = false,
+        onDragEnter,
+        onDragLeave,
+        onDragOver,
+    } = props
 
     const currentDir = useSelector(getCurrentDir)
 
@@ -46,6 +63,9 @@ export const Page = (props: PageProps) => {
         <main
             ref={wrapperRef}
             className={classNames(cls.page, {}, [className])}
+            onDragEnter={onDragEnter}
+            onDragLeave={onDragLeave}
+            onDragOver={onDragOver}
         >
             {children}
 

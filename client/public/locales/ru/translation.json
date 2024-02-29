@@ -32,5 +32,6 @@
   "Create folder": "Создать",
   "A file or folder with the same name already exists in this directory": "Выберите другое имя — это уже занято другой папкой или файлом",
   "Files": "Файлы",
-  "Upload file": "Загрузить"
+  "Upload file": "Загрузить",
+  "Upload files to Cloud Disk": "Загрузите файлы на Cloud Disk "
 }

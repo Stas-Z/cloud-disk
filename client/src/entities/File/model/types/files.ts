@@ -1,4 +1,6 @@
-export type FileType = 'dir' | 'file'
+export type ImgFileType = 'png' | 'jpg' | 'tif'
+
+export type FileType = 'dir' | ImgFileType | 'rar'
 
 export interface MyFile {
     _id: string
