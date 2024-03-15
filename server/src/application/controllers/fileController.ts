@@ -4,7 +4,7 @@ import archiver from 'archiver'
 import { Request, Response } from 'express'
 import { UploadedFile } from 'express-fileupload'
 
-import File, { FileDoc } from '@/core/models/File'
+import File, { FileDoc, ObjectId } from '@/core/models/File'
 import User, { UserDoc } from '@/core/models/User'
 import { FileService } from '@/core/services/fileService'
 import { appConfig } from '@/infrastructure/config/config'
@@ -73,7 +73,7 @@ export class FileController {
             const file = req.files?.file as UploadedFile
 
             const userId = req.user ? req.user.id : null
-            console.log('req.body.parent: ', req.body.parent)
+
             // Находим родительскую директорию в которую сохраняем файл.
             const parent: FileDoc | null = await File.findOne({
                 // Ищем по id user'а из токена и по id самой директории которую мы передаём в теле запроса
@@ -132,6 +132,13 @@ export class FileController {
                 parent: parent?._id,
                 user: user?._id,
             })
+
+            if (parent) {
+                // Пушим id только что добавленного нового файла в массив родительского фаила childs
+                parent.childs?.push(dbFile._id)
+                await parent.save()
+            }
+
             // Сохраняем файл в базе данных
             await dbFile.save()
             // Также сохраняем пользователя поскольку мы меняли у него поля
@@ -242,6 +249,10 @@ export class FileController {
                 return res.status(400).json({ message: 'file not found' })
             }
 
+            // Находим родительскую папку
+
+            const parentFolder = await File.findOne({ _id: file.parent })
+
             // Удаляем физический файл который храниться на сервере
             FileService.deleteFile(file)
 
@@ -250,6 +261,15 @@ export class FileController {
 
             // Удаляем модель файла из базы данных
             await file.deleteOne()
+
+            if (parentFolder && parentFolder.childs) {
+                // Удаляем идентификатор удаленного файла из массива childs родительской папки
+                parentFolder.childs = parentFolder.childs.filter(
+                    (childId) => childId.toString() !== file._id.toString(),
+                ) as [typeof ObjectId]
+
+                await parentFolder.save()
+            }
 
             return res.json({ message: 'File was deleted' })
         } catch (e) {
@@ -266,9 +286,9 @@ export class FileController {
             const childFiles = await File.find({ parent: file._id })
 
             // Создаем массив промисов для удаления каждого дочернего файла
-            const deletePromises = childFiles.map((childFile) =>
-                FileController.deleteChildFiles(childFile),
-            )
+            const deletePromises = childFiles.map((childFile) => {
+                return FileController.deleteChildFiles(childFile)
+            })
 
             // Ждем завершения всех промисов для удаления
             await Promise.all(deletePromises)

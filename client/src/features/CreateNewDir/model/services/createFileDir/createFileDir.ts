@@ -29,7 +29,6 @@ export const createFileDir = createAsyncThunk<
             if (!response.data) {
                 throw new Error()
             }
-            console.log(updateList)
 
             if (updateList) {
                 dispatch(fetchFilesList(parent))

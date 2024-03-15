@@ -16,11 +16,17 @@ export const deleteFile = createAsyncThunk<
     const { extra, rejectWithValue, dispatch } = thunkAPI
 
     try {
+        const formData = new FormData()
+        formData.append('parent', dirId)
+
+        // Отправляем запрос на удаление файла
         const response = await extra.api.delete(`/files/?id=${file._id}`)
 
         if (!response.data) {
-            throw new Error()
+            throw new Error('No data received from the server')
         }
+
+        // Обновляем список файлов в директории после успешного удаления файла
         dispatch(fetchFilesList(dirId))
 
         return response.data.message

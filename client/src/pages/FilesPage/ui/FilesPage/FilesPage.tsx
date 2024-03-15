@@ -5,21 +5,19 @@ import { useSelector } from 'react-redux'
 
 import { getCurrentDir, getSelectedFileName } from '@/entities/File'
 import { NoticePopup } from '@/entities/Notice'
-import { DragAndDrop } from '@/features/DragAndDrop'
 import {
     FileToolBar,
     getfileToolbarError,
     getfileToolbarMessage,
     fileToolBarReducer,
 } from '@/features/FileToolBar'
-import { uploadFiles } from '@/features/UploadFiles'
 import { UserFilesList } from '@/features/UserFilesList'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import {
     DynamicModuleLoader,
     ReducersList,
 } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
-import { useDrag } from '@/shared/lib/hooks/useDrag/useDrag'
+import { DragAndDrop, useDrag } from '@/widgets/DragAndDrop'
 import { Page } from '@/widgets/Page'
 
 import cls from './FilesPage.module.scss'
@@ -51,7 +49,7 @@ const FilesPage = (props: FilesPageProps) => {
     const currentDir = useSelector(getCurrentDir)
 
     const { dragEnter, dragEnterHandler, dragLeaveHandler, dropHandler } =
-        useDrag({ currentDir, uploadFiles })
+        useDrag({ currentDir })
 
     const dragProps = {
         onDragEnter: dragEnterHandler,
