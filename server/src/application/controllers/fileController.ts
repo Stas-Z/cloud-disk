@@ -1,12 +1,13 @@
 import fs from 'fs'
 
-import config from 'config'
+import archiver from 'archiver'
 import { Request, Response } from 'express'
 import { UploadedFile } from 'express-fileupload'
 
 import File, { FileDoc } from '@/core/models/File'
 import User, { UserDoc } from '@/core/models/User'
 import { FileService } from '@/core/services/fileService'
+import { appConfig } from '@/infrastructure/config/config'
 
 interface CreateDirRequest {
     name: string
@@ -72,7 +73,7 @@ export class FileController {
             const file = req.files?.file as UploadedFile
 
             const userId = req.user ? req.user.id : null
-
+            console.log('req.body.parent: ', req.body.parent)
             // Находим родительскую директорию в которую сохраняем файл.
             const parent: FileDoc | null = await File.findOne({
                 // Ищем по id user'а из токена и по id самой директории которую мы передаём в теле запроса
@@ -100,11 +101,10 @@ export class FileController {
                 }
                 user.usedSpace = (user?.usedSpace || 0) + (file?.size || 0)
             }
-
             // Путь файла
             const path = parent
-                ? `${config.get('filePath')}\\${user._id}\\${parent.path}\\${file.name}`
-                : `${config.get('filePath')}\\${user._id}\\${file.name}`
+                ? `${appConfig.filePath}\\${user._id}\\${parent.path}\\${file.name}`
+                : `${appConfig.filePath}\\${user._id}\\${file.name}`
 
             // Проверяем если есть уже такой файл, по такому-то пути
             if (fs.existsSync(path)) {
@@ -117,12 +117,18 @@ export class FileController {
             // Получаем тип файла, его расширение
             const type = file?.name.split('.').pop()
 
+            let newFilePath = file.name
+            // Если есть родитель, добавляем в путь
+            if (parent) {
+                newFilePath = `${parent.path}\\${file.name}`
+            }
+
             // Создаём модель файла и передаём все необходимые параметры
             const dbFile: FileDoc = new File({
                 name: file?.name,
                 type,
                 size: file?.size,
-                path: parent?.path,
+                path: newFilePath,
                 parent: parent?._id,
                 user: user?._id,
             })
@@ -136,6 +142,141 @@ export class FileController {
         } catch (e) {
             console.log(e)
             return res.status(500).json({ message: 'Upload error' })
+        }
+    }
+
+    static async downloadFile(req: Request, res: Response) {
+        try {
+            // Находим файл по id и пользователю
+            const file = await File.findOne({
+                _id: req.query.id,
+                user: req.user.id,
+            })
+
+            if (!file) {
+                return res.status(404).json({ message: 'File not found' })
+            }
+
+            const { filePath } = appConfig
+            // Путь до физического файла, который храниться на сервере.
+            // путь до директории \\ id текущего пользователя \\ путь файла
+            const path = `${filePath}\\${req.user.id._id}\\${file?.path}`
+
+            // если файл является папкой, запаковываем в архив и отдаём на клиент
+            if (file.type === 'dir') {
+                // Создаем поток для записи данных в zip-архив
+                const archive = archiver('zip', {
+                    zlib: { level: 9 }, // уровень сжатия
+                })
+
+                // Отправляем zip-архив как ответ на запрос
+                res.attachment(`${file.name}.zip`)
+                archive.pipe(res)
+
+                // Добавляем содержимое папки в zip-архив
+                archive.directory(path, false)
+
+                // Завершаем архивацию и отправляем архив клиенту
+                archive.finalize()
+            }
+
+            if (file.type !== 'dir') {
+                // Если файл существует отправляем обратно на клиент
+                if (file && fs.existsSync(path)) {
+                    return res.download(path, file.name)
+                }
+
+                return res.status(400).json({ message: 'Download error' })
+            }
+        } catch (e) {
+            console.log(e)
+            res.status(500).json({ message: 'Download error' })
+        }
+    }
+
+    static async downloadFolder(req: Request, res: Response) {
+        try {
+            const folderId = req.query.id
+            const user = req.user.id
+
+            // Находим папку по её id и пользователю
+            const folder = await File.findOne({ _id: folderId, user })
+
+            if (!folder || folder.type !== 'dir') {
+                return res.status(404).json({ message: 'Folder not found' })
+            }
+
+            const { filePath } = appConfig
+            // Путь к папке, которую мы хотим скачать
+            const folderPath = `${filePath}\\${req.user.id._id}\\${folder?.path}`
+
+            // Создаем поток для записи данных в zip-архив
+            const archive = archiver('zip', {
+                zlib: { level: 9 }, // уровень сжатия
+            })
+
+            // Отправляем zip-архив как ответ на запрос
+            res.attachment(`${folder.name}.zip`)
+            archive.pipe(res)
+
+            // Добавляем содержимое папки в zip-архив
+            archive.directory(folderPath, false)
+
+            // Завершаем архивацию и отправляем архив клиенту
+            archive.finalize()
+        } catch (error) {
+            console.error('Error downloading folder:', error)
+            res.status(500).json({ message: 'Failed to download folder' })
+        }
+    }
+
+    static async deleteFile(req: Request, res: Response) {
+        try {
+            // Находим файл по id и пользователю
+            const file = await File.findOne({
+                _id: req.query.id,
+                user: req.user.id,
+            })
+
+            if (!file) {
+                return res.status(400).json({ message: 'file not found' })
+            }
+
+            // Удаляем физический файл который храниться на сервере
+            FileService.deleteFile(file)
+
+            // Рекурсивно удаляем всех дочерних элементов
+            await FileController.deleteChildFiles(file)
+
+            // Удаляем модель файла из базы данных
+            await file.deleteOne()
+
+            return res.json({ message: 'File was deleted' })
+        } catch (e) {
+            console.log(e)
+            return res
+                .status(400)
+                .json({ message: 'The directory is not empty' })
+        }
+    }
+
+    static async deleteChildFiles(file: FileDoc) {
+        try {
+            // Находим все дочерние файлы для данного файла
+            const childFiles = await File.find({ parent: file._id })
+
+            // Создаем массив промисов для удаления каждого дочернего файла
+            const deletePromises = childFiles.map((childFile) =>
+                FileController.deleteChildFiles(childFile),
+            )
+
+            // Ждем завершения всех промисов для удаления
+            await Promise.all(deletePromises)
+
+            // Удаляем текущий файл после удаления всех дочерних файлов
+            await file.deleteOne()
+        } catch (error) {
+            console.error(`Error deleting child files: ${error}`)
         }
     }
 }

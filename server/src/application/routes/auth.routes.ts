@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs'
-import config from 'config'
 import Router, { Request, Response } from 'express'
 import { check, validationResult } from 'express-validator'
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
@@ -8,9 +7,11 @@ import File from '@/core/models/File'
 import User from '@/core/models/User'
 import { FileService } from '@/core/services/fileService'
 import { MappedErrors, filterMessages } from '@/helpers/errorFilterMessage'
+import { appConfig } from '@/infrastructure/config/config'
 import authMiddleware from '@/infrastructure/middleware/auth.middleware'
 
-const SECRET_KEY: Secret = config.get('secretKey')
+const { secretKey } = appConfig
+const SECRET_KEY: Secret = secretKey
 
 // Маршруты для регистрации и авторизации пользователя
 

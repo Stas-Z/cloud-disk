@@ -2,6 +2,7 @@
     border-radius: 8px;
     padding: 6px 16px;
     flex-shrink: 0;
+    color: var(--icon);
 
     &:hover {
         background: var(--input-bg);
@@ -27,4 +28,7 @@
     .icon {
         color: #222426;
     }
+}
+.selected {
+    background-color: var(--selected);
 }

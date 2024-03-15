@@ -1,20 +1,32 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import {
+    PayloadAction,
+    createEntityAdapter,
+    createSlice,
+} from '@reduxjs/toolkit'
 
-import { deleteLastDirSroll } from '../services/deleteLastDirSroll'
+import { deleteLastDirScroll } from '../services/deleteLastDirScroll/deleteLastDirScroll'
+import { fetchFilesList } from '../services/fetchFilesList/fetchFilesList'
+import { MyFile } from '../types/files'
 import { FileSchema, ScrollSave } from '../types/fileSchema'
 
-const initialState: FileSchema = {
-    currentDir: null,
-    fileName: '',
-    dirStack: [],
-    scroll: {},
-    isLoading: false,
-    error: '',
-}
+export const filesAdapter = createEntityAdapter<MyFile, string>({
+    selectId: (file: MyFile) => file._id,
+})
 
 export const fileSlice = createSlice({
     name: 'file',
-    initialState,
+    initialState: filesAdapter.getInitialState<FileSchema>({
+        currentDir: null,
+        fileName: '',
+        dirStack: [],
+        scroll: {},
+        selectedFile: { _id: '', name: '' },
+        isLoading: false,
+        error: '',
+        ids: [],
+        entities: {},
+    }),
+
     reducers: {
         setFileName: (state, action: PayloadAction<string>) => {
             state.fileName = action.payload
@@ -47,21 +59,39 @@ export const fileSlice = createSlice({
         ) => {
             state.scroll[action.payload.path] = action.payload.position
         },
+        setSelectedFile: (state, action: PayloadAction<MyFile>) => {
+            state.selectedFile = action.payload
+        },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(deleteLastDirSroll.pending, (state) => {
+            .addCase(fetchFilesList.pending, (state) => {
                 state.isLoading = true
                 state.error = undefined
             })
             .addCase(
-                deleteLastDirSroll.fulfilled,
+                fetchFilesList.fulfilled,
+                (state, action: PayloadAction<MyFile[]>) => {
+                    state.isLoading = false
+                    filesAdapter.setAll(state, action.payload)
+                },
+            )
+            .addCase(fetchFilesList.rejected, (state, action) => {
+                state.isLoading = false
+                state.error = action.payload
+            })
+            .addCase(deleteLastDirScroll.pending, (state) => {
+                state.isLoading = true
+                state.error = undefined
+            })
+            .addCase(
+                deleteLastDirScroll.fulfilled,
                 (state, action: PayloadAction<ScrollSave>) => {
                     state.isLoading = false
                     state.scroll = action.payload
                 },
             )
-            .addCase(deleteLastDirSroll.rejected, (state, action) => {
+            .addCase(deleteLastDirScroll.rejected, (state, action) => {
                 state.isLoading = false
                 state.error = action.payload
             })

@@ -10,6 +10,7 @@ import { Mods, classNames } from '@/shared/lib/classNames/classNames'
 import cls from './Button.module.scss'
 
 export type ButtonVariant = 'clear' | 'outline' | 'filled'
+export type ButtonTextColor = 'normalText' | 'whiteText'
 
 export type ButtonColor =
     | 'normal'
@@ -73,6 +74,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
      */
     color?: ButtonColor
     /**
+     * @description Button color.
+     */
+    textColor?: ButtonTextColor
+    /**
      * @description Button shadow.
      */
     shadow?: boolean
@@ -93,6 +98,7 @@ export const Button = forwardRef(
             addonRight,
             shadow,
             color = 'normal',
+            textColor = 'normalText',
             ...otherProps
         } = props
 
@@ -104,7 +110,13 @@ export const Button = forwardRef(
             [cls.withAddon]: Boolean(addonLeft) || Boolean(addonRight),
             [cls.shadow]: shadow,
         }
-        const addClass = [className, cls[variant], cls[size], cls[color]]
+        const addClass = [
+            className,
+            cls[variant],
+            cls[size],
+            cls[color],
+            cls[textColor],
+        ]
 
         return (
             <button

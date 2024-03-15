@@ -13,13 +13,24 @@ interface FileListProps {
     files: MyFile[]
     isLoading?: boolean
     view?: FileView
+    onShowToolbar?: () => void
+    toolbarIsOpen?: boolean
 }
 
 export const FileList = memo((props: FileListProps) => {
-    const { className, files, isLoading, view } = props
+    const { className, files, isLoading, view, onShowToolbar, toolbarIsOpen } =
+        props
 
     const renderFiles = (file: MyFile) => {
-        return <FileListItem file={file} view={view} key={file._id} />
+        return (
+            <FileListItem
+                file={file}
+                view={view}
+                key={file._id}
+                onShowToolbar={onShowToolbar}
+                toolbarIsOpen={toolbarIsOpen}
+            />
+        )
     }
 
     return (

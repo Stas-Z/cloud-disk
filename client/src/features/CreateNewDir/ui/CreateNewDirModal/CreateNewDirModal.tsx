@@ -1,0 +1,115 @@
+import { Suspense, memo, useCallback, useState } from 'react'
+
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+
+import { fileActions } from '@/entities/File'
+import { NoticePopup } from '@/entities/Notice'
+import Plus from '@/shared/assets/icons/plus.svg'
+import { classNames } from '@/shared/lib/classNames/classNames'
+import {
+    DynamicModuleLoader,
+    ReducersList,
+} from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
+import { Button } from '@/shared/ui/Button'
+import { Icon } from '@/shared/ui/Icon'
+import { Modal } from '@/shared/ui/Modal'
+import { VStack } from '@/shared/ui/Stack'
+
+import cls from './CreateNewDirModal.module.scss'
+import {
+    getFileError,
+    getFileIsLoading,
+    getFileOnSucces,
+} from '../../model/selectors/CreateNewDirSelectors/CreateNewDirSelectors'
+import { createNewDirReducer } from '../../model/slices/createNewDirSlice'
+import { CreateNewDirFormAsync } from '../CreateNewDirForm/CreateNewDirForm.async'
+
+interface CreateNewDirProps {
+    className?: string
+    onAccept?: (name: string, parent: string) => void
+}
+
+const initialReducers: ReducersList = {
+    createNewDir: createNewDirReducer,
+}
+
+export const CreateNewDirModal = memo((props: CreateNewDirProps) => {
+    const { className, onAccept } = props
+    const { t } = useTranslation()
+    const dispatch = useAppDispatch()
+    const [isAuthModal, setIsAuthModal] = useState(false)
+    const [showError, setShowError] = useState(false)
+    const [noticeFileName, setNoticeFileName] = useState('')
+
+    const onCloseModal = useCallback(() => {
+        setIsAuthModal(false)
+        setShowError(false)
+    }, [])
+
+    const onShowModal = useCallback(() => {
+        setIsAuthModal(true)
+        dispatch(fileActions.setFileName(t('New Folder')))
+    }, [dispatch, t])
+
+    const showErrorHandler = useCallback(() => {
+        setShowError(true)
+    }, [])
+
+    const isLoading = useSelector(getFileIsLoading)
+    const error = useSelector(getFileError)
+    const onSucces = useSelector(getFileOnSucces)
+
+    return (
+        <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount>
+            <VStack
+                max
+                className={classNames(cls.createNewDir, {}, [className])}
+            >
+                <Button
+                    className={cls.addButton}
+                    onClick={onShowModal}
+                    variant="filled"
+                    color="white"
+                    fullWidth
+                    shadow
+                    addonLeft={
+                        <Icon
+                            Svg={Plus}
+                            height={24}
+                            width={24}
+                            className={cls.icon}
+                        />
+                    }
+                >
+                    {t('Create folder')}
+                </Button>
+                <Modal
+                    className={classNames(cls.newDirModal, {}, [className])}
+                    isOpen={isAuthModal}
+                    onClose={onCloseModal}
+                    lazy
+                    overlay
+                >
+                    <Suspense fallback="">
+                        <CreateNewDirFormAsync
+                            error={error}
+                            onSuccess={onCloseModal}
+                            showError={showError}
+                            showErrorHandler={showErrorHandler}
+                            setNoticeFileName={setNoticeFileName}
+                        />
+                    </Suspense>
+                </Modal>
+                {onSucces && (
+                    <NoticePopup
+                        message={t('You have successfully created a folder', {
+                            folder: noticeFileName,
+                        })}
+                    />
+                )}
+            </VStack>
+        </DynamicModuleLoader>
+    )
+})

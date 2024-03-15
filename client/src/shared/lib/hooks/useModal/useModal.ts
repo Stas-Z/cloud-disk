@@ -34,8 +34,8 @@ export function useModal(props: useModalProps) {
 
     const close = useCallback(() => {
         if (onClose) {
-            onClose()
             timerRef.current = setTimeout(() => {
+                onClose()
                 setIsMounted(false)
             }, animationDelay)
         }

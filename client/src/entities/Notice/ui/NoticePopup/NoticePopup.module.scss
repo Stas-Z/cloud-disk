@@ -1,0 +1,43 @@
+.noticePopup {
+    position: fixed;
+    bottom: -100%;
+    left: 20px;
+    box-shadow: 0 0 0 1px #d9d9d9;
+    padding: 20px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    z-index: var(--modal-z-index);
+    background: var(--light-bg);
+    transition: all 0.7s ease-out;
+    animation-name: close-notice;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+.show {
+    bottom: 0;
+    animation-name: open-notice;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes open-notice {
+    0% {
+        bottom: -100%;
+    }
+
+    100% {
+        bottom: 0;
+    }
+}
+
+@keyframes close-notice {
+    0% {
+        bottom: 0;
+    }
+
+    100% {
+        bottom: -100%;
+    }
+}

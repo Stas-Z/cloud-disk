@@ -1,15 +1,25 @@
-import { DragEvent, memo, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import { getCurrentDir } from '@/entities/File'
+import { getCurrentDir, getSelectedFileName } from '@/entities/File'
+import { NoticePopup } from '@/entities/Notice'
+import { DragAndDrop } from '@/features/DragAndDrop'
 import {
-    DragAndDrop,
-    UserFilesList,
-    uploadFiles,
-} from '@/features/UserFilesList'
+    FileToolBar,
+    getfileToolbarError,
+    getfileToolbarMessage,
+    fileToolBarReducer,
+} from '@/features/FileToolBar'
+import { uploadFiles } from '@/features/UploadFiles'
+import { UserFilesList } from '@/features/UserFilesList'
 import { classNames } from '@/shared/lib/classNames/classNames'
-import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
+import {
+    DynamicModuleLoader,
+    ReducersList,
+} from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
+import { useDrag } from '@/shared/lib/hooks/useDrag/useDrag'
 import { Page } from '@/widgets/Page'
 
 import cls from './FilesPage.module.scss'
@@ -18,47 +28,41 @@ interface FilesPageProps {
     className?: string
 }
 
+const initialReducers: ReducersList = {
+    toolbar: fileToolBarReducer,
+}
+
 const FilesPage = (props: FilesPageProps) => {
     const { className } = props
-    const dispatch = useAppDispatch()
-    const [dragEnter, setDragEnter] = useState(false)
+    const { t } = useTranslation()
+    const error = useSelector(getfileToolbarError)
+    const message = useSelector(getfileToolbarMessage)
+    const selectedFileName = useSelector(getSelectedFileName)
+
+    const [fileToolbar, setFileToolbar] = useState(false)
+
+    const onCloseToolbar = useCallback(() => {
+        setFileToolbar(false)
+    }, [])
+    const onShowToolbar = useCallback(() => {
+        setFileToolbar(true)
+    }, [])
+
     const currentDir = useSelector(getCurrentDir)
 
-    const dragEnterHandler = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault()
-        e.stopPropagation()
-        setDragEnter(true)
-    }
-    const dragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault()
-        e.stopPropagation()
-        setDragEnter(false)
-    }
+    const { dragEnter, dragEnterHandler, dragLeaveHandler, dropHandler } =
+        useDrag({ currentDir, uploadFiles })
+
     const dragProps = {
         onDragEnter: dragEnterHandler,
         onDragLeave: dragLeaveHandler,
         onDragOver: dragEnterHandler,
     }
 
-    const dropHandler = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault()
-        e.stopPropagation()
-
-        const { files } = e.dataTransfer
-        if (files) {
-            const fileList: File[] = Array.from(files)
-
-            fileList.forEach((file) =>
-                dispatch(uploadFiles({ dirId: currentDir, file })),
-            )
-        }
-        setDragEnter(false)
-    }
-
     if (dragEnter) {
         return (
             <Page
-                className={classNames(cls.filesPageTsx, {}, [className])}
+                className={classNames(cls.filesPage, {}, [className])}
                 restoreScroll
             >
                 <DragAndDrop {...dragProps} onDrop={dropHandler} />
@@ -67,13 +71,27 @@ const FilesPage = (props: FilesPageProps) => {
         )
     }
     return (
-        <Page
-            className={classNames(cls.filesPageTsx, {}, [className])}
-            restoreScroll
-            {...dragProps}
-        >
-            <UserFilesList />
-        </Page>
+        <DynamicModuleLoader reducers={initialReducers}>
+            <Page
+                className={classNames(cls.filesPage, {}, [className])}
+                restoreScroll
+                {...dragProps}
+            >
+                <FileToolBar
+                    isOpen={fileToolbar}
+                    onClose={onCloseToolbar}
+                    lazy
+                />
+                <NoticePopup
+                    message={t(message, { file: selectedFileName })}
+                    error={t(error)}
+                />
+                <UserFilesList
+                    onShowToolbar={onShowToolbar}
+                    toolbarIsOpen={fileToolbar}
+                />
+            </Page>
+        </DynamicModuleLoader>
     )
 }
 export default memo(FilesPage)

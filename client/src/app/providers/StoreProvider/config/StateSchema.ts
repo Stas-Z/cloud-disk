@@ -6,13 +6,17 @@ import { CounterSchema } from '@/entities/Counter'
 import { FileSchema } from '@/entities/File'
 import { UserSchema } from '@/entities/User'
 import { AuthSchema } from '@/features/AuthorizationForm'
-import { UserFilesSchema } from '@/features/UserFilesList'
+import { CreateNewDirSchema } from '@/features/CreateNewDir'
+import { FileToolBarSchema } from '@/features/FileToolBar'
+import { UploadFilesSchema } from '@/features/UploadFiles'
 
 import { createReduxStore } from './store'
 
 export interface AsyncReducers {
     authForm: AuthSchema
-    userFiles: UserFilesSchema
+    createNewDir: CreateNewDirSchema
+    uploadFiles: UploadFilesSchema
+    toolbar: FileToolBarSchema
 }
 
 export interface StateSchema {
@@ -21,7 +25,9 @@ export interface StateSchema {
     user: UserSchema
     file: FileSchema
     breadcrumbs: BreadcrumbsSchema
-    userFiles: UserFilesSchema
+    createNewDir: CreateNewDirSchema
+    uploadFiles: UploadFilesSchema
+    toolbar: FileToolBarSchema
 }
 
 export type StateSchemaKey = keyof StateSchema

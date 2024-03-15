@@ -1,10 +1,15 @@
+import { EntityState } from '@reduxjs/toolkit'
+
+import { MyFile } from './files'
+
 export type ScrollSave = Record<string, string>
 
-export interface FileSchema {
+export interface FileSchema extends EntityState<MyFile, string> {
     fileName: string
     currentDir: string | null
     dirStack: string[]
     scroll: ScrollSave
+    selectedFile?: MyFile
     isLoading?: boolean
     error?: string
 }

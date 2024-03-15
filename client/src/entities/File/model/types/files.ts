@@ -13,4 +13,9 @@ export interface MyFile {
     parent?: number
     childs?: [number]
     date?: string
+    isDirectory?: boolean
+}
+
+export interface MyFolder extends File {
+    getAllEntries: () => Promise<File[]>
 }

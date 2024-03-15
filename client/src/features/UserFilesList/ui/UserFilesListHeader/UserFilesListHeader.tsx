@@ -11,7 +11,7 @@ import {
     defaultBreadcrumb,
 } from '@/entities/Breadcrumbs'
 import {
-    deleteLastDirSroll,
+    deleteLastDirScroll,
     fileActions,
     getCurrentDir,
     getFilesWithoutLast,
@@ -50,7 +50,7 @@ export const UserFilesListHeader = memo((props: UserFilesListHeaderProps) => {
 
         clearTimeout(timerRef.current)
         timerRef.current = setTimeout(() => {
-            dispatch(deleteLastDirSroll())
+            dispatch(deleteLastDirScroll())
         }, 100)
     }, [breadcrumbsWithoutLast, dispatch, filesWithoutLast, lastFileId])
 

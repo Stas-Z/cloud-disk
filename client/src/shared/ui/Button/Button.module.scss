@@ -1,6 +1,5 @@
 .button {
     cursor: pointer;
-    color: var(--text);
     padding: 8px 16px;
     display: flex;
     align-items: center;
@@ -16,16 +15,19 @@
         }
     }
 }
+.normalText {
+    color: var(--text);
+}
+.whiteText {
+    color: white;
+}
 
 .addonLeft,
 .addonRight {
     display: flex;
-    position: absolute;
-    left: 0;
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: 38px;
 }
 
 .withAddon {
@@ -37,6 +39,10 @@
     border: none;
     background: none;
     outline-color: transparent;
+
+    &:hover {
+        background: none;
+    }
 }
 
 .filled {

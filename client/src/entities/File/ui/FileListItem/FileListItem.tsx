@@ -5,12 +5,6 @@ import { useSelector } from 'react-redux'
 
 import { breadcrumbsActions } from '@/entities/Breadcrumbs'
 import DownloadIcon from '@/shared/assets/icons/arrow-download.svg'
-import FileImgIcon from '@/shared/assets/icons/file-img.svg'
-import FileRarIcon from '@/shared/assets/icons/file-rar.svg'
-import FileTxtIcon from '@/shared/assets/icons/file-txt.svg'
-import FileZipIcon from '@/shared/assets/icons/file-zip.svg'
-import FileIcon from '@/shared/assets/icons/file.svg'
-import FolderIcon from '@/shared/assets/icons/folder.svg'
 import ShareIcon from '@/shared/assets/icons/share-link.svg'
 import ViewIcon from '@/shared/assets/icons/views-icon.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
@@ -21,26 +15,41 @@ import { Text } from '@/shared/ui/Text'
 
 import cls from './FileListItem.module.scss'
 import { FileView } from '../../model/consts/fileConsts'
-import { getCurrentDir } from '../../model/selectors/fileSelectors'
+import {
+    getCurrentDir,
+    getSelectedFileId,
+} from '../../model/selectors/fileSelectors/fileSelectors'
 import { fileActions } from '../../model/slices/fileSlice'
 import { MyFile } from '../../model/types/files'
+import { FileIconType } from '../FileIconType/FileIconType'
 
 interface FileListItemProps {
     className?: string
     file: MyFile
     view?: FileView
+    onShowToolbar?: () => void
+    toolbarIsOpen?: boolean
 }
 
 export const FileListItem = memo((props: FileListItemProps) => {
-    const { className, file, view } = props
+    const { className, file, view, onShowToolbar, toolbarIsOpen } = props
     const { t } = useTranslation()
     const dispatch = useAppDispatch()
     const currentDir = useSelector(getCurrentDir)
+    const selectedItemId = useSelector(getSelectedFileId)
+    const isSelected = selectedItemId === file._id && toolbarIsOpen
 
     const date = file.date?.slice(0, 10)
     const time = file.date?.slice(11, 16)
 
-    const onClickHandler = useCallback(() => {}, [])
+    const onClickHandler = useCallback(() => {
+        dispatch(fileActions.setSelectedFile(file))
+
+        if (onShowToolbar) {
+            onShowToolbar()
+        }
+    }, [dispatch, file, onShowToolbar])
+    const onClickIconHandler = useCallback(() => {}, [])
 
     const openDirHandler = useCallback(() => {
         dispatch(
@@ -63,30 +72,22 @@ export const FileListItem = memo((props: FileListItemProps) => {
         }
     }, [currentDir, dispatch, file._id, file.name, file.type])
 
-    const iconMap: {
-        [key: string]: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
-    } = {
-        dir: FolderIcon,
-        file: FileIcon,
-        png: FileImgIcon,
-        jpg: FileImgIcon,
-        tif: FileImgIcon,
-        txt: FileTxtIcon,
-        rar: FileRarIcon,
-        zip: FileZipIcon,
-    }
-
     return (
         <HStack
             max
-            className={classNames(cls.fileListItem, {}, [className])}
+            className={classNames(
+                cls.fileListItem,
+                { [cls.selected]: isSelected },
+                [className],
+            )}
             gap="16"
             align="center"
             onDoubleClick={openDirHandler}
-            id={file._id.toString()}
+            id={`list-item-${file._id.toString()}`}
+            onClick={onClickHandler}
         >
             <Icon
-                Svg={iconMap[file.type || 'file'] || FileIcon}
+                Svg={FileIconType(file.type)}
                 width={40}
                 height={40}
                 className={cls.iconFolder}
@@ -124,7 +125,7 @@ export const FileListItem = memo((props: FileListItemProps) => {
                         align="center"
                     />
                     <Text
-                        text={file.size}
+                        text={file.size?.toString()}
                         variant="grey"
                         size="s"
                         className={cls.info}
@@ -139,7 +140,7 @@ export const FileListItem = memo((props: FileListItemProps) => {
                     width={24}
                     className={cls.icon}
                     clickable
-                    onClick={onClickHandler}
+                    onClick={onClickIconHandler}
                 />
             </HStack>
         </HStack>

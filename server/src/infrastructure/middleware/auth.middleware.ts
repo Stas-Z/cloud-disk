@@ -1,6 +1,9 @@
-import config from 'config'
 import { NextFunction, Request, Response } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
+
+import { appConfig } from '@/infrastructure/config/config'
+
+const { secretKey } = appConfig
 
 function auth(req: Request, res: Response, next: NextFunction) {
     if (req.method === 'OPTIONS') {
@@ -14,10 +17,7 @@ function auth(req: Request, res: Response, next: NextFunction) {
         }
         const splitToken = token.split(' ')[1]
 
-        const decoded = jwt.verify(
-            splitToken,
-            config.get('secretKey'),
-        ) as JwtPayload
+        const decoded = jwt.verify(splitToken, secretKey) as JwtPayload
         req.user = decoded
 
         next()

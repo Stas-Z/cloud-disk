@@ -47,7 +47,9 @@ export const Page = (props: PageProps) => {
     useEffect(() => {
         if (restoreScroll) {
             setTimeout(() => {
-                const target = document.getElementById(scrollPosition)
+                const target = document.getElementById(
+                    `list-item-${scrollPosition}`,
+                )
 
                 if (target) {
                     target.scrollIntoView({
