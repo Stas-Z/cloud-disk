@@ -2,19 +2,20 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'
 import { MyFile, fetchFilesList } from '@/entities/File'
+import { initAuthData } from '@/entities/User'
 
-export interface uploadFilesProps {
+export interface uploadFileProps {
     file: File
     dirId: string
     updateList?: boolean
 }
 
-export const uploadFiles = createAsyncThunk<
+export const uploadFile = createAsyncThunk<
     MyFile,
-    uploadFilesProps,
+    uploadFileProps,
     ThunkConfig<string>
 >(
-    'uploadFiles/uploadFiles',
+    'uploadFiles/uploadFile',
     async ({ file, dirId, updateList = true }, thunkAPI) => {
         const { extra, rejectWithValue, dispatch } = thunkAPI
 
@@ -46,6 +47,9 @@ export const uploadFiles = createAsyncThunk<
             if (updateList) {
                 dispatch(fetchFilesList(dirId))
             }
+
+            // Обновляем данные пользователя
+            dispatch(initAuthData())
 
             return response.data
         } catch (e: any) {

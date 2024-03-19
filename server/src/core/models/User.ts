@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose'
+import mongoose, { Schema, Types, model } from 'mongoose'
 
 export const { ObjectId } = mongoose.Types
 
@@ -9,7 +9,7 @@ export interface UserAttrs {
     diskSpace?: number
     usedSpace?: number
     avatar?: string
-    files?: typeof ObjectId
+    files?: Types.ObjectId
 }
 // Свойства, которые имеет пользовательский документ (параметры, которые должен иметь пользовательский документ).
 export interface UserDoc extends mongoose.Document {
@@ -18,7 +18,7 @@ export interface UserDoc extends mongoose.Document {
     diskSpace?: number
     usedSpace?: number
     avatar?: string
-    files?: typeof ObjectId
+    files?: Types.ObjectId
 }
 // Интерфейс, описывающий свойства модели пользователя.
 export interface UserModel extends mongoose.Model<UserDoc> {

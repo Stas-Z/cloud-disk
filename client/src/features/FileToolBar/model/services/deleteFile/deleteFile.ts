@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'
 import { MyFile, fetchFilesList } from '@/entities/File'
+import { initAuthData } from '@/entities/User'
 
 interface deleteFileProps {
     file: MyFile
@@ -28,6 +29,9 @@ export const deleteFile = createAsyncThunk<
 
         // Обновляем список файлов в директории после успешного удаления файла
         dispatch(fetchFilesList(dirId))
+
+        // Обновляем данные пользователя
+        dispatch(initAuthData())
 
         return response.data.message
     } catch (e: any) {

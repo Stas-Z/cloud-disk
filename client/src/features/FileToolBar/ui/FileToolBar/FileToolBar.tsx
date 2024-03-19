@@ -17,11 +17,16 @@ import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch
 import { useModal } from '@/shared/lib/hooks/useModal/useModal'
 import { Button } from '@/shared/ui/Button'
 import { Icon } from '@/shared/ui/Icon'
+import { MessageBox } from '@/shared/ui/MessageBox'
 import { HStack } from '@/shared/ui/Stack'
 import { Text } from '@/shared/ui/Text'
 
 import cls from './FileToolBar.module.scss'
 import { truncateFileName } from '../../model/helpers/truncateFileName'
+import {
+    getfileToolbarIsDeleting,
+    getfileToolbarIsDownloading,
+} from '../../model/selectors/fileToolbarSelectors'
 import { deleteFile } from '../../model/services/deleteFile/deleteFile'
 import { downloadFile } from '../../model/services/downloadFile/downloadFile'
 
@@ -31,14 +36,14 @@ interface FileToolBarProps {
     onClose: () => void
     lazy?: boolean
 }
-// const initialReducers: ReducersList = {
-//     toolbar: fileToolBarReducer,
-// }
 
 export const FileToolBar = memo((props: FileToolBarProps) => {
     const { className, isOpen, onClose, lazy } = props
     const { t } = useTranslation()
     const dispatch = useAppDispatch()
+
+    const isDeleting = useSelector(getfileToolbarIsDeleting)
+    const isDownloading = useSelector(getfileToolbarIsDownloading)
 
     const currentDir = useSelector(getCurrentDir)
     const selectedFile = useSelector(getSelectedFile)
@@ -116,10 +121,6 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
     }
 
     return (
-        // <DynamicModuleLoader
-        //     reducers={initialReducers}
-        //     removeAfterUnmount={false}
-        // >
         <div ref={popupRef}>
             <HStack
                 justify="between"
@@ -194,7 +195,7 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
                     </HStack>
                 </HStack>
             </HStack>
+            <MessageBox isDeleting={isDeleting} isDownloading={isDownloading} />
         </div>
-        //  </DynamicModuleLoader>
     )
 })

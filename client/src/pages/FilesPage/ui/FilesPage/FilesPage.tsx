@@ -80,13 +80,13 @@ const FilesPage = (props: FilesPageProps) => {
                     onClose={onCloseToolbar}
                     lazy
                 />
-                <NoticePopup
-                    message={t(message, { file: selectedFileName })}
-                    error={t(error)}
-                />
                 <UserFilesList
                     onShowToolbar={onShowToolbar}
                     toolbarIsOpen={fileToolbar}
+                />
+                <NoticePopup
+                    message={t(message, { file: selectedFileName })}
+                    error={t(error)}
                 />
             </Page>
         </DynamicModuleLoader>

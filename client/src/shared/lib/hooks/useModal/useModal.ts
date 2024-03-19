@@ -29,8 +29,12 @@ export function useModal(props: useModalProps) {
         // Монтирования модалки
         if (isOpen) {
             setIsMounted(true)
+        } else {
+            timerRef.current = setTimeout(() => {
+                setIsMounted(false)
+            }, animationDelay)
         }
-    }, [isOpen])
+    }, [animationDelay, isOpen])
 
     const close = useCallback(() => {
         if (onClose) {

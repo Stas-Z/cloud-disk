@@ -1,10 +1,12 @@
+/* eslint-disable no-await-in-loop */
 import fs from 'fs'
 
 import archiver from 'archiver'
 import { Request, Response } from 'express'
 import { UploadedFile } from 'express-fileupload'
+import mongoose, { Types } from 'mongoose'
 
-import File, { FileDoc, ObjectId } from '@/core/models/File'
+import File, { FileDoc } from '@/core/models/File'
 import User, { UserDoc } from '@/core/models/User'
 import { FileService } from '@/core/services/fileService'
 import { appConfig } from '@/infrastructure/config/config'
@@ -92,15 +94,6 @@ export class FileController {
                     .json({ message: 'No file provided or user not found' })
             }
 
-            // Проверяем если хватает места на диске
-            if (user.diskSpace && user.usedSpace) {
-                if (user.usedSpace + file.size > user.diskSpace) {
-                    return res
-                        .status(400)
-                        .json({ message: 'There no space on the disk' })
-                }
-                user.usedSpace = (user?.usedSpace || 0) + (file?.size || 0)
-            }
             // Путь файла
             const path = parent
                 ? `${appConfig.filePath}\\${user._id}\\${parent.path}\\${file.name}`
@@ -139,13 +132,163 @@ export class FileController {
                 await parent.save()
             }
 
+            // Проверяем если хватает места на диске
+            if (user.diskSpace) {
+                if ((user.usedSpace || 0) + file.size > user.diskSpace) {
+                    return res
+                        .status(400)
+                        .json({ message: 'There no space on the disk' })
+                }
+                user.usedSpace = (user?.usedSpace || 0) + (file?.size || 0)
+            }
+            // Сохраняем пользователя поскольку мы меняли у него поля
+            await user.save()
+
             // Сохраняем файл в базе данных
             await dbFile.save()
-            // Также сохраняем пользователя поскольку мы меняли у него поля
-            await user.save()
 
             // Отправляем данные о файле обратно на client
             res.json(dbFile)
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({ message: 'Upload error' })
+        }
+    }
+
+    static async uploadFilesArray(req: Request, res: Response) {
+        try {
+            // Получаем массив файлов из запроса
+            const responseFiles = req.files?.files as UploadedFile[]
+            const files = Array.isArray(responseFiles)
+                ? responseFiles
+                : ([req.files?.files] as UploadedFile[])
+            const userId = req.user ? req.user.id : null
+
+            // Находим родительскую директорию в которую сохраняем файлы.
+            const parent: FileDoc | null = await File.findOne({
+                // Ищем по id user'а из токена и по id самой директории которую мы передаём в теле запроса
+                user: userId,
+                _id: req.body.parent,
+            })
+
+            // Находим пользователя
+            const user: UserDoc | null = await User.findOne({
+                _id: userId,
+            })
+
+            if (!files || !user) {
+                return res
+                    .status(400)
+                    .json({ message: 'No files provided or user not found' })
+            }
+
+            // Проверяем, были ли переданы файлы
+            if (files.length === 0) {
+                return res.status(400).json({ message: 'No files uploaded' })
+            }
+
+            // Вычисляем общий размер всех файлов
+            const totalSize = files.reduce(
+                (acc, file) => acc + (file.size || 0),
+                0,
+            )
+
+            // Проверяем, достаточно ли места на диске для всех файлов
+            if (
+                user.diskSpace &&
+                (user.usedSpace || 0) + totalSize > user.diskSpace
+            ) {
+                return res
+                    .status(400)
+                    .json({ message: 'There is not enough space on the disk' })
+            }
+
+            // Создаем массив для сохранения всех созданных файлов
+            const savedFiles: FileDoc[] = []
+
+            // Создаем объект для хранения соответствия родительской папки и ее дочерних элементов
+            const parentChildMap: { [parentId: string]: string[] } = {}
+
+            // Обрабатываем каждый файл в массиве
+            await Promise.all(
+                files.map(async (file) => {
+                    // Путь файла
+                    const path = parent
+                        ? `${appConfig.filePath}\\${user._id}\\${parent.path}\\${file.name}`
+                        : `${appConfig.filePath}\\${user._id}\\${file.name}`
+
+                    // Проверяем, существует ли уже такой файл по указанному пути
+                    if (fs.existsSync(path)) {
+                        throw new Error('File already exists')
+                    }
+
+                    // Перемещаем файл по пути созданному выше
+                    file?.mv(path)
+
+                    // Получаем тип файла, его расширение
+                    const type = file?.name.split('.').pop()
+
+                    let newFilePath = file.name
+                    // Если есть родитель, добавляем в путь
+                    if (parent) {
+                        newFilePath = `${parent.path}\\${file.name}`
+                    }
+
+                    // Создаём модель файла и передаём все необходимые параметры
+                    const dbFile: FileDoc = new File({
+                        name: file?.name,
+                        type,
+                        size: file?.size,
+                        path: newFilePath,
+                        parent: parent?._id,
+                        user: user?._id,
+                    })
+
+                    // Добавляем id файла в массив дочерних элементов соответствующей родительской папки в parentChildMap
+                    if (parent) {
+                        parentChildMap[parent._id.toString()] =
+                            parentChildMap[parent._id.toString()] || []
+                        parentChildMap[parent._id.toString()].push(
+                            String(dbFile._id),
+                        )
+                    }
+
+                    await dbFile.save()
+                    savedFiles.push(dbFile)
+                }),
+            )
+
+            // Обновляем использованное место на диске пользователя
+            if (user.diskSpace) {
+                user.usedSpace = (user.usedSpace || 0) + totalSize
+                await user.save()
+            }
+
+            // Обновляем родительские файлы, добавляя в них массив дочерних элементов
+            await Promise.all(
+                Object.keys(parentChildMap).map(async (parentId) => {
+                    const parentFile = await File.findById(parentId)
+                    const childIds: Types.ObjectId[] = parentChildMap[
+                        parentId
+                    ].map((childId) => {
+                        return new mongoose.Types.ObjectId(
+                            childId,
+                        ) as Types.ObjectId
+                    })
+                    if (
+                        parentFile &&
+                        parentFile.childs &&
+                        Array.isArray(parentFile.childs) &&
+                        childIds.length > 0
+                    ) {
+                        parentFile.childs.push(...childIds)
+                        await parentFile.save()
+                    }
+                }),
+            )
+
+            // Отправляем данные о файлах обратно на клиент
+            res.json(savedFiles)
         } catch (e) {
             console.log(e)
             return res.status(500).json({ message: 'Upload error' })
@@ -249,8 +392,13 @@ export class FileController {
                 return res.status(400).json({ message: 'file not found' })
             }
 
-            // Находим родительскую папку
+            const userId = req.user ? req.user.id : null
+            // Находим пользователя
+            const user: UserDoc | null = await User.findOne({
+                _id: userId,
+            })
 
+            // Находим родительскую папку
             const parentFolder = await File.findOne({ _id: file.parent })
 
             // Удаляем физический файл который храниться на сервере
@@ -266,9 +414,14 @@ export class FileController {
                 // Удаляем идентификатор удаленного файла из массива childs родительской папки
                 parentFolder.childs = parentFolder.childs.filter(
                     (childId) => childId.toString() !== file._id.toString(),
-                ) as [typeof ObjectId]
+                ) as [Types.ObjectId]
 
                 await parentFolder.save()
+            }
+            if (user && file.size && user.usedSpace) {
+                user.usedSpace -= file.size
+                // Сохраняем пользователя поскольку мы меняли у него поля
+                await user.save()
             }
 
             return res.json({ message: 'File was deleted' })
@@ -285,16 +438,32 @@ export class FileController {
             // Находим все дочерние файлы для данного файла
             const childFiles = await File.find({ parent: file._id })
 
-            // Создаем массив промисов для удаления каждого дочернего файла
-            const deletePromises = childFiles.map((childFile) => {
-                return FileController.deleteChildFiles(childFile)
-            })
+            // Создаем массив промисов для удаления каждого дочернего файла и вычисления их размера
+            // eslint-disable-next-line no-restricted-syntax
+            for (const childFile of childFiles) {
+                // Размер файла
+                const fileSize = childFile.size || 0
+                // Удаляем дочерний файл
+                await childFile.deleteOne()
 
-            // Ждем завершения всех промисов для удаления
-            await Promise.all(deletePromises)
+                // Вычитаем размер файла из использованного места пользователя
+                if (fileSize > 0) {
+                    const userId = childFile.user
+                        ? childFile.user.toString()
+                        : null
+                    if (userId) {
+                        const user = await User.findOne({ _id: userId })
 
-            // Удаляем текущий файл после удаления всех дочерних файлов
-            await file.deleteOne()
+                        if (user && user.usedSpace) {
+                            user.usedSpace -= fileSize
+                            await user.save()
+                        }
+                    }
+                }
+
+                // Рекурсивно удаляем все дочерние файлы для текущего файла
+                await FileController.deleteChildFiles(childFile)
+            }
         } catch (error) {
             console.error(`Error deleting child files: ${error}`)
         }

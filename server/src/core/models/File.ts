@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose'
+import mongoose, { Schema, Types, model } from 'mongoose'
 
 export const { ObjectId } = mongoose.Types
 // Свойства необходимые для создания нового Файла (параметры, которые мы хотим сохранить в базе данных)
@@ -9,9 +9,9 @@ export interface FileAttrs {
     size?: number
     path?: string
     date?: Date
-    user?: typeof ObjectId
-    parent?: typeof ObjectId
-    childs?: [typeof ObjectId]
+    user?: Types.ObjectId
+    parent?: Types.ObjectId
+    childs?: Types.ObjectId[]
 }
 // Свойства, которые имеет файловый документ (параметры, которые должен иметь файловый документ).
 export interface FileDoc extends mongoose.Document {
@@ -21,9 +21,9 @@ export interface FileDoc extends mongoose.Document {
     size?: number
     path?: string
     date?: Date
-    user?: typeof ObjectId
-    parent?: typeof ObjectId
-    childs?: [typeof ObjectId]
+    user?: Types.ObjectId
+    parent?: Types.ObjectId
+    childs?: Types.ObjectId[]
 }
 // Интерфейс, описывающий свойства модели файла.
 export interface FileModel extends mongoose.Model<FileDoc> {

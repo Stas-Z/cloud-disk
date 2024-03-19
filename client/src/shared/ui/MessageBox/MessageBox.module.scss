@@ -1,0 +1,50 @@
+.messageBox {
+    position: fixed;
+    bottom: 16px;
+    z-index: var(--modal-z-index);
+}
+
+.msgContainer {
+    width: 380px;
+    position: relative;
+    user-select: none;
+    opacity: 0.85;
+    border-radius: 22px;
+    background-color: var(--message-box);
+    box-shadow: var(--shadow-color-big);
+    padding: 10px 16px;
+}
+.spinner {
+    width: 16px;
+    height: 16px;
+    margin-right: 16px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    border-top-color: var(--bg-color);
+    border-left-color: var(--bg-color);
+    animation: islands-spin2 1s linear 0.21s infinite;
+}
+
+@-webkit-keyframes islands-spin2 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(1turn);
+        transform: rotate(1turn);
+    }
+}
+
+@keyframes islands-spin2 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(1turn);
+        transform: rotate(1turn);
+    }
+}

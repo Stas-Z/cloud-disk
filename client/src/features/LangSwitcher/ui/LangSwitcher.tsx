@@ -2,24 +2,27 @@ import { memo } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '@/shared/ui/Button'
+import { Button, ButtonVariant } from '@/shared/ui/Button'
 
 interface LangSwitcherProps {
     className?: string
     short?: boolean
+    variant?: ButtonVariant
 }
 
-export const LangSwitcher = memo(({ className, short }: LangSwitcherProps) => {
-    const { t, i18n } = useTranslation()
+export const LangSwitcher = memo(
+    ({ className, short, variant = 'clear' }: LangSwitcherProps) => {
+        const { t, i18n } = useTranslation()
 
-    const toggle = async () => {
-        i18n.changeLanguage(i18n.language === 'ru' ? 'en' : 'ru')
-        document.documentElement.lang = i18n.language
-    }
+        const toggle = async () => {
+            i18n.changeLanguage(i18n.language === 'ru' ? 'en' : 'ru')
+            document.documentElement.lang = i18n.language
+        }
 
-    return (
-        <Button variant="clear" onClick={toggle}>
-            {short ? t('lng') : t('Language')}
-        </Button>
-    )
-})
+        return (
+            <Button variant={variant} onClick={toggle}>
+                {short ? t('lng') : t('Language')}
+            </Button>
+        )
+    },
+)

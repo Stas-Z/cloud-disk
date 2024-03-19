@@ -1,10 +1,12 @@
 import { Suspense } from 'react'
 
+import { LangSwitcher } from '@/features/LangSwitcher'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { Card } from '@/shared/ui/Card'
 import { Modal } from '@/shared/ui/Modal'
 
-import { LoginFormAsync } from '../LoginForm/LoginForm.async'
+import cls from './LoginModal.module.scss'
+import { LoginFormAsync } from '../../../../features/AuthorizationForm/ui/LoginForm/LoginForm.async'
 
 interface LoginModalProps {
     className?: string
@@ -22,6 +24,9 @@ export const LoginModal = (props: LoginModalProps) => {
         >
             <Suspense fallback="">
                 <Card>
+                    <div className={cls.switchers}>
+                        <LangSwitcher variant="filled" />
+                    </div>
                     <LoginFormAsync />
                 </Card>
             </Suspense>

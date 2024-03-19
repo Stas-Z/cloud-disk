@@ -6,6 +6,8 @@ import { FileToolBarSchema } from '../types/fileToolBarSchema'
 
 const initialState: FileToolBarSchema = {
     isLoading: false,
+    isDeleting: false,
+    isDownloading: false,
     error: '',
     message: '',
 }
@@ -20,13 +22,16 @@ export const fileToolBarSlice = createSlice({
                 state.error = undefined
                 state.message = undefined
                 state.isLoading = true
+                state.isDeleting = true
             })
             .addCase(deleteFile.fulfilled, (state, action) => {
                 state.isLoading = false
+                state.isDeleting = false
                 state.message = action.payload
             })
             .addCase(deleteFile.rejected, (state, action) => {
                 state.isLoading = false
+                state.isDeleting = false
                 state.error = action.payload
                 state.message = undefined
             })
@@ -34,13 +39,16 @@ export const fileToolBarSlice = createSlice({
                 state.error = undefined
                 state.message = undefined
                 state.isLoading = true
+                state.isDownloading = true
             })
             .addCase(downloadFile.fulfilled, (state, action) => {
                 state.isLoading = false
+                state.isDownloading = false
                 state.message = action.payload
             })
             .addCase(downloadFile.rejected, (state, action) => {
                 state.isLoading = false
+                state.isDownloading = false
                 state.error = action.payload
                 state.message = undefined
             })

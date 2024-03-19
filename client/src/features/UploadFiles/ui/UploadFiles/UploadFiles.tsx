@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useState } from 'react'
 
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -14,15 +14,18 @@ import {
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { Button } from '@/shared/ui/Button'
 import { Icon } from '@/shared/ui/Icon'
+import { MessageBox } from '@/shared/ui/MessageBox'
 import { VStack } from '@/shared/ui/Stack'
 
 import cls from './UploadFiles.module.scss'
 import {
     getUploadFilesError,
+    getUploadFilesIsLoading,
     getUploadFilesOnSucces,
     getUploadedFilesFileName,
 } from '../../model/selectors/uploadFilesSelectors'
-import { uploadFiles } from '../../model/services/uploadFiles/uploadFiles'
+import { uploadFile } from '../../model/services/uploadFile/uploadFile'
+import { uploadFilesArrays } from '../../model/services/uploadFilesArray/uploadFilesArray'
 import { uploadFilesReducer } from '../../model/slices/uploadFilesSlice'
 
 interface UploadFilesProps {
@@ -38,20 +41,43 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
     const dispatch = useAppDispatch()
     const currentDir = useSelector(getCurrentDir)
     const error = useSelector(getUploadFilesError)
+    const isUploading = useSelector(getUploadFilesIsLoading)
+
     const uploadedFileName = useSelector(getUploadedFilesFileName)
     const onSucces = useSelector(getUploadFilesOnSucces)
+
+    const [resetFileInput, setResetFileInput] = useState(false)
 
     const openFilePicker = useCallback(() => {
         document.getElementById('fileInput')?.click()
     }, [])
 
-    const fileUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileUploadHandler = async (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const { files } = e.target
+        console.log('e.target: ', e)
+
         if (files) {
-            const fileList: File[] = Array.from(files) // Преобразуем FileList в массив File
-            fileList.forEach((file) => {
-                dispatch(uploadFiles({ dirId: currentDir, file }))
-            })
+            console.log(files)
+
+            if (files.length < 2) {
+                const fileList: File[] = Array.from(files)
+                fileList.forEach(async (file) => {
+                    await dispatch(uploadFile({ dirId: currentDir, file }))
+                })
+            } else {
+                const fileList: File[] = Array.from(files) // Преобразуем FileList в массив File
+
+                await dispatch(
+                    uploadFilesArrays({ dirId: currentDir, files: fileList }),
+                )
+            }
+            // Сброс значения элемента <input type="file"> после загрузки файлов
+            setResetFileInput(true)
+            setTimeout(() => {
+                setResetFileInput(false)
+            }, 0)
         }
     }
 
@@ -67,6 +93,7 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
                     type="file"
                     id="fileInput"
                     style={{ display: 'none' }}
+                    key={resetFileInput ? 'reset' : 'default'}
                 />
                 <Button
                     className={cls.addButton}
@@ -94,6 +121,7 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
                     })}
                 />
             )}
+            <MessageBox isUploading={isUploading} />
         </DynamicModuleLoader>
     )
 })
