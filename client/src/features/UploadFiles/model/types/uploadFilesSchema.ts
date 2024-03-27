@@ -4,5 +4,5 @@ export interface UploadFilesSchema {
     error?: string
     isLoading?: boolean
     onSucces?: boolean
-    uploadedFile?: MyFile
+    uploadedFiles?: MyFile[]
 }

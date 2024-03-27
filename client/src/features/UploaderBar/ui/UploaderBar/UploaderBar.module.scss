@@ -1,0 +1,45 @@
+.uploader {
+    position: fixed;
+    bottom: 0;
+    right: 36px;
+    width: 460px;
+    z-index: var(--modal-z-index);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    background-color: var(--light-bg);
+    border-radius: 10px;
+}
+.uploaderHeader {
+    height: 56px;
+    background-color: var(--antracit);
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+}
+.uploadedProgress {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background-color: #2c82e5;
+}
+.text {
+    margin-left: 24px;
+    width: 100%;
+    z-index: 1;
+}
+.controls {
+    margin-right: 12px;
+    z-index: 1;
+}
+.close {
+    height: 36px;
+    width: 36px;
+}
+.uploaderList {
+    height: 270px;
+    background-color: var(--light-bg);
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: 4px;
+    width: 100%;
+}

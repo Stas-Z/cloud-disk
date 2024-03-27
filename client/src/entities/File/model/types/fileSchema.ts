@@ -5,7 +5,8 @@ import { MyFile } from './files'
 export type ScrollSave = Record<string, string>
 
 export interface FileSchema extends EntityState<MyFile, string> {
-    fileName: string
+    dirName: string
+    dirNameNotice?: string
     currentDir: string | null
     dirStack: string[]
     scroll: ScrollSave

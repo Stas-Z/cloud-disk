@@ -3,7 +3,7 @@ import { memo, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import { getCurrentDir, getSelectedFileName } from '@/entities/File'
+import { getCurrentDir, getNoticeFileName } from '@/entities/File'
 import { NoticePopup } from '@/entities/Notice'
 import {
     FileToolBar,
@@ -11,6 +11,7 @@ import {
     getfileToolbarMessage,
     fileToolBarReducer,
 } from '@/features/FileToolBar'
+import { UploaderBar } from '@/features/UploaderBar'
 import { UserFilesList } from '@/features/UserFilesList'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import {
@@ -33,9 +34,10 @@ const initialReducers: ReducersList = {
 const FilesPage = (props: FilesPageProps) => {
     const { className } = props
     const { t } = useTranslation()
+
     const error = useSelector(getfileToolbarError)
     const message = useSelector(getfileToolbarMessage)
-    const selectedFileName = useSelector(getSelectedFileName)
+    const noticeFileName = useSelector(getNoticeFileName)
 
     const [fileToolbar, setFileToolbar] = useState(false)
 
@@ -85,9 +87,10 @@ const FilesPage = (props: FilesPageProps) => {
                     toolbarIsOpen={fileToolbar}
                 />
                 <NoticePopup
-                    message={t(message, { file: selectedFileName })}
+                    message={t(message, { file: noticeFileName })}
                     error={t(error)}
                 />
+                <UploaderBar />
             </Page>
         </DynamicModuleLoader>
     )

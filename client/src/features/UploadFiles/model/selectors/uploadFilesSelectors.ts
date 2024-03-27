@@ -1,7 +1,5 @@
 import { StateSchema } from '@/app/providers/StoreProvider'
 
-export const getUploadedFilesFileName = (state: StateSchema) =>
-    state.uploadFiles?.uploadedFile?.name || ''
 export const getUploadFilesIsLoading = (state: StateSchema) =>
     state.uploadFiles?.isLoading || false
 export const getUploadFilesOnSucces = (state: StateSchema) =>

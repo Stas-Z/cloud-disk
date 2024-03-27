@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'
-import { MyFile, fetchFilesList } from '@/entities/File'
+import { fetchFilesList } from '@/entities/File'
 import { initAuthData } from '@/entities/User'
 
 interface deleteFileProps {
-    file: MyFile
+    fileId: string
     dirId: string
 }
 
@@ -13,7 +13,7 @@ export const deleteFile = createAsyncThunk<
     string,
     deleteFileProps,
     ThunkConfig<string>
->('fileToolBar/deleteFile', async ({ file, dirId }, thunkAPI) => {
+>('fileToolBar/deleteFile', async ({ fileId, dirId }, thunkAPI) => {
     const { extra, rejectWithValue, dispatch } = thunkAPI
 
     try {
@@ -21,7 +21,7 @@ export const deleteFile = createAsyncThunk<
         formData.append('parent', dirId)
 
         // Отправляем запрос на удаление файла
-        const response = await extra.api.delete(`/files/?id=${file._id}`)
+        const response = await extra.api.delete(`/files/?id=${fileId}`)
 
         if (!response.data) {
             throw new Error('No data received from the server')

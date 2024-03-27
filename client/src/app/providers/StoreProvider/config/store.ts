@@ -5,6 +5,7 @@ import { counterReducer } from '@/entities/Counter'
 import { fileReducer } from '@/entities/File'
 import { userReducer } from '@/entities/User'
 import { authMiddleware } from '@/features/AuthorizationForm'
+import { uploaderBarReducer } from '@/features/UploaderBar'
 import { $api } from '@/shared/api/api'
 import { ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
 
@@ -21,6 +22,7 @@ export function createReduxStore(
         user: userReducer,
         file: fileReducer,
         breadcrumbs: breadcrumbsReducer,
+        uploaderBar: uploaderBarReducer,
     }
 
     const reducerManager = createReducerManager(

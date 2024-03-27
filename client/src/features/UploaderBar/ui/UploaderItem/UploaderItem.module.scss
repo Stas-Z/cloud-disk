@@ -1,0 +1,50 @@
+.uploaderItem {
+    padding: 6px 20px;
+    cursor: pointer;
+    display: flex;
+    width: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    &hover {
+        background: var(--input-bg);
+    }
+}
+.uploaderIcon {
+    position: relative;
+}
+.fileSucces {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+}
+.progressBar {
+    width: 120px;
+    height: 4px;
+    border-radius: 3px;
+    background-color: #e6e6e6;
+    margin-right: 12px;
+}
+.uploadBar {
+    background-color: #2c82e5;
+    height: 4px;
+    transition: width 0.5s ease-out;
+}
+.fileInfo {
+    padding-left: 16px;
+}
+.fileSize p {
+    font-size: 12px !important;
+}
+.itemRight {
+    height: 22px;
+}
+.cancel {
+    opacity: 0;
+    &.show {
+        opacity: 1;
+    }
+}

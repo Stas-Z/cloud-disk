@@ -1,3 +1,5 @@
+export { fileUploadHelper } from './model/lib/helpers/fileUploadHelper/fileUploadHelper'
+
 export { uploadFilesArrays } from './model/services/uploadFilesArray/uploadFilesArray'
 
 export { uploadFile } from './model/services/uploadFile/uploadFile'

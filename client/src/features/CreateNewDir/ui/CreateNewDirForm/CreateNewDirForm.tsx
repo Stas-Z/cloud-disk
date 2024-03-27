@@ -25,7 +25,6 @@ export interface CreateNewDirFormProps {
     error?: string
     showError?: boolean
     showErrorHandler?: () => void
-    setNoticeFileName?: (name: string) => void
 }
 
 const CreateNewDirForm = (props: CreateNewDirFormProps) => {
@@ -38,9 +37,9 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
         onAccept,
         showError,
         showErrorHandler,
-        setNoticeFileName,
     } = props
     const { t } = useTranslation()
+    console.log(isLoading)
 
     const dispatch = useAppDispatch()
 
@@ -50,7 +49,7 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
 
     const onChangeFoldername = useCallback(
         (value: string) => {
-            dispatch(fileActions.setFileName(value))
+            dispatch(fileActions.setDirName(value))
         },
         [dispatch],
     )
@@ -64,22 +63,14 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
                 type: 'dir',
             }),
         )
-        if (setNoticeFileName) {
-            setNoticeFileName(fileName)
-        }
+
+        dispatch(fileActions.setNoticeFileName(fileName))
+
         if (result.meta.requestStatus === 'fulfilled') {
             onSuccess?.()
-            dispatch(fileActions.setFileName(t('New Folder')))
+            dispatch(fileActions.setDirName(t('New Folder')))
         }
-    }, [
-        currenDir,
-        dispatch,
-        fileName,
-        onSuccess,
-        setNoticeFileName,
-        showErrorHandler,
-        t,
-    ])
+    }, [currenDir, dispatch, fileName, onSuccess, showErrorHandler, t])
 
     const onKeyDown = useCallback(
         (e: KeyboardEvent) => {
@@ -142,6 +133,7 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
                     disabled={isLoading}
                     variant="filled"
                     color="yellow"
+                    isLoading={isLoading}
                 >
                     {t('Save')}
                 </Button>

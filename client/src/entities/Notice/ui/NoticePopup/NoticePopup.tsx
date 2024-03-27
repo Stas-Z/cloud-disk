@@ -38,6 +38,7 @@ export const NoticePopup = memo((props: NoticePopupProps) => {
 
     const mods: Mods = {
         [cls.show]: showPopupNotice,
+        [cls.delete]: message,
     }
 
     if (!isMounted) {
@@ -54,7 +55,12 @@ export const NoticePopup = memo((props: NoticePopupProps) => {
 
     return (
         <div className={classNames(cls.noticePopup, mods, [className])}>
-            <Text text={message} size="s" variant="accent" align="center" />
+            <Text
+                text={message}
+                size="s"
+                variant={message ? 'white' : 'accent'}
+                align="center"
+            />
         </div>
     )
 })

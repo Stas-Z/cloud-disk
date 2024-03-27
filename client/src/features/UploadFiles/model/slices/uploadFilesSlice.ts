@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+// eslint-disable-next-line fsd-pathcheker/layer-imports
+
 import { uploadFile } from '../services/uploadFile/uploadFile'
 import { uploadFilesArrays } from '../services/uploadFilesArray/uploadFilesArray'
 import { UploadFilesSchema } from '../types/uploadFilesSchema'
@@ -8,7 +10,6 @@ const initialState: UploadFilesSchema = {
     isLoading: false,
     onSucces: false,
     error: '',
-    uploadedFile: { name: '', _id: '' },
 }
 
 export const uploadFilesSlice = createSlice({
@@ -25,7 +26,6 @@ export const uploadFilesSlice = createSlice({
             .addCase(uploadFile.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.onSucces = true
-                state.uploadedFile = action.payload
             })
             .addCase(uploadFile.rejected, (state, action) => {
                 state.isLoading = false
@@ -37,10 +37,9 @@ export const uploadFilesSlice = createSlice({
                 state.onSucces = false
                 state.error = undefined
             })
-            .addCase(uploadFilesArrays.fulfilled, (state, action) => {
+            .addCase(uploadFilesArrays.fulfilled, (state) => {
                 state.isLoading = false
                 state.onSucces = true
-                state.uploadedFile = action.payload
             })
             .addCase(uploadFilesArrays.rejected, (state, action) => {
                 state.isLoading = false

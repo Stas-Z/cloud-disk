@@ -8,6 +8,7 @@ import { UserSchema } from '@/entities/User'
 import { AuthSchema } from '@/features/AuthorizationForm'
 import { CreateNewDirSchema } from '@/features/CreateNewDir'
 import { FileToolBarSchema } from '@/features/FileToolBar'
+import { UploaderBarSchema } from '@/features/UploaderBar'
 import { UploadFilesSchema } from '@/features/UploadFiles'
 
 import { createReduxStore } from './store'
@@ -28,6 +29,7 @@ export interface StateSchema {
     createNewDir: CreateNewDirSchema
     uploadFiles: UploadFilesSchema
     toolbar: FileToolBarSchema
+    uploaderBar: UploaderBarSchema
 }
 
 export type StateSchemaKey = keyof StateSchema

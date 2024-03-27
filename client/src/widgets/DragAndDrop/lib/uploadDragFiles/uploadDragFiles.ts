@@ -1,48 +1,54 @@
 import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
+import { Canceler } from 'axios'
 
 import { StateSchema, ThunkExtraArg } from '@/app/providers/StoreProvider'
+import { fileActions } from '@/entities/File'
 import { createFileDir } from '@/features/CreateNewDir'
-import { uploadFile, uploadFilesArrays } from '@/features/UploadFiles'
+import { uploadFilesArrays, fileUploadHelper } from '@/features/UploadFiles'
 
 interface FileWithParent {
     file: File
     parentDir: string // Родительская папка
-    updateList?: boolean
 }
 
 export async function uploadDragFiles(
     dispatch: ThunkDispatch<StateSchema, ThunkExtraArg, UnknownAction>,
     items: DataTransferItemList,
     currentDir: string,
+    addCancelToken?: (fileId: string, cancel: Canceler) => void,
 ) {
+    let folderName = '' // Создаём переменную для названия папки
+    let folderId = '' // Создаём переменную для id папки
+    const itemsWithOutDirectory = new DataTransfer()
     const itemsWithDirectory: FileWithParent[] = [] // Создаем пустой массив
 
-    const uploadHandler = (itemsWithDirectory: FileWithParent[]) => {
-        // Группируем файлы по родительским папкам
-        const filesByDir = itemsWithDirectory.reduce<{
-            [dirId: string]: File[]
-        }>((acc, { file, parentDir }) => {
-            if (!acc[parentDir]) {
-                acc[parentDir] = []
-            }
-            acc[parentDir].push(file)
-            return acc
-        }, {})
+    const uploadHandler = async (itemsWithDirectory: FileWithParent[]) => {
+        try {
+            if (itemsWithDirectory.length) {
+                const uniqueParentIds = itemsWithDirectory.reduce(
+                    (acc: string[], currentItem: FileWithParent) => {
+                        if (!acc.includes(currentItem.parentDir)) {
+                            acc.push(currentItem.parentDir)
+                        }
+                        return acc
+                    },
+                    [],
+                )
 
-        Object.entries(filesByDir).forEach(([dirId, files]) => {
-            if (files.length) {
-                try {
-                    dispatch(
-                        uploadFilesArrays({ dirId, files, updateList: false }),
-                    )
-                } catch (error) {
-                    console.error('Error uploading files:', error)
-                    // Обработка ошибки
-                }
-            } else {
-                console.log('No files for directory:', dirId) // Отладочное сообщение, если нет файлов для текущей директории
+                dispatch(
+                    uploadFilesArrays({
+                        dirId: uniqueParentIds,
+                        files: itemsWithDirectory,
+                        folderName,
+                        folderId,
+                        addCancelToken,
+                    }),
+                )
+                dispatch(fileActions.setNoticeFileName(folderName))
             }
-        })
+        } catch (error) {
+            console.error('Error uploading files:', error)
+        }
     }
 
     const readDirectory = async (
@@ -64,6 +70,10 @@ export async function uploadDragFiles(
                 typeof newDirResponse.payload === 'string'
                     ? newDirResponse.payload
                     : newDirResponse?.payload?._id || ''
+
+            if (!folderId) {
+                folderId = newDirId
+            }
 
             const directoryReader = entry.createReader()
             const entries = await new Promise<any[]>((resolve) => {
@@ -90,7 +100,6 @@ export async function uploadDragFiles(
                 itemsWithDirectory.push({
                     file,
                     parentDir: currentDir,
-                    updateList: false,
                 })
             }
         }
@@ -102,12 +111,14 @@ export async function uploadDragFiles(
             if (itemFile && itemFile.isDirectory === false) {
                 const file = item.getAsFile()
                 if (file) {
-                    await dispatch(uploadFile({ dirId: currentDir, file }))
+                    itemsWithOutDirectory.items.add(file)
                 }
             } else if (itemFile && itemFile.isDirectory === true) {
                 const entry = item.webkitGetAsEntry()
 
                 if (entry && entry.isDirectory) {
+                    folderName = entry.name
+
                     // При загрузку папки нам надо обновить список файлов только один раз. isUpdate:true
                     await readDirectory(itemFile, currentDir, true)
                 }
@@ -116,6 +127,13 @@ export async function uploadDragFiles(
         await Promise.all(readPromises)
 
         uploadHandler(itemsWithDirectory)
+
+        fileUploadHelper({
+            files: itemsWithOutDirectory.files,
+            currentDir,
+            dispatch,
+            addCancelToken,
+        })
     }
     try {
         // Дожидаемся завершения всех операций и вызываем uploadHandler

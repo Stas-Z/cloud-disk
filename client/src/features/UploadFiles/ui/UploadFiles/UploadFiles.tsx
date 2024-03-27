@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import { getCurrentDir } from '@/entities/File'
-import { NoticePopup } from '@/entities/Notice'
 import Upload from '@/shared/assets/icons/arrow-upload.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import {
@@ -12,20 +11,19 @@ import {
     ReducersList,
 } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
+import { useCancelTokens } from '@/shared/lib/hooks/useCancelTokens/useCancelTokens'
 import { Button } from '@/shared/ui/Button'
 import { Icon } from '@/shared/ui/Icon'
 import { MessageBox } from '@/shared/ui/MessageBox'
 import { VStack } from '@/shared/ui/Stack'
 
 import cls from './UploadFiles.module.scss'
+import { fileUploadHelper } from '../../model/lib/helpers/fileUploadHelper/fileUploadHelper'
 import {
     getUploadFilesError,
     getUploadFilesIsLoading,
     getUploadFilesOnSucces,
-    getUploadedFilesFileName,
 } from '../../model/selectors/uploadFilesSelectors'
-import { uploadFile } from '../../model/services/uploadFile/uploadFile'
-import { uploadFilesArrays } from '../../model/services/uploadFilesArray/uploadFilesArray'
 import { uploadFilesReducer } from '../../model/slices/uploadFilesSlice'
 
 interface UploadFilesProps {
@@ -43,7 +41,6 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
     const error = useSelector(getUploadFilesError)
     const isUploading = useSelector(getUploadFilesIsLoading)
 
-    const uploadedFileName = useSelector(getUploadedFilesFileName)
     const onSucces = useSelector(getUploadFilesOnSucces)
 
     const [resetFileInput, setResetFileInput] = useState(false)
@@ -52,33 +49,25 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
         document.getElementById('fileInput')?.click()
     }, [])
 
+    const { addCancelToken } = useCancelTokens()
+
     const fileUploadHandler = async (
         e: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const { files } = e.target
-        console.log('e.target: ', e)
+        console.log(files)
 
-        if (files) {
-            console.log(files)
-
-            if (files.length < 2) {
-                const fileList: File[] = Array.from(files)
-                fileList.forEach(async (file) => {
-                    await dispatch(uploadFile({ dirId: currentDir, file }))
-                })
-            } else {
-                const fileList: File[] = Array.from(files) // Преобразуем FileList в массив File
-
-                await dispatch(
-                    uploadFilesArrays({ dirId: currentDir, files: fileList }),
-                )
-            }
-            // Сброс значения элемента <input type="file"> после загрузки файлов
-            setResetFileInput(true)
-            setTimeout(() => {
-                setResetFileInput(false)
-            }, 0)
-        }
+        fileUploadHelper({
+            files,
+            currentDir,
+            dispatch,
+            addCancelToken,
+        })
+        // Сброс значения элемента <input type="file"> после загрузки файлов
+        setResetFileInput(true)
+        setTimeout(() => {
+            setResetFileInput(false)
+        }, 0)
     }
 
     return (
@@ -114,13 +103,7 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
                     {t('Upload file')}
                 </Button>
             </VStack>
-            {onSucces && (
-                <NoticePopup
-                    message={t('The file was uploaded successfully', {
-                        file: uploadedFileName,
-                    })}
-                />
-            )}
+
             <MessageBox isUploading={isUploading} />
         </DynamicModuleLoader>
     )

@@ -3,7 +3,7 @@ import { Suspense, memo, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import { fileActions } from '@/entities/File'
+import { fileActions, getNoticeFileName } from '@/entities/File'
 import { NoticePopup } from '@/entities/Notice'
 import Plus from '@/shared/assets/icons/plus.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
@@ -19,8 +19,8 @@ import { VStack } from '@/shared/ui/Stack'
 
 import cls from './CreateNewDirModal.module.scss'
 import {
+    getDirIsLoading,
     getFileError,
-    getFileIsLoading,
     getFileOnSucces,
 } from '../../model/selectors/CreateNewDirSelectors/CreateNewDirSelectors'
 import { createNewDirReducer } from '../../model/slices/createNewDirSlice'
@@ -41,7 +41,7 @@ export const CreateNewDirModal = memo((props: CreateNewDirProps) => {
     const dispatch = useAppDispatch()
     const [isAuthModal, setIsAuthModal] = useState(false)
     const [showError, setShowError] = useState(false)
-    const [noticeFileName, setNoticeFileName] = useState('')
+    const noticeFileName = useSelector(getNoticeFileName)
 
     const onCloseModal = useCallback(() => {
         setIsAuthModal(false)
@@ -50,14 +50,14 @@ export const CreateNewDirModal = memo((props: CreateNewDirProps) => {
 
     const onShowModal = useCallback(() => {
         setIsAuthModal(true)
-        dispatch(fileActions.setFileName(t('New Folder')))
+        dispatch(fileActions.setDirName(t('New Folder')))
     }, [dispatch, t])
 
     const showErrorHandler = useCallback(() => {
         setShowError(true)
     }, [])
 
-    const isLoading = useSelector(getFileIsLoading)
+    const isLoading = useSelector(getDirIsLoading)
     const error = useSelector(getFileError)
     const onSucces = useSelector(getFileOnSucces)
 
@@ -98,7 +98,7 @@ export const CreateNewDirModal = memo((props: CreateNewDirProps) => {
                             onSuccess={onCloseModal}
                             showError={showError}
                             showErrorHandler={showErrorHandler}
-                            setNoticeFileName={setNoticeFileName}
+                            isLoading={isLoading}
                         />
                     </Suspense>
                 </Modal>

@@ -1,6 +1,7 @@
 export type ImgFileType = 'png' | 'jpg' | 'tif'
+export type VideoFileType = 'mp4' | 'avi' | 'mov'
 
-export type FileType = 'dir' | ImgFileType | 'rar'
+export type FileType = 'dir' | ImgFileType | 'rar' | VideoFileType
 
 export interface MyFile {
     _id: string
@@ -14,8 +15,5 @@ export interface MyFile {
     childs?: [number]
     date?: string
     isDirectory?: boolean
-}
-
-export interface MyFolder extends File {
-    getAllEntries: () => Promise<File[]>
+    progress?: number
 }

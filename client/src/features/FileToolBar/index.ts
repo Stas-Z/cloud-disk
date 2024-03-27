@@ -1,3 +1,5 @@
+export { deleteFile } from './model/services/deleteFile/deleteFile'
+
 export { fileToolBarReducer } from './model/slices/fileToolBarSlice'
 
 export {

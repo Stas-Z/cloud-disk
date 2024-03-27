@@ -2,10 +2,15 @@ import { createSelector } from '@reduxjs/toolkit'
 
 import { StateSchema } from '@/app/providers/StoreProvider'
 
+export const getFileIsLoading = (state: StateSchema) =>
+    state.file.isLoading || false
+
 export const getCurrentDir = (state: StateSchema) =>
     state.file?.currentDir ?? ''
 
-export const getFileName = (state: StateSchema) => state.file?.fileName || ''
+export const getFileName = (state: StateSchema) => state.file?.dirName || ''
+export const getNoticeFileName = (state: StateSchema) =>
+    state?.file.dirNameNotice || ''
 
 export const getDirStack = (state: StateSchema) => state.file?.dirStack || []
 

@@ -81,6 +81,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
      * @description Button shadow.
      */
     shadow?: boolean
+    /**
+     * @description Style for loading button.
+     */
+    isLoading?: boolean
 }
 
 export const Button = forwardRef(
@@ -97,6 +101,7 @@ export const Button = forwardRef(
             addonLeft,
             addonRight,
             shadow,
+            isLoading,
             color = 'normal',
             textColor = 'normalText',
             ...otherProps
@@ -109,6 +114,7 @@ export const Button = forwardRef(
             [cls.fullWidth]: fullWidth,
             [cls.withAddon]: Boolean(addonLeft) || Boolean(addonRight),
             [cls.shadow]: shadow,
+            [cls.loading]: isLoading,
         }
         const addClass = [
             className,

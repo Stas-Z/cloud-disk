@@ -6,6 +6,7 @@ import '@/app/styles/index.scss'
 import '@/shared/config/i18n/i18n'
 import { ErrorBoundary } from './app/providers/ErrorBoundary'
 import { StoreProvider } from './app/providers/StoreProvider'
+import CancelTokensProvider from './shared/lib/hooks/useCancelTokens/useCancelTokens'
 
 const container = document.getElementById('root')
 
@@ -16,9 +17,11 @@ const root = createRoot(container)
 root.render(
     <BrowserRouter>
         <StoreProvider>
-            <ErrorBoundary>
-                <App />
-            </ErrorBoundary>
+            <CancelTokensProvider>
+                <ErrorBoundary>
+                    <App />
+                </ErrorBoundary>
+            </CancelTokensProvider>
         </StoreProvider>
     </BrowserRouter>,
 )

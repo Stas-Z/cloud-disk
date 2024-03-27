@@ -139,10 +139,7 @@ export class FileController {
                         .status(400)
                         .json({ message: 'There no space on the disk' })
                 }
-                user.usedSpace = (user?.usedSpace || 0) + (file?.size || 0)
             }
-            // Сохраняем пользователя поскольку мы меняли у него поля
-            await user.save()
 
             // Сохраняем файл в базе данных
             await dbFile.save()
@@ -155,21 +152,26 @@ export class FileController {
         }
     }
 
+    static async getArrayTotalSize(files: {
+        [key: string]: UploadedFile[]
+    }): Promise<number> {
+        return new Promise<number>((resolve, reject) => {
+            let totalSize = 0
+            Object.values(files).forEach((fileGroup) => {
+                fileGroup.forEach((file) => {
+                    totalSize += file.size
+                })
+            })
+            resolve(totalSize)
+        })
+    }
+
     static async uploadFilesArray(req: Request, res: Response) {
         try {
             // Получаем массив файлов из запроса
-            const responseFiles = req.files?.files as UploadedFile[]
-            const files = Array.isArray(responseFiles)
-                ? responseFiles
-                : ([req.files?.files] as UploadedFile[])
-            const userId = req.user ? req.user.id : null
+            const { files } = req
 
-            // Находим родительскую директорию в которую сохраняем файлы.
-            const parent: FileDoc | null = await File.findOne({
-                // Ищем по id user'а из токена и по id самой директории которую мы передаём в теле запроса
-                user: userId,
-                _id: req.body.parent,
-            })
+            const userId = req.user ? req.user.id : null
 
             // Находим пользователя
             const user: UserDoc | null = await User.findOne({
@@ -182,16 +184,26 @@ export class FileController {
                     .json({ message: 'No files provided or user not found' })
             }
 
-            // Проверяем, были ли переданы файлы
-            if (files.length === 0) {
-                return res.status(400).json({ message: 'No files uploaded' })
-            }
+            const parentFilesMap: { [parentId: string]: UploadedFile[] } = {}
 
-            // Вычисляем общий размер всех файлов
-            const totalSize = files.reduce(
-                (acc, file) => acc + (file.size || 0),
-                0,
-            )
+            // Получаем массив файлов из запроса
+            Object.keys(files).forEach((key) => {
+                const fileOrFiles = files[key]
+                // Проверяем, является ли fileOrFiles массивом
+                if (Array.isArray(fileOrFiles)) {
+                    // Если является, то просто добавляем его к массиву в parentFilesMap
+                    parentFilesMap[key] = parentFilesMap[key]
+                        ? [...parentFilesMap[key], ...fileOrFiles]
+                        : [...fileOrFiles]
+                } else {
+                    // Если не является массивом, создаем массив из одного файла и добавляем к массиву в parentFilesMap
+                    parentFilesMap[key] = parentFilesMap[key]
+                        ? [...parentFilesMap[key], fileOrFiles]
+                        : [fileOrFiles]
+                }
+            })
+            const totalSize =
+                await FileController.getArrayTotalSize(parentFilesMap)
 
             // Проверяем, достаточно ли места на диске для всех файлов
             if (
@@ -209,52 +221,75 @@ export class FileController {
             // Создаем объект для хранения соответствия родительской папки и ее дочерних элементов
             const parentChildMap: { [parentId: string]: string[] } = {}
 
-            // Обрабатываем каждый файл в массиве
+            // Обрабатываем каждую родительскую папку и ее файлы
             await Promise.all(
-                files.map(async (file) => {
-                    // Путь файла
-                    const path = parent
-                        ? `${appConfig.filePath}\\${user._id}\\${parent.path}\\${file.name}`
-                        : `${appConfig.filePath}\\${user._id}\\${file.name}`
+                Object.keys(files).map(async (key) => {
+                    const parentId = key.split('_').pop() // Получаем id parent из ключа
+                    let filesGroup = files[key]
 
-                    // Проверяем, существует ли уже такой файл по указанному пути
-                    if (fs.existsSync(path)) {
-                        throw new Error('File already exists')
+                    // Если filesGroup не является массивом, преобразуем его в массив
+                    if (!Array.isArray(filesGroup)) {
+                        filesGroup = [filesGroup]
                     }
 
-                    // Перемещаем файл по пути созданному выше
-                    file?.mv(path)
+                    if (Array.isArray(filesGroup)) {
+                        // Проходим по каждому файлу в группе файлов
+                        await Promise.all(
+                            filesGroup.map(async (file) => {
+                                // Находим родительскую директорию в которую сохраняем файлы.
+                                const parent: FileDoc | null =
+                                    await File.findOne({
+                                        // Ищем по id user'а из токена и по id самой директории которую мы передаём в теле запроса
+                                        user: userId,
+                                        _id: parentId,
+                                    })
 
-                    // Получаем тип файла, его расширение
-                    const type = file?.name.split('.').pop()
+                                // Путь файла
+                                const path = parent
+                                    ? `${appConfig.filePath}\\${user._id}\\${parent.path}\\${file.name}`
+                                    : `${appConfig.filePath}\\${user._id}\\${file.name}`
 
-                    let newFilePath = file.name
-                    // Если есть родитель, добавляем в путь
-                    if (parent) {
-                        newFilePath = `${parent.path}\\${file.name}`
-                    }
+                                // Проверяем, существует ли уже такой файл по указанному пути
+                                if (fs.existsSync(path)) {
+                                    throw new Error('File already exists')
+                                }
 
-                    // Создаём модель файла и передаём все необходимые параметры
-                    const dbFile: FileDoc = new File({
-                        name: file?.name,
-                        type,
-                        size: file?.size,
-                        path: newFilePath,
-                        parent: parent?._id,
-                        user: user?._id,
-                    })
+                                // Перемещаем файл по пути созданному выше
+                                file?.mv(path)
 
-                    // Добавляем id файла в массив дочерних элементов соответствующей родительской папки в parentChildMap
-                    if (parent) {
-                        parentChildMap[parent._id.toString()] =
-                            parentChildMap[parent._id.toString()] || []
-                        parentChildMap[parent._id.toString()].push(
-                            String(dbFile._id),
+                                // Получаем тип файла, его расширение
+                                const type = file?.name.split('.').pop()
+
+                                let newFilePath = file.name
+                                // Если есть родитель, добавляем в путь
+                                if (parent) {
+                                    newFilePath = `${parent.path}\\${file.name}`
+                                }
+
+                                // Создаём модель файла и передаём все необходимые параметры
+                                const dbFile: FileDoc = new File({
+                                    name: file?.name,
+                                    type,
+                                    size: file?.size,
+                                    path: newFilePath,
+                                    parent: parent?._id,
+                                    user: user?._id,
+                                })
+                                // Добавляем id файла в массив дочерних элементов соответствующей родительской папки в parentChildMap
+                                if (parent) {
+                                    parentChildMap[parent._id.toString()] =
+                                        parentChildMap[parent._id.toString()] ||
+                                        []
+                                    parentChildMap[parent._id.toString()].push(
+                                        String(dbFile._id),
+                                    )
+                                }
+
+                                await dbFile.save()
+                                savedFiles.push(dbFile)
+                            }),
                         )
                     }
-
-                    await dbFile.save()
-                    savedFiles.push(dbFile)
                 }),
             )
 
@@ -292,6 +327,37 @@ export class FileController {
         } catch (e) {
             console.log(e)
             return res.status(500).json({ message: 'Upload error' })
+        }
+    }
+
+    static async updateUserUsedSpace(req: Request, res: Response) {
+        try {
+            // Получаем userId из параметров запроса
+            const userId = req.user ? req.user.id : null
+
+            // Получаем новое значение usedSpace из тела запроса
+            const { usedSpace } = req.body
+
+            // Находим пользователя
+            const user: UserDoc | null = await User.findOne({
+                _id: userId,
+            })
+
+            // Проверяем, найден ли пользователь
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' })
+            }
+
+            // Обновляем поле usedSpace у пользователя
+            user.usedSpace += usedSpace
+            // Сохраняем обновленного пользователя
+            await user.save()
+
+            // Отправляем успешный ответ
+            res.status(200).json({ message: 'Used space updated successfully' })
+        } catch (error) {
+            console.error('Error updating used space:', error)
+            res.status(500).json({ message: 'Internal server error' })
         }
     }
 
@@ -341,42 +407,6 @@ export class FileController {
         } catch (e) {
             console.log(e)
             res.status(500).json({ message: 'Download error' })
-        }
-    }
-
-    static async downloadFolder(req: Request, res: Response) {
-        try {
-            const folderId = req.query.id
-            const user = req.user.id
-
-            // Находим папку по её id и пользователю
-            const folder = await File.findOne({ _id: folderId, user })
-
-            if (!folder || folder.type !== 'dir') {
-                return res.status(404).json({ message: 'Folder not found' })
-            }
-
-            const { filePath } = appConfig
-            // Путь к папке, которую мы хотим скачать
-            const folderPath = `${filePath}\\${req.user.id._id}\\${folder?.path}`
-
-            // Создаем поток для записи данных в zip-архив
-            const archive = archiver('zip', {
-                zlib: { level: 9 }, // уровень сжатия
-            })
-
-            // Отправляем zip-архив как ответ на запрос
-            res.attachment(`${folder.name}.zip`)
-            archive.pipe(res)
-
-            // Добавляем содержимое папки в zip-архив
-            archive.directory(folderPath, false)
-
-            // Завершаем архивацию и отправляем архив клиенту
-            archive.finalize()
-        } catch (error) {
-            console.error('Error downloading folder:', error)
-            res.status(500).json({ message: 'Failed to download folder' })
         }
     }
 

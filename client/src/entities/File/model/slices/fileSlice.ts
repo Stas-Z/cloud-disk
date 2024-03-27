@@ -17,7 +17,8 @@ export const fileSlice = createSlice({
     name: 'file',
     initialState: filesAdapter.getInitialState<FileSchema>({
         currentDir: null,
-        fileName: '',
+        dirName: '',
+        dirNameNotice: '',
         dirStack: [],
         scroll: {},
         selectedFile: { _id: '', name: '' },
@@ -28,8 +29,11 @@ export const fileSlice = createSlice({
     }),
 
     reducers: {
-        setFileName: (state, action: PayloadAction<string>) => {
-            state.fileName = action.payload
+        setDirName: (state, action: PayloadAction<string>) => {
+            state.dirName = action.payload
+        },
+        setNoticeFileName: (state, action: PayloadAction<string>) => {
+            state.dirNameNotice = action.payload
         },
         setCurrentDir: (state, action: PayloadAction<string | null>) => {
             state.currentDir = action.payload

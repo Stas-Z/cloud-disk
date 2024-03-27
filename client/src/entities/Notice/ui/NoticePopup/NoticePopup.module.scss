@@ -23,6 +23,10 @@
     animation-fill-mode: forwards;
 }
 
+.delete {
+    background: var(--message-box);
+}
+
 @keyframes open-notice {
     0% {
         bottom: -100%;

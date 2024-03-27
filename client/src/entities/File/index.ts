@@ -21,6 +21,8 @@ export {
     getSelectedFile,
     getSelectedFileId,
     getSelectedFileName,
+    getNoticeFileName,
+    getFileIsLoading,
 } from './model/selectors/fileSelectors/fileSelectors'
 
 export { FileList } from './ui/FileList/FileList'
@@ -28,4 +30,4 @@ export { FileList } from './ui/FileList/FileList'
 export { FileListItem } from './ui/FileListItem/FileListItem'
 
 export type { FileSchema } from './model/types/fileSchema'
-export type { MyFile, FileType, MyFolder } from './model/types/files'
+export type { MyFile, FileType } from './model/types/files'

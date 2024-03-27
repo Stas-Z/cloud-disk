@@ -1,13 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import axios, { Canceler } from 'axios'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'
 import { MyFile, fetchFilesList } from '@/entities/File'
 import { initAuthData } from '@/entities/User'
+// eslint-disable-next-line fsd-pathcheker/layer-imports
+import { uploadBarService, uploaderBarActions } from '@/features/UploaderBar'
 
 export interface uploadFileProps {
     file: File
     dirId: string
     updateList?: boolean
+    addCancelToken?: (fileId: string, cancel: Canceler) => void
 }
 
 export const uploadFile = createAsyncThunk<
@@ -16,7 +20,7 @@ export const uploadFile = createAsyncThunk<
     ThunkConfig<string>
 >(
     'uploadFiles/uploadFile',
-    async ({ file, dirId, updateList = true }, thunkAPI) => {
+    async ({ file, dirId, updateList = true, addCancelToken }, thunkAPI) => {
         const { extra, rejectWithValue, dispatch } = thunkAPI
 
         try {
@@ -25,17 +29,33 @@ export const uploadFile = createAsyncThunk<
             if (dirId) {
                 formData.append('parent', dirId)
             }
+
+            const fileId = thunkAPI.requestId // уникальный id для файлов для UploadBar
+
+            const { token, cancel } = axios.CancelToken.source() // создаём токен отмены и функцию отмены
+            if (addCancelToken) {
+                addCancelToken(fileId, cancel) // сохраняем в контекст функцию отмены и id файла
+            }
+            uploadBarService({ file, dispatch, fileId }) // Заполняем стейт для UploaderBar
+
             const response = await extra.api.post<MyFile>(
                 'files/upload',
                 formData,
                 {
+                    cancelToken: token, // токен отмены
                     onUploadProgress: (progressEvent) => {
                         if (progressEvent.total) {
                             const percentCompleted = Math.round(
                                 (progressEvent.loaded / progressEvent.total) *
                                     100,
                             )
-                            console.log(`Upload progress: ${percentCompleted}%`)
+                            dispatch(
+                                uploaderBarActions.setProgressFile({
+                                    _id: Date.now().toString(),
+                                    name: file.name,
+                                    progress: percentCompleted,
+                                }),
+                            )
                         }
                     },
                 },

@@ -155,3 +155,28 @@
 .round {
     border-radius: 34px;
 }
+
+.loading {
+    background-image: repeating-linear-gradient(
+        -45deg,
+        var(--button-yellow),
+        var(--button-yellow) 4px,
+        var(--button-yellow-accent) 0,
+        var(--button-yellow-accent) 8px
+    );
+    background-size: 34px 34px;
+    animation-name: button-view-action-progress;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes button-view-action-progress {
+    0% {
+        background-position: -12px 0;
+    }
+
+    to {
+        background-position: 0 0;
+    }
+}

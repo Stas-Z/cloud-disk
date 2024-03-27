@@ -8,6 +8,7 @@ import {
     getSelectedFile,
     getCurrentDir,
     FileIconType,
+    fileActions,
 } from '@/entities/File'
 import IconDownload from '@/shared/assets/icons/arrow-download.svg'
 import Close from '@/shared/assets/icons/close.svg'
@@ -97,6 +98,7 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
 
             if (selectedFile) {
                 dispatch(downloadFile(selectedFile))
+                dispatch(fileActions.setNoticeFileName(selectedFile.name))
             }
         },
         [dispatch, selectedFile],
@@ -106,8 +108,11 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
             e.stopPropagation()
             if (selectedFile) {
                 const result = await dispatch(
-                    deleteFile({ file: selectedFile, dirId: currentDir }),
+                    deleteFile({ fileId: selectedFile._id, dirId: currentDir }),
                 )
+
+                dispatch(fileActions.setNoticeFileName(selectedFile.name))
+
                 if (result.meta.requestStatus === 'fulfilled') {
                     close()
                 }
