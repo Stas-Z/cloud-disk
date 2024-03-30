@@ -6,6 +6,15 @@
     color: var(--text);
 }
 
+.succes {
+    .title {
+        color: var(--succes);
+    }
+
+    .text {
+        color: var(--succes);
+    }
+}
 .error {
     .title {
         color: var(--red-light);

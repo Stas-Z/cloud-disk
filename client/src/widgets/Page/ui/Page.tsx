@@ -9,7 +9,8 @@ import {
 import { useSelector } from 'react-redux'
 
 import { StateSchema } from '@/app/providers/StoreProvider'
-import { getCurrentDir, getScrollSaveByDir } from '@/entities/File'
+import { getCurrentDir } from '@/entities/File'
+import { getScrollSaveByDir } from '@/features/ScrollSave'
 import { classNames } from '@/shared/lib/classNames/classNames'
 
 import cls from './Page.module.scss'

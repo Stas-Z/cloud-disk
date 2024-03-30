@@ -12,24 +12,6 @@ export const getFileName = (state: StateSchema) => state.file?.dirName || ''
 export const getNoticeFileName = (state: StateSchema) =>
     state?.file.dirNameNotice || ''
 
-export const getDirStack = (state: StateSchema) => state.file?.dirStack || []
-
-export const getFilesWithoutLast = createSelector(getDirStack, (dirStack) =>
-    dirStack.slice(0, -1),
-)
-
-export const getLastFileId = createSelector(
-    getDirStack,
-    (dirStack) => dirStack[dirStack.length - 1],
-)
-
-export const getScrollSave = (state: StateSchema) => state.file.scroll
-export const getScrollSaveByDir = createSelector(
-    getScrollSave,
-    (state: StateSchema, pathDir: string) => pathDir,
-    (scroll, pathDir) => scroll[pathDir] || '',
-)
-
 export const getSelectedFile = (state: StateSchema) => state.file.selectedFile
 export const getSelectedFileId = createSelector(
     [getSelectedFile],

@@ -4,7 +4,13 @@ import { classNames } from '@/shared/lib/classNames/classNames'
 
 import cls from './Text.module.scss'
 
-export type TextVariant = 'primary' | 'error' | 'accent' | 'grey' | 'white'
+export type TextVariant =
+    | 'primary'
+    | 'error'
+    | 'accent'
+    | 'grey'
+    | 'white'
+    | 'succes'
 
 export type TextAlign = 'right' | 'left' | 'center'
 

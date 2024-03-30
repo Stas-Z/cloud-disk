@@ -60,13 +60,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     /**
      * Content to render on the left side of input
      * @example
-     * <Input addonLeft={<Icon Svg={SearchIcon} />} />
+     * <Button addonLeft={<Icon Svg={SearchIcon} />} />
      */
     addonLeft?: ReactNode
     /**
      * Content to render on the right side of input
      * @example
-     * <Input addonRight={<Icon Svg={SearchIcon} />} />
+     * <Button addonRight={<Icon Svg={SearchIcon} />} />
      */
     addonRight?: ReactNode
     /**

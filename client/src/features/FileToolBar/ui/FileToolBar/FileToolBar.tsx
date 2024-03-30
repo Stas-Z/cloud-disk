@@ -7,7 +7,7 @@ import {
     getSelectedFileName,
     getSelectedFile,
     getCurrentDir,
-    FileIconType,
+    fileIconType,
     fileActions,
 } from '@/entities/File'
 import IconDownload from '@/shared/assets/icons/arrow-download.svg'
@@ -23,7 +23,7 @@ import { HStack } from '@/shared/ui/Stack'
 import { Text } from '@/shared/ui/Text'
 
 import cls from './FileToolBar.module.scss'
-import { truncateFileName } from '../../model/helpers/truncateFileName'
+import { truncateFileName } from '../../../../entities/File/model/lib/truncateFileName/truncateFileName'
 import {
     getfileToolbarIsDeleting,
     getfileToolbarIsDownloading,
@@ -145,7 +145,7 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
                         max
                     >
                         <Icon
-                            Svg={FileIconType(selectedFile?.type)}
+                            Svg={fileIconType(selectedFile?.type)}
                             width={16}
                             height={16}
                             className={cls.fileIcon}

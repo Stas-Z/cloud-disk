@@ -5,7 +5,10 @@ import { counterReducer } from '@/entities/Counter'
 import { fileReducer } from '@/entities/File'
 import { userReducer } from '@/entities/User'
 import { authMiddleware } from '@/features/AuthorizationForm'
+import { scrollSaveReducer } from '@/features/ScrollSave'
 import { uploaderBarReducer } from '@/features/UploaderBar'
+import { userFilesFiltersReducer } from '@/features/UserFilesFilters'
+import { filesPageReducer } from '@/pages/FilesPage'
 import { $api } from '@/shared/api/api'
 import { ReducersList } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
 
@@ -21,8 +24,11 @@ export function createReduxStore(
         counter: counterReducer,
         user: userReducer,
         file: fileReducer,
+        scroll: scrollSaveReducer,
         breadcrumbs: breadcrumbsReducer,
         uploaderBar: uploaderBarReducer,
+        fileFilters: userFilesFiltersReducer,
+        filePage: filesPageReducer,
     }
 
     const reducerManager = createReducerManager(

@@ -65,7 +65,7 @@ export const uploadFile = createAsyncThunk<
             }
 
             if (updateList) {
-                dispatch(fetchFilesList(dirId))
+                dispatch(fetchFilesList({}))
             }
 
             // Обновляем данные пользователя

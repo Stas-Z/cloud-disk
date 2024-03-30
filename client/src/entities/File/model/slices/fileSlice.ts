@@ -4,10 +4,9 @@ import {
     createSlice,
 } from '@reduxjs/toolkit'
 
-import { deleteLastDirScroll } from '../services/deleteLastDirScroll/deleteLastDirScroll'
 import { fetchFilesList } from '../services/fetchFilesList/fetchFilesList'
 import { MyFile } from '../types/files'
-import { FileSchema, ScrollSave } from '../types/fileSchema'
+import { FileSchema } from '../types/fileSchema'
 
 export const filesAdapter = createEntityAdapter<MyFile, string>({
     selectId: (file: MyFile) => file._id,
@@ -19,8 +18,7 @@ export const fileSlice = createSlice({
         currentDir: null,
         dirName: '',
         dirNameNotice: '',
-        dirStack: [],
-        scroll: {},
+
         selectedFile: { _id: '', name: '' },
         isLoading: false,
         error: '',
@@ -39,39 +37,18 @@ export const fileSlice = createSlice({
             state.currentDir = action.payload
         },
 
-        pushToDirStack: (state, action: PayloadAction<string>) => {
-            state.dirStack = [...state.dirStack, action.payload]
-        },
-        setDirStack: (state, action: PayloadAction<string[]>) => {
-            state.dirStack = action.payload
-        },
-        sliceDirStackById: (state, action: PayloadAction<string>) => {
-            const dirStackToDelete = state.dirStack.findIndex(
-                (dirStack) => dirStack === action.payload,
-            )
-            if (action.payload === null) {
-                state.dirStack = []
-            }
-            if (dirStackToDelete !== -1) {
-                state.dirStack = [...state.dirStack.slice(0, dirStackToDelete)]
-            }
-        },
-
-        setLastDirScroll: (
-            state,
-            action: PayloadAction<{ path: string; position: string }>,
-        ) => {
-            state.scroll[action.payload.path] = action.payload.position
-        },
         setSelectedFile: (state, action: PayloadAction<MyFile>) => {
             state.selectedFile = action.payload
         },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchFilesList.pending, (state) => {
+            .addCase(fetchFilesList.pending, (state, action) => {
                 state.isLoading = true
                 state.error = undefined
+                if (action.meta.arg.replace) {
+                    filesAdapter.removeAll(state)
+                }
             })
             .addCase(
                 fetchFilesList.fulfilled,
@@ -81,21 +58,6 @@ export const fileSlice = createSlice({
                 },
             )
             .addCase(fetchFilesList.rejected, (state, action) => {
-                state.isLoading = false
-                state.error = action.payload
-            })
-            .addCase(deleteLastDirScroll.pending, (state) => {
-                state.isLoading = true
-                state.error = undefined
-            })
-            .addCase(
-                deleteLastDirScroll.fulfilled,
-                (state, action: PayloadAction<ScrollSave>) => {
-                    state.isLoading = false
-                    state.scroll = action.payload
-                },
-            )
-            .addCase(deleteLastDirScroll.rejected, (state, action) => {
                 state.isLoading = false
                 state.error = action.payload
             })

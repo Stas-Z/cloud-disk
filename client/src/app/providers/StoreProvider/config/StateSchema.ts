@@ -8,8 +8,11 @@ import { UserSchema } from '@/entities/User'
 import { AuthSchema } from '@/features/AuthorizationForm'
 import { CreateNewDirSchema } from '@/features/CreateNewDir'
 import { FileToolBarSchema } from '@/features/FileToolBar'
+import { ScrollSaveSchema } from '@/features/ScrollSave'
 import { UploaderBarSchema } from '@/features/UploaderBar'
 import { UploadFilesSchema } from '@/features/UploadFiles'
+import { UserFilesFiltersSchema } from '@/features/UserFilesFilters'
+import { FilesPageSchema } from '@/pages/FilesPage'
 
 import { createReduxStore } from './store'
 
@@ -25,6 +28,9 @@ export interface StateSchema {
     authForm: AuthSchema
     user: UserSchema
     file: FileSchema
+    filePage: FilesPageSchema
+    scroll: ScrollSaveSchema
+    fileFilters: UserFilesFiltersSchema
     breadcrumbs: BreadcrumbsSchema
     createNewDir: CreateNewDirSchema
     uploadFiles: UploadFilesSchema

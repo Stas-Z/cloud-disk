@@ -1,76 +1,36 @@
 import { memo, useCallback } from 'react'
 
-import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
-
-import { breadcrumbsActions } from '@/entities/Breadcrumbs'
 import DownloadIcon from '@/shared/assets/icons/arrow-download.svg'
 import ShareIcon from '@/shared/assets/icons/share-link.svg'
 import ViewIcon from '@/shared/assets/icons/views-icon.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
-import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { Icon } from '@/shared/ui/Icon'
 import { HStack } from '@/shared/ui/Stack'
 import { Text } from '@/shared/ui/Text'
 
 import cls from './FileListItem.module.scss'
-import { FileView } from '../../model/consts/fileConsts'
-import {
-    getCurrentDir,
-    getSelectedFileId,
-} from '../../model/selectors/fileSelectors/fileSelectors'
-import { fileActions } from '../../model/slices/fileSlice'
+import { fileIconType } from '../../model/lib/fileIconType/fileIconType'
+import { sizeFormat } from '../../model/lib/sizeFormat/sizeFormat'
 import { MyFile } from '../../model/types/files'
-import { FileIconType } from '../FileIconType/FileIconType'
 
 interface FileListItemProps {
     className?: string
     file: MyFile
-    view?: FileView
-    onShowToolbar?: () => void
-    toolbarIsOpen?: boolean
+    onClickHandler: () => void
+    openDirHandler: () => void
+    isSelected?: boolean
 }
 
 export const FileListItem = memo((props: FileListItemProps) => {
-    const { className, file, view, onShowToolbar, toolbarIsOpen } = props
-    const { t } = useTranslation()
-    const dispatch = useAppDispatch()
-    const currentDir = useSelector(getCurrentDir)
-    const selectedItemId = useSelector(getSelectedFileId)
-    const isSelected = selectedItemId === file._id && toolbarIsOpen
+    const { className, file, onClickHandler, openDirHandler, isSelected } =
+        props
 
     const date = file.date?.slice(0, 10)
     const time = file.date?.slice(11, 16)
 
-    const onClickHandler = useCallback(() => {
-        dispatch(fileActions.setSelectedFile(file))
-
-        if (onShowToolbar) {
-            onShowToolbar()
-        }
-    }, [dispatch, file, onShowToolbar])
     const onClickIconHandler = useCallback(() => {}, [])
 
-    const openDirHandler = useCallback(() => {
-        dispatch(
-            breadcrumbsActions.pushToStackBreadcrumbs({
-                name: file.name,
-                id: file._id,
-            }),
-        )
-        dispatch(fileActions.pushToDirStack(currentDir))
-
-        if (file.type === 'dir') {
-            dispatch(fileActions.setCurrentDir(file._id))
-
-            dispatch(
-                fileActions.setLastDirScroll({
-                    path: currentDir,
-                    position: file._id,
-                }),
-            )
-        }
-    }, [currentDir, dispatch, file._id, file.name, file.type])
+    const fileSize = file.size ? sizeFormat(file.size) : '0B'
 
     return (
         <HStack
@@ -83,11 +43,11 @@ export const FileListItem = memo((props: FileListItemProps) => {
             gap="16"
             align="center"
             onDoubleClick={openDirHandler}
-            id={`list-item-${file._id.toString()}`}
+            id={`list-item-${file._id}`}
             onClick={onClickHandler}
         >
             <Icon
-                Svg={FileIconType(file.type)}
+                Svg={fileIconType(file.type)}
                 width={40}
                 height={40}
                 className={cls.iconFolder}
@@ -124,13 +84,17 @@ export const FileListItem = memo((props: FileListItemProps) => {
                         className={cls.info}
                         align="center"
                     />
-                    <Text
-                        text={file.size?.toString()}
-                        variant="grey"
-                        size="s"
-                        className={cls.info}
-                        align="center"
-                    />
+                    {file.type !== 'dir' ? (
+                        <Text
+                            text={fileSize.toString()}
+                            variant="grey"
+                            size="s"
+                            className={cls.info}
+                            align="center"
+                        />
+                    ) : (
+                        <div className={cls.info} />
+                    )}
                 </HStack>
             </HStack>
             <HStack align="center" justify="end" className={cls.shareLink}>

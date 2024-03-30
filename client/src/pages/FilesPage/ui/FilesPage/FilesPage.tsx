@@ -12,16 +12,17 @@ import {
     fileToolBarReducer,
 } from '@/features/FileToolBar'
 import { UploaderBar } from '@/features/UploaderBar'
-import { UserFilesList } from '@/features/UserFilesList'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import {
     DynamicModuleLoader,
     ReducersList,
 } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { DragAndDrop, useDrag } from '@/widgets/DragAndDrop'
 import { Page } from '@/widgets/Page'
 
 import cls from './FilesPage.module.scss'
+import { UserFilesList } from '../UserFilesList/UserFilesList'
 
 interface FilesPageProps {
     className?: string
@@ -34,6 +35,7 @@ const initialReducers: ReducersList = {
 const FilesPage = (props: FilesPageProps) => {
     const { className } = props
     const { t } = useTranslation()
+    const dispatch = useAppDispatch()
 
     const error = useSelector(getfileToolbarError)
     const message = useSelector(getfileToolbarMessage)
@@ -59,39 +61,36 @@ const FilesPage = (props: FilesPageProps) => {
         onDragOver: dragEnterHandler,
     }
 
-    if (dragEnter) {
-        return (
-            <Page
-                className={classNames(cls.filesPage, {}, [className])}
-                restoreScroll
-            >
-                <DragAndDrop {...dragProps} onDrop={dropHandler} />
-                <UserFilesList />
-            </Page>
-        )
-    }
+    const content = dragEnter ? (
+        <Page
+            className={classNames(cls.filesPage, {}, [className])}
+            restoreScroll
+        >
+            <DragAndDrop {...dragProps} onDrop={dropHandler} />
+            <UserFilesList />
+        </Page>
+    ) : (
+        <Page
+            className={classNames(cls.filesPage, {}, [className])}
+            restoreScroll
+            {...dragProps}
+        >
+            <FileToolBar isOpen={fileToolbar} onClose={onCloseToolbar} lazy />
+            <UserFilesList
+                onShowToolbar={onShowToolbar}
+                toolbarIsOpen={fileToolbar}
+            />
+            <NoticePopup
+                message={t(message, { file: noticeFileName })}
+                error={t(error)}
+            />
+            <UploaderBar />
+        </Page>
+    )
+
     return (
         <DynamicModuleLoader reducers={initialReducers}>
-            <Page
-                className={classNames(cls.filesPage, {}, [className])}
-                restoreScroll
-                {...dragProps}
-            >
-                <FileToolBar
-                    isOpen={fileToolbar}
-                    onClose={onCloseToolbar}
-                    lazy
-                />
-                <UserFilesList
-                    onShowToolbar={onShowToolbar}
-                    toolbarIsOpen={fileToolbar}
-                />
-                <NoticePopup
-                    message={t(message, { file: noticeFileName })}
-                    error={t(error)}
-                />
-                <UploaderBar />
-            </Page>
+            {content}
         </DynamicModuleLoader>
     )
 }

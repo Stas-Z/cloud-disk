@@ -20,6 +20,8 @@
     width: 100%;
     user-select: none;
     -webkit-user-select: none;
+    max-width: 350px;
+    overflow: hidden;
 }
 
 .shareLink {

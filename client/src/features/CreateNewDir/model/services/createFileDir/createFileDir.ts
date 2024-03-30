@@ -31,7 +31,7 @@ export const createFileDir = createAsyncThunk<
             }
 
             if (updateList) {
-                dispatch(fetchFilesList(parent))
+                dispatch(fetchFilesList({}))
             }
 
             return response.data

@@ -37,3 +37,9 @@ export const getAllFiles = createSelector(
         return sortedFiles
     },
 )
+
+// // Создаем мемоизированный селектор для получения всех файлов
+// export const getAllFiles = createSelector(
+//     [selectUserFilesState],
+//     (fileState: FileSchema) => filesAdapter.getSelectors().selectAll(fileState),
+// )

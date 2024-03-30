@@ -26,7 +26,7 @@ export const uploadBarService = (props: uploadedBarServiceProps) => {
             name: file.name,
             progress: 0,
             _id: fileId,
-            size: file.size.toString(),
+            size: file.size,
             type,
             date: Date.now().toString(),
         }
@@ -37,7 +37,7 @@ export const uploadBarService = (props: uploadedBarServiceProps) => {
             name: filesArray.folderName,
             progress: 0,
             _id: fileId,
-            size: filesArray.totalSize.toString(),
+            size: filesArray.totalSize,
             type: 'dir',
             date: Date.now().toString(),
         }

@@ -28,7 +28,7 @@ export const deleteFile = createAsyncThunk<
         }
 
         // Обновляем список файлов в директории после успешного удаления файла
-        dispatch(fetchFilesList(dirId))
+        dispatch(fetchFilesList({}))
 
         // Обновляем данные пользователя
         dispatch(initAuthData())

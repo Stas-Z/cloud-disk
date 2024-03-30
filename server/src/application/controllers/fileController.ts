@@ -56,11 +56,41 @@ export class FileController {
 
     static async getFiles(req: Request, res: Response) {
         try {
-            // Ищем фаилы по id пользователя(получаем из token'а) и id родительской папки(получаем параметром из строки запроса)
-            const files = await File.find({
-                user: req.user?.id,
-                parent: req.query.parent,
-            })
+            const { sort } = req.query
+            let files
+            switch (sort) {
+                case 'name':
+                    files = await File.find({
+                        user: req.user?.id,
+                        parent: req.query.parent,
+                    }).sort({ name: 1 })
+                    break
+                case 'type':
+                    files = await File.find({
+                        user: req.user?.id,
+                        parent: req.query.parent,
+                    }).sort({ type: 1 })
+                    break
+                case 'date':
+                    files = await File.find({
+                        user: req.user?.id,
+                        parent: req.query.parent,
+                    }).sort({ date: 1 })
+                    break
+                case 'size':
+                    files = await File.find({
+                        user: req.user?.id,
+                        parent: req.query.parent,
+                    }).sort({ size: 1 })
+                    break
+                default:
+                    // Ищем фаилы по id пользователя(получаем из token'а) и id родительской папки(получаем параметром из строки запроса)
+                    files = await File.find({
+                        user: req.user?.id,
+                        parent: req.query.parent,
+                    })
+                    break
+            }
             // Возвращаем файлы обратно на клиент
             return res.json(files)
         } catch (e) {
