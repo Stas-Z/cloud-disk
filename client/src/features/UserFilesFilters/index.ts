@@ -1,3 +1,5 @@
+export { FileSearch } from './ui/FileSearch/FileSearch'
+
 export {
     getFileFiltersSearch,
     getFileFiltersSort,

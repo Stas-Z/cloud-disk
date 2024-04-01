@@ -38,8 +38,9 @@
   "Delete": "Delete",
   "The directory is not empty": "The directory is not empty!",
   "File was deleted": " File \"{{file}}\" was deleted",
-  "You have successfully created a folder": "You have successfully created a folder \"{{folder}}\".",
+  "You have successfully created a folder": "You have successfully created a folder \"{{file}}\".",
   "The file was uploaded successfully": "The file \"{{file}}\" was uploaded successfully ",
+  "The file was downloaded successfully": "The file \"{{file}}\" was downloaded successfully ",
   "Deleting": "Deleting",
   "Loading": "Loading {{percentCompleted}}%",
   "Downloading": "Downloading",
@@ -55,5 +56,8 @@
   "Large grid": "Large grid",
   "Grid": "Grid",
   "List": "List",
-  "By": "By"
+  "By": "By",
+  "No files or folders were found in your Disk for the request": "No files or folders were found in your Disk for the request «{{search}}»",
+  "All files": "All files",
+  "Upload your files": "Upload your files in any convenient way, you can even drag and drop them into your browser window."
 }

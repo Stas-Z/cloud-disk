@@ -5,11 +5,9 @@ import { useSelector } from 'react-redux'
 
 import { getUserEmail } from '@/entities/User'
 import { AvatarDropdown } from '@/features/AvatarDropdown'
-import SearchIcon from '@/shared/assets/icons/search.svg'
+import { FileSearch } from '@/features/UserFilesFilters'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { AppLogo } from '@/shared/ui/AppLogo'
-import { Icon } from '@/shared/ui/Icon'
-import { Input } from '@/shared/ui/Input'
 import { HStack } from '@/shared/ui/Stack'
 
 import cls from './Navbar.module.scss'
@@ -32,21 +30,9 @@ export const Navbar = memo((props: NavbarProps) => {
                 align="center"
                 justify="between"
             >
-                <HStack gap="24" justify="start">
+                <HStack gap="24" justify="start" max>
                     <AppLogo width={79} height={40} />
-                    <Input
-                        placeholder={t('Search my Disk')}
-                        size="m"
-                        className={cls.search}
-                        addonRight={
-                            <Icon
-                                Svg={SearchIcon}
-                                width={16}
-                                height={16}
-                                className={cls.searchIcon}
-                            />
-                        }
-                    />
+                    <FileSearch />
                 </HStack>
                 <HStack justify="end">
                     <AvatarDropdown email={email} />

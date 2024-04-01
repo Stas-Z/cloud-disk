@@ -28,13 +28,14 @@ import { uploadFilesReducer } from '../../model/slices/uploadFilesSlice'
 
 interface UploadFilesProps {
     className?: string
+    emptyPage?: boolean
 }
 const initialReducers: ReducersList = {
     uploadFiles: uploadFilesReducer,
 }
 
 export const UploadFiles = memo((props: UploadFilesProps) => {
-    const { className } = props
+    const { className, emptyPage } = props
     const { t } = useTranslation()
     const dispatch = useAppDispatch()
     const currentDir = useSelector(getCurrentDir)
@@ -55,7 +56,6 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
         e: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const { files } = e.target
-        console.log(files)
 
         fileUploadHelper({
             files,
@@ -85,20 +85,17 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
                     key={resetFileInput ? 'reset' : 'default'}
                 />
                 <Button
-                    className={cls.addButton}
+                    className={classNames(
+                        cls.addButton,
+                        { [cls.empty]: emptyPage },
+                        [className],
+                    )}
                     variant="filled"
-                    color="yellow"
+                    color={emptyPage ? 'white' : 'yellow'}
                     fullWidth
-                    shadow
+                    shadow={!emptyPage}
                     onClick={openFilePicker}
-                    addonLeft={
-                        <Icon
-                            Svg={Upload}
-                            height={16}
-                            width={16}
-                            className={cls.icon}
-                        />
-                    }
+                    addonLeft={<Icon Svg={Upload} className={cls.icon} />}
                 >
                     {t('Upload file')}
                 </Button>

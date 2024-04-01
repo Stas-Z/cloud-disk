@@ -59,14 +59,7 @@ export const FileSortSelector = memo((props: FileSortSelectorProps) => {
                         className={cls.icon}
                     />
                 }
-                addonLeft={
-                    <Icon
-                        Svg={ListMenu}
-                        width={16}
-                        height={16}
-                        className={cls.icon}
-                    />
-                }
+                addonLeft={<Icon Svg={ListMenu} className={cls.icon} />}
             />
         </div>
     )

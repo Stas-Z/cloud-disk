@@ -26,7 +26,7 @@ type InputSize = 's' | 'm' | 'l'
 // В InputHTMLAttributes уже есть value и onChange, поэтому их надо исключить через Omit.
 // Omit позовляет из типа забрать все пропсы и исключить те, которые нам не нужны.
 
-type VariantType = 'filled' | 'outlined'
+type VariantType = 'filled' | 'outlined' | 'search'
 
 interface InputProps extends HTMLInputProps {
     /**

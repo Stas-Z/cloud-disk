@@ -63,11 +63,11 @@ export const FileListItem = memo((props: FileListItemProps) => {
                 </HStack>
                 <HStack justify="end" max gap="16">
                     <HStack max align="center" justify="end" gap="4">
-                        <Icon Svg={ViewIcon} height={16} width={16} />
+                        <Icon Svg={ViewIcon} />
                         <Text text="2" size="s" variant="grey" />
                     </HStack>
                     <HStack max align="center" justify="end" gap="4">
-                        <Icon Svg={DownloadIcon} height={16} width={16} />
+                        <Icon Svg={DownloadIcon} />
                         <Text text="0" size="s" variant="grey" />
                     </HStack>
                     <Text

@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'
 import { fetchFilesList } from '@/entities/File'
+import { noticeActions } from '@/entities/Notice'
 import { initAuthData } from '@/entities/User'
 
 interface deleteFileProps {
@@ -33,9 +34,12 @@ export const deleteFile = createAsyncThunk<
         // Обновляем данные пользователя
         dispatch(initAuthData())
 
-        return response.data.message
+        dispatch(noticeActions.setNoticeMessage('File was deleted'))
+
+        return response.data
     } catch (e: any) {
         if (e.response && e.response.data.message) {
+            dispatch(noticeActions.setErrorMessage(e.response.data.message))
             return rejectWithValue(e.response.data.message)
         }
         return rejectWithValue(e.message)

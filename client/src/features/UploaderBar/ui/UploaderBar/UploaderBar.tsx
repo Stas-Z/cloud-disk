@@ -77,8 +77,6 @@ export const UploaderBar = memo((props: UploaderProps) => {
                             Svg={Close}
                             clickable
                             onClick={onCloseHandler}
-                            width={16}
-                            height={16}
                             className={cls.icon}
                             color="white"
                         />

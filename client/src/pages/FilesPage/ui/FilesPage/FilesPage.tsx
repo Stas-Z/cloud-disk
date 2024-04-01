@@ -1,23 +1,16 @@
 import { memo, useCallback, useState } from 'react'
 
-import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import { getCurrentDir, getNoticeFileName } from '@/entities/File'
+import { getCurrentDir } from '@/entities/File'
 import { NoticePopup } from '@/entities/Notice'
-import {
-    FileToolBar,
-    getfileToolbarError,
-    getfileToolbarMessage,
-    fileToolBarReducer,
-} from '@/features/FileToolBar'
+import { FileToolBar, fileToolBarReducer } from '@/features/FileToolBar'
 import { UploaderBar } from '@/features/UploaderBar'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import {
     DynamicModuleLoader,
     ReducersList,
 } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
-import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { DragAndDrop, useDrag } from '@/widgets/DragAndDrop'
 import { Page } from '@/widgets/Page'
 
@@ -34,12 +27,6 @@ const initialReducers: ReducersList = {
 
 const FilesPage = (props: FilesPageProps) => {
     const { className } = props
-    const { t } = useTranslation()
-    const dispatch = useAppDispatch()
-
-    const error = useSelector(getfileToolbarError)
-    const message = useSelector(getfileToolbarMessage)
-    const noticeFileName = useSelector(getNoticeFileName)
 
     const [fileToolbar, setFileToolbar] = useState(false)
 
@@ -80,10 +67,7 @@ const FilesPage = (props: FilesPageProps) => {
                 onShowToolbar={onShowToolbar}
                 toolbarIsOpen={fileToolbar}
             />
-            <NoticePopup
-                message={t(message, { file: noticeFileName })}
-                error={t(error)}
-            />
+            <NoticePopup />
             <UploaderBar />
         </Page>
     )

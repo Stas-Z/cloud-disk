@@ -85,7 +85,7 @@ export const ListBox = typedMemo(<T extends string>(props: ListBoxProps<T>) => {
         if (selectedItem && selectedItem?.Icon) {
             return (
                 <div className={cls.icon}>
-                    <Icon width={16} height={16} Svg={selectedItem.Icon} />
+                    <Icon Svg={selectedItem.Icon} />
                 </div>
             )
         }
@@ -143,11 +143,7 @@ export const ListBox = typedMemo(<T extends string>(props: ListBoxProps<T>) => {
                                     >
                                         {item.Icon && (
                                             <div className={cls.optionsIcon}>
-                                                <Icon
-                                                    width={16}
-                                                    height={16}
-                                                    Svg={item.Icon}
-                                                />
+                                                <Icon Svg={item.Icon} />
                                             </div>
                                         )}
                                         {item.Icon && (

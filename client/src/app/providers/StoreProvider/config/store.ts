@@ -3,6 +3,7 @@ import { Reducer, ReducersMapObject, configureStore } from '@reduxjs/toolkit'
 import { breadcrumbsReducer } from '@/entities/Breadcrumbs'
 import { counterReducer } from '@/entities/Counter'
 import { fileReducer } from '@/entities/File'
+import { noticeReducer } from '@/entities/Notice'
 import { userReducer } from '@/entities/User'
 import { authMiddleware } from '@/features/AuthorizationForm'
 import { scrollSaveReducer } from '@/features/ScrollSave'
@@ -24,6 +25,7 @@ export function createReduxStore(
         counter: counterReducer,
         user: userReducer,
         file: fileReducer,
+        notice: noticeReducer,
         scroll: scrollSaveReducer,
         breadcrumbs: breadcrumbsReducer,
         uploaderBar: uploaderBarReducer,

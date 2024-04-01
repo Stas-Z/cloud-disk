@@ -75,8 +75,6 @@ export const UserFilesListHeader = memo((props: UserFilesListHeaderProps) => {
                         <HStack className={cls.back}>
                             <Icon
                                 Svg={ArrowBack}
-                                height={16}
-                                width={16}
                                 clickable
                                 onClick={backClickHandler}
                             />

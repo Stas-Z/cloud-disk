@@ -3,8 +3,8 @@ import { Suspense, memo, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import { fileActions, getNoticeFileName } from '@/entities/File'
-import { NoticePopup } from '@/entities/Notice'
+import { fileActions } from '@/entities/File'
+import { getNoticeFileName } from '@/entities/Notice'
 import Plus from '@/shared/assets/icons/plus.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import {
@@ -21,7 +21,6 @@ import cls from './CreateNewDirModal.module.scss'
 import {
     getDirIsLoading,
     getFileError,
-    getFileOnSucces,
 } from '../../model/selectors/CreateNewDirSelectors/CreateNewDirSelectors'
 import { createNewDirReducer } from '../../model/slices/createNewDirSlice'
 import { CreateNewDirFormAsync } from '../CreateNewDirForm/CreateNewDirForm.async'
@@ -59,7 +58,6 @@ export const CreateNewDirModal = memo((props: CreateNewDirProps) => {
 
     const isLoading = useSelector(getDirIsLoading)
     const error = useSelector(getFileError)
-    const onSucces = useSelector(getFileOnSucces)
 
     return (
         <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount>
@@ -102,13 +100,6 @@ export const CreateNewDirModal = memo((props: CreateNewDirProps) => {
                         />
                     </Suspense>
                 </Modal>
-                {onSucces && (
-                    <NoticePopup
-                        message={t('You have successfully created a folder', {
-                            folder: noticeFileName,
-                        })}
-                    />
-                )}
             </VStack>
         </DynamicModuleLoader>
     )

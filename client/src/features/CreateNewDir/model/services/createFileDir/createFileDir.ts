@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'
 import { MyFile, FileType, fetchFilesList } from '@/entities/File'
+import { noticeActions } from '@/entities/Notice'
 
 interface createFileDirProps {
     name: string
@@ -33,6 +34,12 @@ export const createFileDir = createAsyncThunk<
             if (updateList) {
                 dispatch(fetchFilesList({}))
             }
+
+            dispatch(
+                noticeActions.setNoticeMessage(
+                    'You have successfully created a folder',
+                ),
+            )
 
             return response.data
         } catch (e: any) {

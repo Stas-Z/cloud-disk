@@ -8,8 +8,8 @@ import {
     getSelectedFile,
     getCurrentDir,
     fileIconType,
-    fileActions,
 } from '@/entities/File'
+import { noticeActions } from '@/entities/Notice'
 import IconDownload from '@/shared/assets/icons/arrow-download.svg'
 import Close from '@/shared/assets/icons/close.svg'
 import RecycleIcon from '@/shared/assets/icons/recycle.svg'
@@ -25,6 +25,7 @@ import { Text } from '@/shared/ui/Text'
 import cls from './FileToolBar.module.scss'
 import { truncateFileName } from '../../../../entities/File/model/lib/truncateFileName/truncateFileName'
 import {
+    getfileToolbarError,
     getfileToolbarIsDeleting,
     getfileToolbarIsDownloading,
 } from '../../model/selectors/fileToolbarSelectors'
@@ -45,6 +46,9 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
 
     const isDeleting = useSelector(getfileToolbarIsDeleting)
     const isDownloading = useSelector(getfileToolbarIsDownloading)
+
+    // const message = useSelector(getfileToolbarMessage)
+    const error = useSelector(getfileToolbarError)
 
     const currentDir = useSelector(getCurrentDir)
     const selectedFile = useSelector(getSelectedFile)
@@ -98,7 +102,7 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
 
             if (selectedFile) {
                 dispatch(downloadFile(selectedFile))
-                dispatch(fileActions.setNoticeFileName(selectedFile.name))
+                dispatch(noticeActions.setNoticeFileName(selectedFile.name))
             }
         },
         [dispatch, selectedFile],
@@ -111,7 +115,7 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
                     deleteFile({ fileId: selectedFile._id, dirId: currentDir }),
                 )
 
-                dispatch(fileActions.setNoticeFileName(selectedFile.name))
+                dispatch(noticeActions.setNoticeFileName(selectedFile.name))
 
                 if (result.meta.requestStatus === 'fulfilled') {
                     close()
@@ -146,8 +150,6 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
                     >
                         <Icon
                             Svg={fileIconType(selectedFile?.type)}
-                            width={16}
-                            height={16}
                             className={cls.fileIcon}
                         />
                         <Text text={truncateName} variant="white" />
@@ -159,12 +161,7 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
                             variant="clear"
                             textColor="whiteText"
                             addonLeft={
-                                <Icon
-                                    Svg={IconDownload}
-                                    width={16}
-                                    height={16}
-                                    className={cls.icon}
-                                />
+                                <Icon Svg={IconDownload} className={cls.icon} />
                             }
                         >
                             {t('Download')}
@@ -175,12 +172,7 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
                             textColor="whiteText"
                             onClick={deleteClickHandler}
                             addonLeft={
-                                <Icon
-                                    Svg={RecycleIcon}
-                                    width={16}
-                                    height={16}
-                                    className={cls.icon}
-                                />
+                                <Icon Svg={RecycleIcon} className={cls.icon} />
                             }
                         >
                             {t('Delete')}

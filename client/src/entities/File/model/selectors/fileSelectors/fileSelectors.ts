@@ -9,8 +9,6 @@ export const getCurrentDir = (state: StateSchema) =>
     state.file?.currentDir ?? ''
 
 export const getFileName = (state: StateSchema) => state.file?.dirName || ''
-export const getNoticeFileName = (state: StateSchema) =>
-    state?.file.dirNameNotice || ''
 
 export const getSelectedFile = (state: StateSchema) => state.file.selectedFile
 export const getSelectedFileId = createSelector(

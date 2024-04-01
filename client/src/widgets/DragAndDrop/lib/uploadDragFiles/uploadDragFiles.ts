@@ -2,7 +2,7 @@ import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
 import { Canceler } from 'axios'
 
 import { StateSchema, ThunkExtraArg } from '@/app/providers/StoreProvider'
-import { fileActions } from '@/entities/File'
+import { noticeActions } from '@/entities/Notice'
 import { createFileDir } from '@/features/CreateNewDir'
 import { uploadFilesArrays, fileUploadHelper } from '@/features/UploadFiles'
 
@@ -44,7 +44,7 @@ export async function uploadDragFiles(
                         addCancelToken,
                     }),
                 )
-                dispatch(fileActions.setNoticeFileName(folderName))
+                dispatch(noticeActions.setNoticeFileName(folderName))
             }
         } catch (error) {
             console.error('Error uploading files:', error)

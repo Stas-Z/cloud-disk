@@ -17,7 +17,6 @@ export const fileSlice = createSlice({
     initialState: filesAdapter.getInitialState<FileSchema>({
         currentDir: null,
         dirName: '',
-        dirNameNotice: '',
 
         selectedFile: { _id: '', name: '' },
         isLoading: false,
@@ -30,9 +29,7 @@ export const fileSlice = createSlice({
         setDirName: (state, action: PayloadAction<string>) => {
             state.dirName = action.payload
         },
-        setNoticeFileName: (state, action: PayloadAction<string>) => {
-            state.dirNameNotice = action.payload
-        },
+
         setCurrentDir: (state, action: PayloadAction<string | null>) => {
             state.currentDir = action.payload
         },
@@ -50,13 +47,10 @@ export const fileSlice = createSlice({
                     filesAdapter.removeAll(state)
                 }
             })
-            .addCase(
-                fetchFilesList.fulfilled,
-                (state, action: PayloadAction<MyFile[]>) => {
-                    state.isLoading = false
-                    filesAdapter.setAll(state, action.payload)
-                },
-            )
+            .addCase(fetchFilesList.fulfilled, (state, action) => {
+                state.isLoading = false
+                filesAdapter.setAll(state, action.payload)
+            })
             .addCase(fetchFilesList.rejected, (state, action) => {
                 state.isLoading = false
                 state.error = action.payload

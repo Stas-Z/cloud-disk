@@ -38,8 +38,9 @@
   "Delete": "Удалить",
   "The directory is not empty": "Ошибка, в этой папке содержаться файлы!",
   "File was deleted": "Файл \"{{file}}\" был удален",
-  "You have successfully created a folder": "Вы успешно создали папку \"{{folder}}\".",
+  "You have successfully created a folder": "Вы успешно создали папку \"{{file}}\".",
   "The file was uploaded successfully": "Файл \"{{file}}\" успешно загружен",
+  "The file was downloaded successfully": "Файл \"{{file}}\" успешно скачен",
   "Deleting": "Удаляется",
   "Loading": "Загрузка {{percentCompleted}}%",
   "Downloading": "Скачивание",
@@ -54,5 +55,8 @@
   "Large grid": "Крупная плитка",
   "Grid": "Плитка",
   "List": "Список",
-  "By": "По"
+  "By": "По",
+  "No files or folders were found in your Disk for the request": "В вашем Диске не найдено файлов или папок по запросу «{{search}}»",
+  "All files": "Все файлы",
+  "Upload your files": "Загружайте свои файлы любым удобным способом, можно даже перетащить в окно браузера."
 }

@@ -4,7 +4,7 @@ import { MyFile } from './files'
 
 export interface FileSchema extends EntityState<MyFile, string> {
     dirName: string
-    dirNameNotice?: string
+
     currentDir: string | null
 
     selectedFile?: MyFile

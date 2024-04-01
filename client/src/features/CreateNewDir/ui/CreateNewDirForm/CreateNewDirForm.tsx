@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import { getCurrentDir, fileActions, getFileName } from '@/entities/File'
+import { noticeActions } from '@/entities/Notice'
 import Close from '@/shared/assets/icons/close.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
@@ -26,7 +27,6 @@ export interface CreateNewDirFormProps {
     showError?: boolean
     showErrorHandler?: () => void
 }
-
 
 const CreateNewDirForm = (props: CreateNewDirFormProps) => {
     const {
@@ -64,7 +64,7 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
             }),
         )
 
-        dispatch(fileActions.setNoticeFileName(fileName))
+        dispatch(noticeActions.setNoticeFileName(fileName))
 
         if (result.meta.requestStatus === 'fulfilled') {
             onSuccess?.()
@@ -89,55 +89,49 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
     }, [onKeyDown, isOpen])
 
     return (
-            <VStack
-                className={classNames(cls.newDirForm, {}, [className])}
-                justify="between"
-            >
-                <Text
-                    title={t('Enter the folder name')}
-                    size="s"
-                    bold
-                    className={cls.title}
-                />
-                <HStack className={cls.close}>
-                    <Icon
-                        Svg={Close}
-                        clickable
-                        onClick={onSuccess}
-                        height={16}
-                        width={16}
+        <VStack
+            className={classNames(cls.newDirForm, {}, [className])}
+            justify="between"
+        >
+            <Text
+                title={t('Enter the folder name')}
+                size="s"
+                bold
+                className={cls.title}
+            />
+            <HStack className={cls.close}>
+                <Icon Svg={Close} clickable onClick={onSuccess} />
+            </HStack>
+            <VStack gap="8" max>
+                <HStack max className={cls.input}>
+                    <Input
+                        value={t(fileName)}
+                        onChange={onChangeFoldername}
+                        placeholder={t('New Folder')}
+                        variant="outlined"
+                        focus
                     />
                 </HStack>
-                <VStack gap="8" max>
-                    <HStack max className={cls.input}>
-                        <Input
-                            value={t(fileName)}
-                            onChange={onChangeFoldername}
-                            placeholder={t('New Folder')}
-                            variant="outlined"
-                            focus
-                        />
-                    </HStack>
-                    <HStack max className={cls.error}>
-                        {error && showError && (
-                            <Text text={t(error)} variant="error" size="s" />
-                        )}
-                    </HStack>
-                </VStack>
-
-                <HStack max justify="end">
-                    <Button
-                        onClick={onSaveClick}
-                        className={cls.loginBtn}
-                        disabled={isLoading}
-                        variant="filled"
-                        color="yellow"
-                        isLoading={isLoading}
-                    >
-                        {t('Save')}
-                    </Button>
+                <HStack max className={cls.error}>
+                    {error && showError && (
+                        <Text text={t(error)} variant="error" size="s" />
+                    )}
                 </HStack>
             </VStack>
+
+            <HStack max justify="end">
+                <Button
+                    onClick={onSaveClick}
+                    className={cls.loginBtn}
+                    disabled={isLoading}
+                    variant="filled"
+                    color="yellow"
+                    isLoading={isLoading}
+                >
+                    {t('Save')}
+                </Button>
+            </HStack>
+        </VStack>
     )
 }
 export default memo(CreateNewDirForm)

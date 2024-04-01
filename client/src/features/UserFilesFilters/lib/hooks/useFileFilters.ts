@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 
 import { FileSortFiled, FileView, fetchFilesList } from '@/entities/File'
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
+import { useDebounce } from '@/shared/lib/hooks/useDebounce/useDebounce'
 
 import {
     getFileFiltersSearch,
@@ -19,11 +20,14 @@ export function useFileFilters() {
 
     const dispatch = useAppDispatch()
 
-    const fetchData = useCallback(() => {
-        dispatch(fetchFilesList({ replace: true, search, sort })) // Запрос на сервер при сортировке или поиске
-    }, [dispatch, search, sort])
+    const fetchData = useCallback(
+        async (sortValue?: FileSortFiled) => {
+            dispatch(fetchFilesList({ replace: true, search, sort: sortValue })) // Запрос на сервер при сортировке или поиске
+        },
+        [dispatch, search],
+    )
 
-    // const debouncedFetchData = useDebounce(fetchData, 500)
+    const debouncedFetchData = useDebounce(fetchData, 500)
 
     const onChangeView = useCallback(
         (view: FileView) => {
@@ -32,20 +36,24 @@ export function useFileFilters() {
         [dispatch],
     )
     const onChangeSort = useCallback(
-        (newSort: FileSortFiled) => {
+        async (newSort: FileSortFiled) => {
             dispatch(userFilesFiltersActions.setSort(newSort))
-            fetchData()
+            await fetchData(newSort)
         },
         [dispatch, fetchData],
     )
-    // const onChangeSearch = useCallback(
-    //   (search: string) => {
-    //     dispatch(articlesPageActions.setSearch(search))
-    //     dispatch(articlesPageActions.setPage(1))
-    //     debouncedFetchData()
-    //   },
-    //   [dispatch, debouncedFetchData],
-    // )
+    const onChangeSearch = useCallback(
+        (search: string) => {
+            dispatch(userFilesFiltersActions.setSearch(search))
+            debouncedFetchData()
+        },
+        [dispatch, debouncedFetchData],
+    )
+
+    const onBlurSearch = useCallback(async () => {
+        dispatch(userFilesFiltersActions.setSearch(''))
+        dispatch(fetchFilesList({ replace: true }))
+    }, [dispatch])
 
     return {
         sort,
@@ -53,5 +61,7 @@ export function useFileFilters() {
         view,
         onChangeView,
         onChangeSort,
+        onChangeSearch,
+        onBlurSearch,
     }
 }

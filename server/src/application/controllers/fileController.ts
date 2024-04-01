@@ -57,40 +57,44 @@ export class FileController {
     static async getFiles(req: Request, res: Response) {
         try {
             const { sort } = req.query
+
             let files
-            switch (sort) {
-                case 'name':
-                    files = await File.find({
-                        user: req.user?.id,
-                        parent: req.query.parent,
-                    }).sort({ name: 1 })
-                    break
-                case 'type':
-                    files = await File.find({
-                        user: req.user?.id,
-                        parent: req.query.parent,
-                    }).sort({ type: 1 })
-                    break
-                case 'date':
-                    files = await File.find({
-                        user: req.user?.id,
-                        parent: req.query.parent,
-                    }).sort({ date: 1 })
-                    break
-                case 'size':
-                    files = await File.find({
-                        user: req.user?.id,
-                        parent: req.query.parent,
-                    }).sort({ size: 1 })
-                    break
-                default:
-                    // Ищем фаилы по id пользователя(получаем из token'а) и id родительской папки(получаем параметром из строки запроса)
-                    files = await File.find({
-                        user: req.user?.id,
-                        parent: req.query.parent,
-                    })
-                    break
+            // Применяем сортировку, если указан параметр сортировки
+            if (sort && typeof sort === 'string') {
+                files = await File.find({
+                    user: req.user?.id,
+                    parent: req.query.parent,
+                }).sort({ [sort]: 1 })
+            } else {
+                files = await File.find({
+                    user: req.user?.id,
+                    parent: req.query.parent,
+                })
             }
+
+            const searchName = req.query.search as string
+
+            // Если есть параметр поиска, фильтруем все файлы пользователя
+            if (searchName && searchName.length > 1) {
+                let searchFiles
+                // Применяем сортировку, если указан параметр сортировки
+                if (sort && typeof sort === 'string') {
+                    searchFiles = await File.find({
+                        user: req.user?.id,
+                    }).sort({ [sort]: 1 })
+                } else {
+                    searchFiles = await File.find({
+                        user: req.user?.id,
+                    })
+                }
+                const sendFiles = searchFiles.filter(
+                    (file) =>
+                        file.name.includes(searchName) && file.type !== 'dir',
+                )
+                // Возвращаем файлы обратно на клиент
+                return res.json(sendFiles)
+            }
+
             // Возвращаем файлы обратно на клиент
             return res.json(files)
         } catch (e) {
@@ -526,6 +530,18 @@ export class FileController {
             }
         } catch (error) {
             console.error(`Error deleting child files: ${error}`)
+        }
+    }
+
+    static async searchFile(req: Request, res: Response) {
+        try {
+            const searchName = req.query.search as string
+            let files = await File.find({ user: req.user.id })
+            files = files.filter((file) => file.name.includes(searchName))
+            return res.json({ files })
+        } catch (e) {
+            console.log(e)
+            return res.status(400).json({ message: 'Search error' })
         }
     }
 }

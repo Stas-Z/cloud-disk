@@ -2,13 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'
 import { MyFile } from '@/entities/File'
+import { noticeActions } from '@/entities/Notice'
 
 export const downloadFile = createAsyncThunk<
     string,
     MyFile,
     ThunkConfig<string>
 >('fileToolBar/downloadFile', async (file, thunkAPI) => {
-    const { extra, rejectWithValue } = thunkAPI
+    const { extra, rejectWithValue, dispatch } = thunkAPI
 
     try {
         const response = await extra.api.get<Blob>(
@@ -31,9 +32,16 @@ export const downloadFile = createAsyncThunk<
             throw new Error()
         }
 
-        return 'The file was uploaded successfully'
+        dispatch(
+            noticeActions.setNoticeMessage(
+                'The file was downloaded successfully',
+            ),
+        )
+        return 'The file was downloaded successfully'
     } catch (e: any) {
         if (e.response && e.response.data.message) {
+            dispatch(noticeActions.setErrorMessage(e.response.data.message))
+
             return rejectWithValue(e.response.data.message)
         }
         return rejectWithValue(e.message)

@@ -80,9 +80,7 @@ export const Dropdown = memo((props: DropdownProps) => {
                             })}
                             disabled={item.disabled}
                         >
-                            {item.Icon && (
-                                <Icon width={16} height={16} Svg={item.Icon} />
-                            )}
+                            {item.Icon && <Icon Svg={item.Icon} />}
                             <span className={cls.link}>{item.content}</span>
                         </button>
                     )

@@ -4,6 +4,7 @@ import { AxiosInstance } from 'axios'
 import { BreadcrumbsSchema } from '@/entities/Breadcrumbs'
 import { CounterSchema } from '@/entities/Counter'
 import { FileSchema } from '@/entities/File'
+import { NoticeSchema } from '@/entities/Notice'
 import { UserSchema } from '@/entities/User'
 import { AuthSchema } from '@/features/AuthorizationForm'
 import { CreateNewDirSchema } from '@/features/CreateNewDir'
@@ -28,6 +29,7 @@ export interface StateSchema {
     authForm: AuthSchema
     user: UserSchema
     file: FileSchema
+    notice: NoticeSchema
     filePage: FilesPageSchema
     scroll: ScrollSaveSchema
     fileFilters: UserFilesFiltersSchema

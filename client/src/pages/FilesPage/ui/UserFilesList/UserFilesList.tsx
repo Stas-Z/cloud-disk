@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect } from 'react'
 
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import {
@@ -11,9 +12,7 @@ import {
 import { scrollSaveActions } from '@/features/ScrollSave'
 import {
     getFileFiltersSearch,
-    getFileFiltersSort,
     getFileFiltersView,
-    userFilesFiltersActions,
 } from '@/features/UserFilesFilters'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
@@ -21,7 +20,9 @@ import { Loader } from '@/shared/ui/Loader'
 
 import cls from './UserFilesList.module.scss'
 import { fetchFilesList } from '../../../../entities/File/model/services/fetchFilesList/fetchFilesList'
+import { initFilesPage } from '../../model/services/initFilesPage'
 import { filesPageActions } from '../../model/slices/filesPageSlice'
+import { EmptyPage } from '../EmptyPage/EmptyPage'
 import { UserFilesListHeader } from '../UserFilesListHeader/UserFilesListHeader'
 
 interface UserFilesProps {
@@ -35,16 +36,15 @@ export const UserFilesList = memo((props: UserFilesProps) => {
     const dispatch = useAppDispatch()
     const isLoading = useSelector(getFileIsLoading)
 
-    const sort = useSelector(getFileFiltersSort)
-    const search = useSelector(getFileFiltersSearch)
-
     const currentDir = useSelector(getCurrentDir)
     const view = useSelector(getFileFiltersView)
 
+    const { t } = useTranslation()
+
     useEffect(() => {
-        dispatch(userFilesFiltersActions.initState())
-        dispatch(fetchFilesList({ sort, search }))
-    }, [currentDir, dispatch, search, sort])
+        dispatch(initFilesPage())
+        dispatch(fetchFilesList({}))
+    }, [dispatch, currentDir])
 
     const pushToDirStackHandler = useCallback(
         (currentDir: string) => {
@@ -65,6 +65,7 @@ export const UserFilesList = memo((props: UserFilesProps) => {
     )
 
     const files = useSelector(getAllFiles)
+    const search = useSelector(getFileFiltersSearch)
 
     if (isLoading) {
         return (
@@ -73,6 +74,10 @@ export const UserFilesList = memo((props: UserFilesProps) => {
                 <Loader />
             </div>
         )
+    }
+
+    if (files.length === 0) {
+        return <EmptyPage search={search} />
     }
 
     return (

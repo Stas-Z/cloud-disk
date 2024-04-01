@@ -18,7 +18,6 @@ export {
     getSelectedFile,
     getSelectedFileId,
     getSelectedFileName,
-    getNoticeFileName,
     getFileIsLoading,
 } from './model/selectors/fileSelectors/fileSelectors'
 
