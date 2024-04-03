@@ -1,0 +1,29 @@
+.sidebarItem {
+    height: 32px;
+    position: relative;
+    padding-left: 30px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    font-size: 14px;
+
+    &:hover {
+        background: var(--selected);
+        color: inherit;
+    }
+}
+
+.active {
+    background: var(--selected);
+}
+
+.icon {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    height: 32px;
+    width: 32px;
+}

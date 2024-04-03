@@ -9,14 +9,17 @@
         &.yellow {
             background-color: var(--button-yellow-accent);
         }
+
         &.white {
             background-color: #f5f5f5;
         }
     }
 }
+
 .normalText {
     color: var(--text);
 }
+
 .whiteText {
     color: white;
 }
@@ -57,17 +60,24 @@
         background: var(--save);
     }
 
+    &.accent {
+        background: var(--accent);
+    }
+
     &.cancel {
         background: var(--cancel);
     }
+
     &.yellow {
         background-color: var(--button-yellow);
         transition: background-color 0.15s linear;
     }
+
     &.white {
         background-color: white;
         transition: background-color 0.15s linear;
     }
+
     &.transaprent {
         background-color: transparent;
     }
@@ -92,12 +102,18 @@
     &.cancel {
         border: 1px solid var(--cancel);
     }
+
+    &.accent {
+        border: 1px solid var(--accent);
+    }
 }
+
 .yellow {
     &.shadow {
         box-shadow: var(--shadow-color-yellow);
     }
 }
+
 .white {
     &.shadow {
         box-shadow: var(--shadow-color-black);
@@ -121,6 +137,11 @@
 .square.xl {
     width: var(--font-line-xl);
     height: var(--font-line-xl);
+}
+
+.s {
+    font: var(--font-s);
+    padding: 5px 10px;
 }
 
 .m {
@@ -151,6 +172,7 @@
 .fullWidth {
     width: 100%;
 }
+
 .round {
     border-radius: 34px;
 }
@@ -175,7 +197,7 @@
         background-position: -12px 0;
     }
 
-    to {
+    100% {
         background-position: 0 0;
     }
 }

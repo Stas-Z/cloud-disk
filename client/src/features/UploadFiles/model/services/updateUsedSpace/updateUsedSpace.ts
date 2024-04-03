@@ -15,7 +15,7 @@ export const updateUsedSpace = createAsyncThunk<
     const { extra, rejectWithValue, dispatch } = thunkAPI
 
     try {
-        const response = await extra.api.patch<void>('files/user', {
+        const response = await extra.api.patch<void>('user/userSpace', {
             usedSpace: fileSize,
         })
 

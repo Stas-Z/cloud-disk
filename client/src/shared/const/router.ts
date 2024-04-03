@@ -1,7 +1,7 @@
 export enum AppRoutes {
     LOGIN = 'login',
     FILES = 'files',
-    FILE_DETAILS = 'file_details',
+    PROFILE = 'profile',
     FORBIDDEN = 'forbidden',
 
     NOT_FOUND = 'not_found',
@@ -9,5 +9,5 @@ export enum AppRoutes {
 
 export const getRouteLogin = () => '/'
 export const getRouteFiles = () => '/files'
-export const getRouteFilesDetails = (id: string) => `/files/${id}`
+export const getRouteProfile = () => '/profile'
 export const getRouteForbidden = () => '/forbidden'

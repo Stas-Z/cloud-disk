@@ -14,7 +14,6 @@ import {
 import { DragAndDrop, useDrag } from '@/widgets/DragAndDrop'
 import { Page } from '@/widgets/Page'
 
-import cls from './FilesPage.module.scss'
 import { UserFilesList } from '../UserFilesList/UserFilesList'
 
 interface FilesPageProps {
@@ -49,16 +48,13 @@ const FilesPage = (props: FilesPageProps) => {
     }
 
     const content = dragEnter ? (
-        <Page
-            className={classNames(cls.filesPage, {}, [className])}
-            restoreScroll
-        >
+        <Page className={classNames('', {}, [className])} restoreScroll>
             <DragAndDrop {...dragProps} onDrop={dropHandler} />
             <UserFilesList />
         </Page>
     ) : (
         <Page
-            className={classNames(cls.filesPage, {}, [className])}
+            className={classNames('', {}, [className])}
             restoreScroll
             {...dragProps}
         >

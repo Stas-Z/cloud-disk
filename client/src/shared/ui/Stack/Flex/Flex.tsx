@@ -10,6 +10,13 @@ export type FlexAlign = 'start' | 'center' | 'end' | 'unset'
 export type FlexDirection = 'row' | 'column'
 export type FlexWrap = 'nowrap' | 'wrap'
 export type FlexGap = '4' | '8' | '16' | '24' | '32'
+export type FlexPosition =
+    | 'absolute'
+    | 'fixed'
+    | 'relative'
+    | 'static'
+    | 'sticky'
+    | 'inherit'
 
 const justifyClasses: Record<FlexJustify, string> = {
     start: cls.justifyStart,
@@ -38,6 +45,14 @@ const gapClasses: Record<FlexGap, string> = {
     24: cls.gap24,
     32: cls.gap32,
 }
+const positionClasses: Record<FlexPosition, string> = {
+    absolute: cls.absolute,
+    fixed: cls.fixed,
+    relative: cls.relative,
+    static: cls.static,
+    sticky: cls.sticky,
+    inherit: cls.inherit,
+}
 
 export interface FlexProps {
     /**
@@ -60,6 +75,10 @@ export interface FlexProps {
      * @description Gap between flex items
      */
     gap?: FlexGap
+    /**
+     * @description Gap between flex items
+     */
+    position?: FlexPosition
     /**
      * @description Flag to set width: 100%
      */
@@ -97,6 +116,7 @@ export const Flex = <E extends ElementType = typeof defaultFlexTag>(
         align = 'center',
         direction = 'row',
         gap,
+        position,
         max,
         maxHeight,
         wrap = 'nowrap',
@@ -113,6 +133,7 @@ export const Flex = <E extends ElementType = typeof defaultFlexTag>(
         directionClasses[direction],
         cls[wrap],
         gap && gapClasses[gap],
+        position && positionClasses[position],
     ]
 
     const mods: Mods = {

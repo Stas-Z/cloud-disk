@@ -1,9 +1,7 @@
 import { memo } from 'react'
 
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
-import { getUserEmail } from '@/entities/User'
 import { AvatarDropdown } from '@/features/AvatarDropdown'
 import { FileSearch } from '@/features/UserFilesFilters'
 import { classNames } from '@/shared/lib/classNames/classNames'
@@ -20,8 +18,6 @@ export const Navbar = memo((props: NavbarProps) => {
     const { className } = props
     const { t } = useTranslation('translation')
 
-    const email = useSelector(getUserEmail)
-
     return (
         <header className={classNames(cls.navbar, {}, [className])}>
             <HStack
@@ -35,7 +31,7 @@ export const Navbar = memo((props: NavbarProps) => {
                     <FileSearch />
                 </HStack>
                 <HStack justify="end">
-                    <AvatarDropdown email={email} />
+                    <AvatarDropdown />
                 </HStack>
             </HStack>
         </header>

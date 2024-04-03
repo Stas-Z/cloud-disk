@@ -11,7 +11,7 @@ export const initAuthData = createAsyncThunk<User, void, ThunkConfig<string>>(
     async (_, thunkAPI) => {
         const { extra, rejectWithValue, dispatch } = thunkAPI
         try {
-            const response = await extra.api.get<User>('auth/auth', {
+            const response = await extra.api.get<User>('user/auth', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem(USER_TOKEN_KEY)}`,
                 },

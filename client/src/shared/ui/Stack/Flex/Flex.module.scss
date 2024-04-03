@@ -17,6 +17,7 @@
 .justifyBetween {
     justify-content: space-between;
 }
+
 .justifyAround {
     justify-content: space-around;
 }
@@ -80,6 +81,31 @@
 .nowrap {
     flex-wrap: nowrap;
 }
+
 .inline {
     display: inline-flex;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.fixed {
+    position: fixed;
+}
+
+.relative {
+    position: relative;
+}
+
+.static {
+    position: static;
+}
+
+.sticky {
+    position: sticky;
+}
+
+.inherit {
+    position: inherit;
 }

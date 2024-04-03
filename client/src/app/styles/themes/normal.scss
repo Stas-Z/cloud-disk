@@ -1,6 +1,6 @@
 :root {
     --bg-color: #ebf0ff;
-    --light-bg: #ffffff;
+    --light-bg: #fff;
     --input-bg: #f0f4ff;
     --dark-bg: #fff;
     --accent: #00b4ff;
@@ -14,11 +14,10 @@
     --selected: #e0e0e0;
     --message-box: #222426;
     --antracit: #383838;
-    --shadow-color-yellow: 0 8px 14px rgba(255, 204, 0, 0.25);
-    --shadow-color-black: 0 8px 14px rgba(34, 34, 34, 0.05);
-    --shadow-color-big: 0px 0px 2px hsla(0, 0%, 60%, 0.1),
-        0px 8px 28px hsla(0, 0%, 60%, 0.3);
-
+    --shadow-color-yellow: 0 8px 14px rgb(255 204 0 / 25%);
+    --shadow-color-black: 0 8px 14px rgb(34 34 34 / 5%);
+    --shadow-color-big: 0px 0px 2px hsl(0deg 0% 60% / 10%),
+        0px 8px 28px hsl(0deg 0% 60% / 30%);
     --button-yellow: #ffdc60;
     --button-yellow-accent: #ffd21f;
 }

@@ -7,4 +7,5 @@ export const appConfig: AppConfig = {
     dbUrl: config.get<string>('dbUrl'),
     secretKey: config.get<string>('secretKey'),
     filePath: config.get<string>('filePath'),
+    staticPath: config.get<string>('staticPath'),
 }

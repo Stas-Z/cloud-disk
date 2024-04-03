@@ -19,7 +19,9 @@ export const authMiddleware =
     (next: (action: unknown) => unknown) =>
     (action: unknown): void => {
         if (isLoggedIn(action)) {
-            localStorage.setItem(USER_TOKEN_KEY, action.payload.token)
+            if (action.payload.token) {
+                localStorage.setItem(USER_TOKEN_KEY, action.payload.token)
+            }
         }
 
         if (isLoggedOut(action)) {

@@ -19,8 +19,9 @@ export type ButtonColor =
     | 'yellow'
     | 'white'
     | 'transaprent'
+    | 'accent'
 
-export type ButtonSize = 'm' | 'l' | 'xl'
+export type ButtonSize = 's' | 'm' | 'l' | 'xl'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     /**

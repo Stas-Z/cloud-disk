@@ -14,6 +14,7 @@
     box-shadow: var(--shadow-color-big);
     padding: 10px 16px;
 }
+
 .spinner {
     width: 16px;
     height: 16px;
@@ -25,26 +26,22 @@
     animation: islands-spin2 1s linear 0.21s infinite;
 }
 
-@-webkit-keyframes islands-spin2 {
+@keyframes islands-spin2 {
     0% {
-        -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
     }
 
-    to {
-        -webkit-transform: rotate(1turn);
+    100% {
         transform: rotate(1turn);
     }
 }
 
 @keyframes islands-spin2 {
     0% {
-        -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
     }
 
-    to {
-        -webkit-transform: rotate(1turn);
+    100% {
         transform: rotate(1turn);
     }
 }

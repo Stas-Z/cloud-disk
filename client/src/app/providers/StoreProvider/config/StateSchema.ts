@@ -8,6 +8,7 @@ import { NoticeSchema } from '@/entities/Notice'
 import { UserSchema } from '@/entities/User'
 import { AuthSchema } from '@/features/AuthorizationForm'
 import { CreateNewDirSchema } from '@/features/CreateNewDir'
+import { ProfileCardSchema } from '@/features/EditableProfileCard'
 import { FileToolBarSchema } from '@/features/FileToolBar'
 import { ScrollSaveSchema } from '@/features/ScrollSave'
 import { UploaderBarSchema } from '@/features/UploaderBar'
@@ -22,6 +23,7 @@ export interface AsyncReducers {
     createNewDir: CreateNewDirSchema
     uploadFiles: UploadFilesSchema
     toolbar: FileToolBarSchema
+    profile: ProfileCardSchema
 }
 
 export interface StateSchema {
@@ -38,6 +40,7 @@ export interface StateSchema {
     uploadFiles: UploadFilesSchema
     toolbar: FileToolBarSchema
     uploaderBar: UploaderBarSchema
+    profile: ProfileCardSchema
 }
 
 export type StateSchemaKey = keyof StateSchema

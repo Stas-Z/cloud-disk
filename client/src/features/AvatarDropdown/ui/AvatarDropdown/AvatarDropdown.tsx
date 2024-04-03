@@ -1,10 +1,12 @@
 import { memo, useCallback } from 'react'
 
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { userActions } from '@/entities/User'
+import { getUserData, userActions } from '@/entities/User'
 import LogoutIcon from '@/shared/assets/icons/logout.svg'
+import UsersIcon from '@/shared/assets/icons/menu-users.svg'
+import { getRouteProfile } from '@/shared/const/router'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { Avatar } from '@/shared/ui/Avatar'
 import { Dropdown } from '@/shared/ui/Popups'
@@ -15,31 +17,45 @@ import cls from './AvatarDropdown.module.scss'
 
 interface AvatarDropdownProps {
     className?: string
-    email?: string
 }
 
 export const AvatarDropdown = memo((props: AvatarDropdownProps) => {
-    const { className, email } = props
+    const { className } = props
     const { t } = useTranslation()
     const dispatch = useDispatch()
+    const userData = useSelector(getUserData)
 
     const onLogout = useCallback(() => {
         dispatch(userActions.logout())
     }, [dispatch])
 
+    if (!userData || !userData.id) {
+        return null
+    }
     const items = [
         {
             id: '1',
+            Icon: UsersIcon,
+            content: t('Profile'),
+            href: getRouteProfile(),
+        },
+        {
+            id: '2',
             Icon: LogoutIcon,
             content: t('Sign out'),
             onClick: onLogout,
         },
     ]
-
+    const avatar = userData?.avatar
+        ? `${__STATIC__}/${userData.id}/${userData.avatar}`
+        : ''
     const userAvatar = (
         <VStack align="center" className={cls.avatar} gap="8">
-            <Avatar size={64} />
-            <Text text={email} size="s" />
+            <Avatar size={64} src={avatar} />
+            <VStack align="center">
+                <Text text={userData.username} size="m" bold />
+                <Text text={userData.email} size="s" />
+            </VStack>
         </VStack>
     )
 
@@ -47,9 +63,9 @@ export const AvatarDropdown = memo((props: AvatarDropdownProps) => {
         <Dropdown
             className={classNames('', {}, [className])}
             items={items}
-            trigger={<Avatar size={34} />}
+            trigger={<Avatar size={34} src={avatar} />}
             direction="bottom_left"
-            userAvatar={userAvatar}
+            addonTop={userAvatar}
         />
     )
 })

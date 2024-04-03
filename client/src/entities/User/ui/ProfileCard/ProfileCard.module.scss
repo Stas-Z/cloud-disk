@@ -1,0 +1,32 @@
+.profileCard {
+    padding-top: 20px;
+}
+
+.title {
+    margin-bottom: 28px;
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.avatar {
+    margin-right: 12px;
+}
+
+.uploadButton {
+    margin-bottom: 12px;
+}
+
+.avatarContent,
+.usernameContent,
+.emailContent {
+    width: 100%;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    left: -10px;
+}

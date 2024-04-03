@@ -6,7 +6,8 @@
         &:hover {
             color: var(--text);
         }
-        &:after {
+
+        &::after {
             content: '';
             display: block;
             position: absolute;

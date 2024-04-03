@@ -59,5 +59,18 @@
   "By": "By",
   "No files or folders were found in your Disk for the request": "No files or folders were found in your Disk for the request «{{search}}»",
   "All files": "All files",
-  "Upload your files": "Upload your files in any convenient way, you can even drag and drop them into your browser window."
+  "Upload your files": "Upload your files in any convenient way, you can even drag and drop them into your browser window.",
+  "Profile": "Profile",
+  "Profile not found": "Profile not found",
+  "Account details": "Account details",
+  "Avatar ": {
+    " picture": "Avatar / picture"
+  },
+  "Avatar": "Avatar / picture",
+  "Choose file": "Choose file",
+  "Ideal dimensions": "Ideal dimensions: 100x100 pixels.",
+  "Full name": "Full name",
+  "Email address": "Email address",
+  "Save changes": "Save changes",
+  "Cancel changes": "Cancel changes"
 }

@@ -9,7 +9,7 @@ import {
     type BuildPaths,
 } from './config/build/types/config'
 
-function getApiUrl(mode: BuildMode, apiUrl?: string) {
+function getApiUrl(mode: BuildMode, apiUrl?: string, staticUrl?: boolean) {
     if (apiUrl) {
         return apiUrl
     }
@@ -17,6 +17,15 @@ function getApiUrl(mode: BuildMode, apiUrl?: string) {
         return '/api'
     }
     return 'http://localhost:5000/api'
+}
+function getStaticUrl(mode: BuildMode, staticUrl?: string) {
+    if (staticUrl) {
+        return staticUrl
+    }
+    if (mode === 'production') {
+        return ''
+    }
+    return 'http://localhost:5000'
 }
 
 export default (env: BuildEnv) => {
@@ -26,6 +35,7 @@ export default (env: BuildEnv) => {
     const mode = env?.mode || 'development' // Пытаемся получить переменные env, если переменные не заданы, у нас есть дефолтное значение "development".
     const isDev = mode === 'development'
     const apiUrl = getApiUrl(mode, env?.apiUrl) // адрес сервера бэкенд
+    const staticUrl = getStaticUrl(mode, env?.staticUrl) // адрес для статических файлов бэкенд
 
     const paths: BuildPaths = {
         // Список путей
@@ -45,6 +55,7 @@ export default (env: BuildEnv) => {
         isDev,
         port: PORT,
         apiUrl,
+        staticUrl,
         project: 'frontend',
     })
 

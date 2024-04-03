@@ -2,10 +2,12 @@
     position: relative;
     height: 36px;
 }
+
 .menu {
     border: 1px solid #0000000d;
     overflow: hidden;
 }
+
 .top_right {
     bottom: 100%;
 }
@@ -23,9 +25,11 @@
     top: 110%;
     right: 0;
 }
+
 .disabled {
     opacity: 0.7;
 }
+
 .active {
     background: var(--input-bg) !important;
 }
@@ -36,8 +40,7 @@
     z-index: 1000000;
     border-radius: 12px;
     font-weight: 400;
-
-    box-shadow: 0 11px 14px -7px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 11px 14px -7px rgb(0 0 0 / 30%);
     min-width: 236px;
 }
 
@@ -52,26 +55,32 @@
 .selected {
     background: var(--light-bg);
 }
+
 .label {
     text-transform: capitalize;
     padding-right: 5px;
 }
+
 .listButton {
     font-weight: 600 !important;
     text-transform: lowercase;
 }
+
 .iconWrapperLeft {
     width: 16px;
     margin-right: 16px;
 }
+
 .iconWrapperRight {
     width: 16px;
     margin-left: auto;
 }
+
 .optionsIcon {
     margin-right: 10px;
     display: flex;
 }
+
 .icon {
     padding-left: 10px;
     align-items: center;

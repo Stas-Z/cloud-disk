@@ -8,20 +8,23 @@
         background: var(--input-bg);
     }
 }
+
 .iconFolder {
     flex-shrink: 0;
 }
+
 .listInfo {
     flex-grow: 1;
 }
+
 .title,
 .info {
     white-space: nowrap;
     width: 100%;
     user-select: none;
-    -webkit-user-select: none;
     max-width: 350px;
-    overflow: hidden;
+
+    // overflow: hidden;
 }
 
 .shareLink {
@@ -31,6 +34,7 @@
         color: #222426;
     }
 }
+
 .selected {
     background-color: var(--selected);
 }

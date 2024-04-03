@@ -4,21 +4,17 @@ import { useTranslation } from 'react-i18next'
 
 import { classNames } from '@/shared/lib/classNames/classNames'
 
-import cls from './ScrollSave.module.scss'
-
-
-
 interface ScrollSaveProps {
-  className?: string
+    className?: string
 }
 
 export const ScrollSave = memo((props: ScrollSaveProps) => {
-  const { className } = props
-  const { t } = useTranslation()
+    const { className } = props
+    const { t } = useTranslation()
 
-  return (
-    <div className={classNames(cls.scrollSave, {}, [className])}>
-      <div />
-    </div>
-  )
+    return (
+        <div className={classNames('', {}, [className])}>
+            <div />
+        </div>
+    )
 })

@@ -40,7 +40,7 @@ interface DropdownProps {
     /**
      * @description User info: avatar and email adress
      */
-    userAvatar?: ReactNode
+    addonTop?: ReactNode
 }
 
 export const Dropdown = memo((props: DropdownProps) => {
@@ -49,7 +49,7 @@ export const Dropdown = memo((props: DropdownProps) => {
         items,
         trigger,
         direction = 'bottom_right',
-        userAvatar,
+        addonTop,
     } = props
 
     return (
@@ -69,7 +69,7 @@ export const Dropdown = memo((props: DropdownProps) => {
                     popupCls.menu,
                 ])}
             >
-                {userAvatar && userAvatar}
+                {addonTop && addonTop}
                 {items.map((item, index) => {
                     const content = ({ active }: { active: boolean }) => (
                         <button

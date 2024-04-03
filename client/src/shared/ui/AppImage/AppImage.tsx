@@ -30,6 +30,7 @@ export const AppImage = memo((props: AppImageProps) => {
         img.src = src ?? ''
         img.onload = () => {
             setIsLoading(false)
+            setHasError(false)
         }
         img.onerror = () => {
             setIsLoading(false)
@@ -42,8 +43,16 @@ export const AppImage = memo((props: AppImageProps) => {
     }
 
     if (hasError && errorFallback) {
-        return <div className={className}>{errorFallback}</div>
+        return (
+            <div {...otherProps} className={className}>
+                {errorFallback}
+            </div>
+        )
     }
 
-    return <img className={className} src={src} alt={alt} {...otherProps} />
+    return (
+        <div className={className} {...otherProps}>
+            <img className={className} src={src} alt={alt} {...otherProps} />
+        </div>
+    )
 })

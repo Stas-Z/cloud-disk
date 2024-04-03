@@ -7,17 +7,20 @@
     &:hover {
         background: var(--input-bg);
     }
+
     .title {
         height: 40px;
         word-break: break-all;
         white-space: pre-line;
     }
 }
+
 .bigGrid {
     .title {
         width: 145px;
     }
 }
+
 .grid {
     .title {
         width: 90px;

@@ -1,8 +1,5 @@
 import { memo, useCallback } from 'react'
 
-import DownloadIcon from '@/shared/assets/icons/arrow-download.svg'
-import ShareIcon from '@/shared/assets/icons/share-link.svg'
-import ViewIcon from '@/shared/assets/icons/views-icon.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { Icon } from '@/shared/ui/Icon'
 import { HStack } from '@/shared/ui/Stack'
@@ -62,14 +59,15 @@ export const FileListItem = memo((props: FileListItemProps) => {
                     <Text text={file.name} size="s" className={cls.title} />
                 </HStack>
                 <HStack justify="end" max gap="16">
-                    <HStack max align="center" justify="end" gap="4">
+                    {/* // TODO: */}
+                    {/* <HStack max align="center" justify="end" gap="4">
                         <Icon Svg={ViewIcon} />
                         <Text text="2" size="s" variant="grey" />
                     </HStack>
                     <HStack max align="center" justify="end" gap="4">
                         <Icon Svg={DownloadIcon} />
                         <Text text="0" size="s" variant="grey" />
-                    </HStack>
+                    </HStack> */}
                     <Text
                         text={date}
                         variant="grey"
@@ -97,7 +95,8 @@ export const FileListItem = memo((props: FileListItemProps) => {
                     )}
                 </HStack>
             </HStack>
-            <HStack align="center" justify="end" className={cls.shareLink}>
+            {/* // TODO: */}
+            {/* <HStack align="center" justify="end" className={cls.shareLink}>
                 <Icon
                     Svg={ShareIcon}
                     height={24}
@@ -106,7 +105,7 @@ export const FileListItem = memo((props: FileListItemProps) => {
                     clickable
                     onClick={onClickIconHandler}
                 />
-            </HStack>
+            </HStack> */}
         </HStack>
     )
 })

@@ -2,12 +2,13 @@ import { FilesPage } from '@/pages/FilesPage'
 import { ForbiddenPage } from '@/pages/ForbiddenPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
+import { ProfilePage } from '@/pages/ProfilePage'
 import {
     AppRoutes,
     getRouteFiles,
-    getRouteFilesDetails,
     getRouteForbidden,
     getRouteLogin,
+    getRouteProfile,
 } from '@/shared/const/router'
 import { AppRoutesProps } from '@/shared/types/router'
 
@@ -16,13 +17,13 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
         path: getRouteLogin(),
         element: <LoginPage />,
     },
-    [AppRoutes.FILES]: {
-        path: getRouteFiles(),
-        element: <FilesPage />,
+    [AppRoutes.PROFILE]: {
+        path: getRouteProfile(),
+        element: <ProfilePage />,
         authOnly: true,
     },
-    [AppRoutes.FILE_DETAILS]: {
-        path: getRouteFilesDetails(':id'),
+    [AppRoutes.FILES]: {
+        path: getRouteFiles(),
         element: <FilesPage />,
         authOnly: true,
     },

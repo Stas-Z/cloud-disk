@@ -58,10 +58,12 @@ const LoginForm = (props: LoginFormProps) => {
 
     const onButtonClickHandler = useCallback(async () => {
         if (view === AuthType.REG) {
-            await dispatch(regByEmail({ password, email }))
-            timerRef.current = setTimeout(() => {
-                dispatch(authByEmail({ password, email }))
-            }, 1000)
+            const result = await dispatch(regByEmail({ password, email }))
+            if (result.meta.requestStatus === 'fulfilled') {
+                timerRef.current = setTimeout(() => {
+                    dispatch(authByEmail({ password, email }))
+                }, 1000)
+            }
         }
         if (view === AuthType.AUTH) {
             await dispatch(authByEmail({ password, email }))

@@ -1,12 +1,13 @@
 .fileListBig {
     display: flex;
     justify-content: space-between;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
 }
+
 .gridBigGag {
     width: 169px;
 }
+
 .gridGag {
     width: 109px;
 }

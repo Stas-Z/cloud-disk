@@ -364,37 +364,6 @@ export class FileController {
         }
     }
 
-    static async updateUserUsedSpace(req: Request, res: Response) {
-        try {
-            // Получаем userId из параметров запроса
-            const userId = req.user ? req.user.id : null
-
-            // Получаем новое значение usedSpace из тела запроса
-            const { usedSpace } = req.body
-
-            // Находим пользователя
-            const user: UserDoc | null = await User.findOne({
-                _id: userId,
-            })
-
-            // Проверяем, найден ли пользователь
-            if (!user) {
-                return res.status(404).json({ message: 'User not found' })
-            }
-
-            // Обновляем поле usedSpace у пользователя
-            user.usedSpace += usedSpace
-            // Сохраняем обновленного пользователя
-            await user.save()
-
-            // Отправляем успешный ответ
-            res.status(200).json({ message: 'Used space updated successfully' })
-        } catch (error) {
-            console.error('Error updating used space:', error)
-            res.status(500).json({ message: 'Internal server error' })
-        }
-    }
-
     static async downloadFile(req: Request, res: Response) {
         try {
             // Находим файл по id и пользователю
@@ -407,10 +376,8 @@ export class FileController {
                 return res.status(404).json({ message: 'File not found' })
             }
 
-            const { filePath } = appConfig
             // Путь до физического файла, который храниться на сервере.
-            // путь до директории \\ id текущего пользователя \\ путь файла
-            const path = `${filePath}\\${req.user.id._id}\\${file?.path}`
+            const path = FileService.getPath(file)
 
             // если файл является папкой, запаковываем в архив и отдаём на клиент
             if (file.type === 'dir') {

@@ -18,18 +18,12 @@ export const AuthTypeTabs = memo((props: AuthTypeTabsProps) => {
     const { className, onChangeType, value } = props
     const { t } = useTranslation()
 
-    const typeTabs = useMemo(
+    const typeTabs: TabItem[] = useMemo(
         () =>
-            Object.values(AuthType).reduce(
-                (accumulator: TabItem[], currentValue) => [
-                    ...accumulator,
-                    {
-                        value: currentValue,
-                        content: t(currentValue) as ReactNode,
-                    },
-                ],
-                [],
-            ),
+            Object.values(AuthType).map((type) => ({
+                value: type,
+                content: t(type) as ReactNode,
+            })),
         [t],
     )
 

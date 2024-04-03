@@ -4,8 +4,8 @@ import mongoose from 'mongoose'
 
 import { appConfig } from '@/infrastructure/config/config'
 
-import authRouter from './application/routes/auth.routes'
 import fileRouter from './application/routes/file.routes'
+import userRouter from './application/routes/user.routes'
 import corsMiddleware from './infrastructure/middleware/cors.middleware'
 
 const app = express()
@@ -15,7 +15,9 @@ const PORT = serverPort
 app.use(fileUpload({ defCharset: 'utf8', defParamCharset: 'utf8' }))
 app.use(corsMiddleware)
 app.use(express.json())
-app.use('/api/auth', authRouter)
+app.use(express.static('static'))
+
+app.use('/api/user', userRouter)
 app.use('/api/files', fileRouter)
 
 const start = async () => {

@@ -8,10 +8,19 @@ import { FileDoc } from '../models/File'
 
 export class FileService {
     // Функция для создания папки
-    static createDir(file: FileDoc): Promise<{ message: string }> {
+    static createDir(
+        file: FileDoc,
+        staticFolder?: boolean,
+    ): Promise<{ message: string }> {
         const { filePath } = appConfig
+        const { staticPath } = appConfig
         // Путь к файлу который мы будем создавать: {хранилище}\{папка пользователя(id)}\{путь к файлу}
-        const totalFilePath = `${filePath}\\${file.user}\\${file.path}`
+        let totalFilePath: string
+        totalFilePath = `${filePath}\\${file.user}\\${file.path}`
+        if (staticFolder) {
+            // Cоздания статической папки
+            totalFilePath = `${staticPath}\\${file.user}\\${file.path}`
+        }
         return new Promise<{ message: string }>((resolve, reject) => {
             try {
                 // Проверяем если такой файл существует
@@ -45,9 +54,8 @@ export class FileService {
     }
 
     static getPath(file: FileDoc) {
-        const { filePath } = appConfig
         // Получение физического пути до файла
-        return `${filePath}\\${file.user}\\${file.path}`
+        return `${appConfig.filePath}\\${file.user}\\${file.path}`
     }
 
     static deleteFolderRecursive(path: string) {

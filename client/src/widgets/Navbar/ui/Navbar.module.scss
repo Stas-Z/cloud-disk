@@ -3,15 +3,18 @@
     padding-bottom: 4px;
     padding-right: calc(32px - 100vw + 100%);
 }
+
 .avatar {
     height: 64px;
 }
+
 .search {
     max-width: 255px;
     width: 100%;
     transition: max-width 0.25s;
     flex-shrink: 0;
 }
+
 .searchIcon {
     margin-left: 12px;
     margin-right: 12px;

@@ -2,7 +2,12 @@
     padding: 20px 20px 0;
     z-index: 1;
 }
+
 .stickyWrapper {
     position: sticky;
     top: 20px;
+}
+
+.menu {
+    position: relative;
 }

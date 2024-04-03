@@ -5,6 +5,7 @@
     transform: translate(-50%, -50%);
     z-index: var(--modal-z-index);
 }
+
 .spiner {
     width: 32px;
     height: 32px;
@@ -13,30 +14,26 @@
     border-left-color: var(--button-yellow);
     display: inline-block;
     animation: islands-spin2 1s linear 0.21s infinite;
-    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     border-radius: 50%;
 }
 
 @keyframes islands-spin2 {
     0% {
-        -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
     }
 
-    to {
-        -webkit-transform: rotate(1turn);
+    100% {
         transform: rotate(1turn);
     }
 }
-@-webkit-keyframes islands-spin2 {
+
+@keyframes islands-spin2 {
     0% {
-        -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
     }
 
-    to {
-        -webkit-transform: rotate(1turn);
+    100% {
         transform: rotate(1turn);
     }
 }

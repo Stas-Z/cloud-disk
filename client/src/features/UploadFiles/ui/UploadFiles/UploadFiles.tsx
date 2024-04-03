@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback } from 'react'
 
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -12,6 +12,7 @@ import {
 } from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { useCancelTokens } from '@/shared/lib/hooks/useCancelTokens/useCancelTokens'
+import useResetInput from '@/shared/lib/hooks/useResetInput/useResetInput'
 import { Button } from '@/shared/ui/Button'
 import { Icon } from '@/shared/ui/Icon'
 import { MessageBox } from '@/shared/ui/MessageBox'
@@ -44,31 +45,28 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
 
     const onSucces = useSelector(getUploadFilesOnSucces)
 
-    const [resetFileInput, setResetFileInput] = useState(false)
-
     const openFilePicker = useCallback(() => {
         document.getElementById('fileInput')?.click()
     }, [])
 
     const { addCancelToken } = useCancelTokens()
+    const { resetFileInput, onResetInput } = useResetInput()
 
-    const fileUploadHandler = async (
-        e: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        const { files } = e.target
+    const fileUploadHandler = useCallback(
+        async (e: React.ChangeEvent<HTMLInputElement>) => {
+            const { files } = e.target
 
-        fileUploadHelper({
-            files,
-            currentDir,
-            dispatch,
-            addCancelToken,
-        })
-        // Сброс значения элемента <input type="file"> после загрузки файлов
-        setResetFileInput(true)
-        setTimeout(() => {
-            setResetFileInput(false)
-        }, 0)
-    }
+            fileUploadHelper({
+                files,
+                currentDir,
+                dispatch,
+                addCancelToken,
+            })
+            // Сброс значения элемента <input type="file"> после загрузки файлов
+            onResetInput()
+        },
+        [addCancelToken, currentDir, dispatch, onResetInput],
+    )
 
     return (
         <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount>

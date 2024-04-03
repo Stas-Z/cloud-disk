@@ -58,5 +58,18 @@
   "By": "По",
   "No files or folders were found in your Disk for the request": "В вашем Диске не найдено файлов или папок по запросу «{{search}}»",
   "All files": "Все файлы",
-  "Upload your files": "Загружайте свои файлы любым удобным способом, можно даже перетащить в окно браузера."
+  "Upload your files": "Загружайте свои файлы любым удобным способом, можно даже перетащить в окно браузера.",
+  "Profile": "Профиль",
+  "Profile not found": "Профиль не найден",
+  "Account details": "Детали учетной записи",
+  "Avatar ": {
+    " picture": " Аватар / фото"
+  },
+  "Avatar": "Аватар / фото",
+  "Choose file": "Выберите файл",
+  "Ideal dimensions": "Идеальные размеры: 100х100 пикселей.",
+  "Full name": "Полное имя",
+  "Email address": "Email адрес",
+  "Save changes": "Сохранить изменения",
+  "Cancel changes": "Отменить изменения"
 }

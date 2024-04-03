@@ -28,7 +28,7 @@ interface AvatarProps {
 }
 
 export const Avatar = (props: AvatarProps) => {
-    const { className, size = 100, src, alt } = props
+    const { className, size = 100, src, alt, ...otherProps } = props
 
     const styles = useMemo<CSSProperties>(
         () => ({
@@ -49,6 +49,7 @@ export const Avatar = (props: AvatarProps) => {
             alt={alt}
             style={styles}
             className={classNames(cls.avatar, {}, [className])}
+            {...otherProps}
         />
     )
 }
