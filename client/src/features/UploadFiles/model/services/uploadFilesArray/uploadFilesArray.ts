@@ -3,7 +3,8 @@ import axios, { Canceler } from 'axios'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'
 import { MyFile } from '@/entities/File'
-import { initAuthData } from '@/entities/User'
+import { noticeActions } from '@/entities/Notice'
+import { getUserDiskSpace, initAuthData } from '@/entities/User'
 // eslint-disable-next-line fsd-pathcheker/layer-imports
 import { uploadBarService, uploaderBarActions } from '@/features/UploaderBar'
 
@@ -30,15 +31,22 @@ export const uploadFilesArrays = createAsyncThunk<
         { files, dirId, addCancelToken, folderName, folderId },
         thunkAPI,
     ) => {
-        const { extra, rejectWithValue, dispatch } = thunkAPI
+        const { extra, rejectWithValue, dispatch, getState } = thunkAPI
 
         try {
             const formData = new FormData()
+
+            const userSpace = getUserDiskSpace(getState())
 
             const totalSize = files.reduce(
                 (size, file) => size + file.file.size,
                 0,
             )
+
+            if (totalSize > userSpace) {
+                dispatch(noticeActions.setNoticeError('Not enough disk space'))
+                return rejectWithValue('Not enough disk space')
+            }
 
             const filesByParentDir: { [parentDir: string]: File[] } = {} // Создаем объект для группировки файлов по родительским директориям
 

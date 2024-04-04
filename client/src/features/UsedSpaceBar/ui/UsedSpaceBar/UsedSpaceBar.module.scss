@@ -1,0 +1,30 @@
+.usedSpaceBar {
+    position: sticky;
+    bottom: 0;
+    padding: 0 20px 20px;
+    width: 100%;
+}
+
+.infoSpaceContent {
+    margin-top: 10px;
+    padding: 12px;
+    background: linear-gradient(180deg, #ffdc60, #fdefb2);
+    border-radius: 12px;
+}
+
+.indicatorBar {
+    position: relative;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #edc124;
+    margin-bottom: 5px;
+}
+
+.indicatorValue {
+    border-radius: 4px;
+    background: #fff;
+    position: relative;
+    height: 8px;
+    overflow: hidden;
+}

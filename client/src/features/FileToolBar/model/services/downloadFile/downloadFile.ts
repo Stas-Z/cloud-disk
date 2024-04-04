@@ -40,7 +40,7 @@ export const downloadFile = createAsyncThunk<
         return 'The file was downloaded successfully'
     } catch (e: any) {
         if (e.response && e.response.data.message) {
-            dispatch(noticeActions.setErrorMessage(e.response.data.message))
+            dispatch(noticeActions.setNoticeError(e.response.data.message))
 
             return rejectWithValue(e.response.data.message)
         }

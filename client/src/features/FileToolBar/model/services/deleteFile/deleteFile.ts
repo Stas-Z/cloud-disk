@@ -34,12 +34,12 @@ export const deleteFile = createAsyncThunk<
         // Обновляем данные пользователя
         dispatch(initAuthData())
 
-        dispatch(noticeActions.setNoticeMessage('File was deleted'))
+        dispatch(noticeActions.setNoticeDelete('File was deleted'))
 
         return response.data
     } catch (e: any) {
         if (e.response && e.response.data.message) {
-            dispatch(noticeActions.setErrorMessage(e.response.data.message))
+            dispatch(noticeActions.setNoticeError(e.response.data.message))
             return rejectWithValue(e.response.data.message)
         }
         return rejectWithValue(e.message)

@@ -5,6 +5,7 @@ import { NoticeSchema } from '../types/noticeSchema'
 const initialState: NoticeSchema = {
     dirNameNotice: '',
     noticeMessage: '',
+    noticeDelete: '',
     noticeError: '',
 }
 
@@ -18,13 +19,17 @@ export const noticeSlice = createSlice({
         setNoticeMessage: (state, action: PayloadAction<string>) => {
             state.noticeMessage = action.payload
         },
-        setErrorMessage: (state, action: PayloadAction<string>) => {
+        setNoticeError: (state, action: PayloadAction<string>) => {
             state.noticeError = action.payload
+        },
+        setNoticeDelete: (state, action: PayloadAction<string>) => {
+            state.noticeDelete = action.payload
         },
         clearNotice: (state) => {
             state.noticeMessage = ''
             state.noticeError = ''
             state.dirNameNotice = ''
+            state.noticeDelete = ''
         },
     },
 })

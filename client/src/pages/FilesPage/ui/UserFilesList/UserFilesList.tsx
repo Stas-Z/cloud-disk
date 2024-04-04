@@ -76,7 +76,7 @@ export const UserFilesList = memo((props: UserFilesProps) => {
         )
     }
 
-    if (files.length === 0) {
+    if (files.length === 0 && !currentDir) {
         return <EmptyPage search={search} />
     }
 

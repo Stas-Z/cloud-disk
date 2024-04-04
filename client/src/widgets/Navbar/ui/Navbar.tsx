@@ -30,7 +30,7 @@ export const Navbar = memo((props: NavbarProps) => {
                     <AppLogo width={79} height={40} />
                     <FileSearch />
                 </HStack>
-                <HStack justify="end">
+                <HStack justify="end" gap="24">
                     <AvatarDropdown />
                 </HStack>
             </HStack>

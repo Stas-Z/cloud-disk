@@ -31,7 +31,7 @@ const User = new Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     username: { type: String },
-    diskSpace: { type: Number, default: 1024 ** 3 * 10 },
+    diskSpace: { type: Number, default: 1024 ** 3 * 2 },
     usedSpace: { type: Number, default: 0 },
     avatar: { type: String },
     files: [{ type: ObjectId, ref: 'File' }],

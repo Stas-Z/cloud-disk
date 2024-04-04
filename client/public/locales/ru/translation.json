@@ -71,5 +71,16 @@
   "Full name": "Полное имя",
   "Email address": "Email адрес",
   "Save changes": "Сохранить изменения",
-  "Cancel changes": "Отменить изменения"
+  "Cancel changes": "Отменить изменения",
+  "Enter your full name": "Введите свое полное имя",
+  "Welcome to Open Cloud Disk": "Добро пожаловать на \"Open Cloud  Disk\"",
+  "This pet project is a cloud data storage": "Этот пет-проект представляет собой облачное хранилище данных. В данном проекте используется JWT token для регистрации и аутентификации пользователей. Пользователи могут загружать файлы, организовывать их в папки, использовать сортировку и поиск для удобства доступа.",
+  "All files you upload will be stored for only one day": "Все файлы которые вы загружаете будут храниться только один день!",
+  "Gb": "ГБ",
+  "Mb": "МБ",
+  "Kb": "КБ",
+  "byte": "байт",
+  "Free from": "Свободно {{used}} из {{disk}}",
+  "Not enough disk space": "Не хватает места на диске",
+  "dropLanguage": "Русский"
 }

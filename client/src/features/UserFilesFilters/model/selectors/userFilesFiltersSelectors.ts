@@ -1,7 +1,7 @@
 import { StateSchema } from '@/app/providers/StoreProvider'
 
 export const getFileFiltersView = (state: StateSchema) =>
-    state.fileFilters.view || 'list'
+    state.fileFilters.view || 'grid'
 export const getFileFiltersSort = (state: StateSchema) =>
     state.fileFilters.sort ?? 'type'
 export const getFileFiltersSearch = (state: StateSchema) =>

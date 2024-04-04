@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 
 import { getCurrentDir } from '@/entities/File'
 import { NoticePopup } from '@/entities/Notice'
+import { getUserDiskSpace } from '@/entities/User'
+import { FilePageGreeting } from '@/features/FilePageGreeting'
 import { FileToolBar, fileToolBarReducer } from '@/features/FileToolBar'
 import { UploaderBar } from '@/features/UploaderBar'
 import { classNames } from '@/shared/lib/classNames/classNames'
@@ -37,9 +39,10 @@ const FilesPage = (props: FilesPageProps) => {
     }, [])
 
     const currentDir = useSelector(getCurrentDir)
+    const userSpace = useSelector(getUserDiskSpace)
 
     const { dragEnter, dragEnterHandler, dragLeaveHandler, dropHandler } =
-        useDrag({ currentDir })
+        useDrag({ currentDir, userSpace })
 
     const dragProps = {
         onDragEnter: dragEnterHandler,
@@ -71,6 +74,7 @@ const FilesPage = (props: FilesPageProps) => {
     return (
         <DynamicModuleLoader reducers={initialReducers}>
             {content}
+            <FilePageGreeting />
         </DynamicModuleLoader>
     )
 }

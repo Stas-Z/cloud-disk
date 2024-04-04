@@ -8,6 +8,7 @@ import {
     MyFile,
     getCurrentDir,
     sizeFormat,
+    truncateFileName,
 } from '@/entities/File'
 // eslint-disable-next-line fsd-pathcheker/layer-imports
 import { deleteFile } from '@/features/FileToolBar'
@@ -61,6 +62,8 @@ export const UploaderItem = memo((props: UploaderItemProps) => {
     const fileSize = file.size ? sizeFormat(file.size) : '0B'
     const uploaded = file.progress === 100
 
+    const truncateName = truncateFileName(file.name)
+
     const itemRight = (
         <>
             <div className={cls.progressBar}>
@@ -112,7 +115,7 @@ export const UploaderItem = memo((props: UploaderItemProps) => {
                 )}
             </HStack>
             <VStack className={cls.fileInfo} align="start" justify="center" max>
-                <Text text={file.name} size="s" />
+                <Text text={truncateName} size="s" />
                 <Text
                     text={fileSize.toString()}
                     size="s"

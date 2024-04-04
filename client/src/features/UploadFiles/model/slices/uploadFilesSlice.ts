@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-// eslint-disable-next-line fsd-pathcheker/layer-imports
-
 import { uploadFile } from '../services/uploadFile/uploadFile'
 import { uploadFilesArrays } from '../services/uploadFilesArray/uploadFilesArray'
 import { UploadFilesSchema } from '../types/uploadFilesSchema'

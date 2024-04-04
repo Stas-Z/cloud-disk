@@ -7,10 +7,11 @@ import { uploadDragFiles } from '../uploadDragFiles/uploadDragFiles'
 
 interface useDragProps {
     currentDir: string
+    userSpace: number
 }
 
 export function useDrag(props: useDragProps) {
-    const { currentDir } = props
+    const { currentDir, userSpace } = props
     const dispatch = useAppDispatch()
     const [dragEnter, setDragEnter] = useState(false)
     const { addCancelToken } = useCancelTokens()
@@ -26,12 +27,12 @@ export function useDrag(props: useDragProps) {
         setDragEnter(false)
     }
 
-    const dropHandler = (e: DragEvent<HTMLDivElement>) => {
+    const dropHandler = async (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault()
         e.stopPropagation()
 
         const { items } = e.dataTransfer
-        uploadDragFiles(dispatch, items, currentDir, addCancelToken)
+        uploadDragFiles(dispatch, items, currentDir, addCancelToken, userSpace)
         setDragEnter(false)
     }
 

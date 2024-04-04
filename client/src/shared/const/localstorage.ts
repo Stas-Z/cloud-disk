@@ -1,4 +1,5 @@
 export const USER_LOCALSTORAGE_KEY = 'user'
+export const USER_FIRST_VISIT_KEY = 'firstVisit'
 export const USER_TOKEN_KEY = 'token'
 export const UPLOADED_FILE = 'uploaded_file'
 export const FILE_VIEW_LOCALSTORAGE_KEY = 'file_view'

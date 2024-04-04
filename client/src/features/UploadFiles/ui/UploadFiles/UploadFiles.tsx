@@ -41,6 +41,7 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
     const dispatch = useAppDispatch()
     const currentDir = useSelector(getCurrentDir)
     const error = useSelector(getUploadFilesError)
+
     const isUploading = useSelector(getUploadFilesIsLoading)
 
     const onSucces = useSelector(getUploadFilesOnSucces)

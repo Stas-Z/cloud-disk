@@ -72,5 +72,16 @@
   "Full name": "Full name",
   "Email address": "Email address",
   "Save changes": "Save changes",
-  "Cancel changes": "Cancel changes"
+  "Cancel changes": "Cancel changes",
+  "Enter your full name": "Enter your full name",
+  "Welcome to Open Cloud Disk": "Welcome to \"Open Cloud Disk\"",
+  "This pet project is a cloud data storage": "This pet project is a cloud data storage. This project uses JWT token to register and authenticate users. Users can upload files, organize them into folders, and use sorting and searching for easy access.",
+  "All files you upload will be stored for only one day": "All files you upload will be stored for only one day!",
+  "Gb": "Gb",
+  "Mb": "Mb",
+  "Kb": "Kb",
+  "byte": "byte",
+  "Free from": "Free {{used}} from {{disk}}",
+  "Not enough disk space": "Not enough disk space",
+  "dropLanguage": "English"
 }

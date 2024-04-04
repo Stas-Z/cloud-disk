@@ -10,6 +10,7 @@ import { Text } from '@/shared/ui/Text'
 
 import cls from './NoticePopup.module.scss'
 import {
+    getNoticeDelete,
     getNoticeError,
     getNoticeFileName,
     getNoticeMessage,
@@ -27,9 +28,11 @@ export const NoticePopup = memo((props: NoticePopupProps) => {
 
     const message = useSelector(getNoticeMessage)
     const error = useSelector(getNoticeError)
+    const deleteMessage = useSelector(getNoticeDelete)
     const noticeFileName = useSelector(getNoticeFileName)
 
-    const showNotice = Boolean(message) || Boolean(error)
+    const showNotice =
+        Boolean(message) || Boolean(error) || Boolean(deleteMessage)
 
     const [showPopupNotice, setshowPopupNotice] = useState(true)
 
@@ -53,7 +56,7 @@ export const NoticePopup = memo((props: NoticePopupProps) => {
 
     const mods: Mods = {
         [cls.show]: showPopupNotice,
-        [cls.delete]: message,
+        [cls.delete]: Boolean(deleteMessage),
     }
 
     if (!isMounted) {
@@ -63,7 +66,19 @@ export const NoticePopup = memo((props: NoticePopupProps) => {
     if (error) {
         return (
             <div className={classNames(cls.noticePopup, mods, [className])}>
-                <Text text={t(error)} size="s" variant="error" />
+                <Text text={t(error)} size="s" variant="error" align="center" />
+            </div>
+        )
+    }
+    if (deleteMessage) {
+        return (
+            <div className={classNames(cls.noticePopup, mods, [className])}>
+                <Text
+                    text={t(deleteMessage, { file: noticeFileName })}
+                    size="s"
+                    variant="white"
+                    align="center"
+                />
             </div>
         )
     }
@@ -73,7 +88,7 @@ export const NoticePopup = memo((props: NoticePopupProps) => {
             <Text
                 text={t(message, { file: noticeFileName })}
                 size="s"
-                variant={message ? 'white' : 'accent'}
+                variant="accent"
                 align="center"
             />
         </div>

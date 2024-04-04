@@ -4,6 +4,7 @@ import { Canceler } from 'axios'
 import { StateSchema, ThunkExtraArg } from '@/app/providers/StoreProvider'
 import { noticeActions } from '@/entities/Notice'
 import { createFileDir } from '@/features/CreateNewDir'
+import { deleteFile } from '@/features/FileToolBar'
 import { uploadFilesArrays, fileUploadHelper } from '@/features/UploadFiles'
 
 interface FileWithParent {
@@ -16,11 +17,14 @@ export async function uploadDragFiles(
     items: DataTransferItemList,
     currentDir: string,
     addCancelToken?: (fileId: string, cancel: Canceler) => void,
+    userSpace?: number,
 ) {
     let folderName = '' // Создаём переменную для названия папки
     let folderId = '' // Создаём переменную для id папки
     const itemsWithOutDirectory = new DataTransfer()
     const itemsWithDirectory: FileWithParent[] = [] // Создаем пустой массив
+    let totalSize = 0 // Создаём переменную для общего веса файлов
+    const deleteDir = { id: '', name: '' } // Создаём объект для удаления если общий вес файлов превышает допустимый
 
     const uploadHandler = async (itemsWithDirectory: FileWithParent[]) => {
         try {
@@ -71,6 +75,10 @@ export async function uploadDragFiles(
                     ? newDirResponse.payload
                     : newDirResponse?.payload?._id || ''
 
+            if (totalSize === 0) {
+                deleteDir.id = newDirId
+                deleteDir.name = entry.name
+            }
             if (!folderId) {
                 folderId = newDirId
             }
@@ -101,6 +109,7 @@ export async function uploadDragFiles(
                     file,
                     parentDir: currentDir,
                 })
+                totalSize += file.size
             }
         }
     }
@@ -112,6 +121,7 @@ export async function uploadDragFiles(
                 const file = item.getAsFile()
                 if (file) {
                     itemsWithOutDirectory.items.add(file)
+                    totalSize += file.size
                 }
             } else if (itemFile && itemFile.isDirectory === true) {
                 const entry = item.webkitGetAsEntry()
@@ -125,6 +135,12 @@ export async function uploadDragFiles(
             }
         })
         await Promise.all(readPromises)
+
+        if (userSpace && totalSize > userSpace) {
+            dispatch(noticeActions.setNoticeFileName(deleteDir.name))
+            dispatch(deleteFile({ fileId: deleteDir.id, dirId: currentDir }))
+            return
+        }
 
         uploadHandler(itemsWithDirectory)
 

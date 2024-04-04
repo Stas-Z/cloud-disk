@@ -3,7 +3,8 @@ import axios, { Canceler } from 'axios'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'
 import { MyFile, fetchFilesList } from '@/entities/File'
-import { initAuthData } from '@/entities/User'
+import { noticeActions } from '@/entities/Notice'
+import { getUserDiskSpace, initAuthData } from '@/entities/User'
 // eslint-disable-next-line fsd-pathcheker/layer-imports
 import { uploadBarService, uploaderBarActions } from '@/features/UploaderBar'
 
@@ -21,13 +22,20 @@ export const uploadFile = createAsyncThunk<
 >(
     'uploadFiles/uploadFile',
     async ({ file, dirId, updateList = true, addCancelToken }, thunkAPI) => {
-        const { extra, rejectWithValue, dispatch } = thunkAPI
+        const { extra, rejectWithValue, dispatch, getState } = thunkAPI
 
         try {
             const formData = new FormData()
             formData.append('file', file)
             if (dirId) {
                 formData.append('parent', dirId)
+            }
+
+            const userSpace = getUserDiskSpace(getState())
+
+            if (file.size > userSpace) {
+                dispatch(noticeActions.setNoticeError('Not enough disk space'))
+                return rejectWithValue('Not enough disk space')
             }
 
             const fileId = thunkAPI.requestId // уникальный id для файлов для UploadBar
@@ -74,6 +82,7 @@ export const uploadFile = createAsyncThunk<
             return response.data
         } catch (e: any) {
             if (e.response && e.response.data.message) {
+                dispatch(noticeActions.setNoticeError(e.response.data.message))
                 return rejectWithValue(e.response.data.message)
             }
             return rejectWithValue(e.message)

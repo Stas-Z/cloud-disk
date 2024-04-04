@@ -114,6 +114,7 @@ export const ProfileCard = memo((props: ProfileCardProps) => {
                         size="l"
                         value={data?.username || ''}
                         onChange={onChangeUsername}
+                        placeholder={t('Enter your full name')}
                     />
                 </div>
                 <div className={cls.emailContent}>
@@ -127,6 +128,7 @@ export const ProfileCard = memo((props: ProfileCardProps) => {
                         value={data?.email || ''}
                         onChange={onChangeEmail}
                         type="email"
+                        placeholder={t('Enter your email')}
                     />
                 </div>
             </VStack>

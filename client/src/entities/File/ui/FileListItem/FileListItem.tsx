@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo } from 'react'
 
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { Icon } from '@/shared/ui/Icon'
@@ -25,7 +25,7 @@ export const FileListItem = memo((props: FileListItemProps) => {
     const date = file.date?.slice(0, 10)
     const time = file.date?.slice(11, 16)
 
-    const onClickIconHandler = useCallback(() => {}, [])
+    // const onClickIconHandler = useCallback(() => {}, [])
 
     const fileSize = file.size ? sizeFormat(file.size) : '0B'
 

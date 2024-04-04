@@ -56,6 +56,9 @@ export class FileController {
 
     static async getFiles(req: Request, res: Response) {
         try {
+            // Удаление устаревших файлов перед получением нового списка файлов
+            await FileService.deleteOutdatedFiles(req.user?.id)
+
             const { sort } = req.query
 
             let files
@@ -138,6 +141,15 @@ export class FileController {
                 return res.status(400).json({ message: 'File already exists' })
             }
 
+            // Проверяем если хватает места на диске
+            if (user.diskSpace) {
+                if ((user.usedSpace || 0) + file.size > user.diskSpace) {
+                    return res
+                        .status(400)
+                        .json({ message: 'There no space on the disk' })
+                }
+            }
+
             // Перемещаем файл по пути созданному выше
             file?.mv(path)
 
@@ -164,15 +176,6 @@ export class FileController {
                 // Пушим id только что добавленного нового файла в массив родительского фаила childs
                 parent.childs?.push(dbFile._id)
                 await parent.save()
-            }
-
-            // Проверяем если хватает места на диске
-            if (user.diskSpace) {
-                if ((user.usedSpace || 0) + file.size > user.diskSpace) {
-                    return res
-                        .status(400)
-                        .json({ message: 'There no space on the disk' })
-                }
             }
 
             // Сохраняем файл в базе данных

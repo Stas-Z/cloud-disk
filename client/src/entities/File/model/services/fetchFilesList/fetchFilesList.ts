@@ -1,4 +1,3 @@
-/* eslint-disable fsd-pathcheker/layer-imports */
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { ThunkConfig } from '@/app/providers/StoreProvider'

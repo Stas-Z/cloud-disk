@@ -2,9 +2,13 @@
 /* eslint-disable no-promise-executor-return */
 import fs from 'fs'
 
+import { Types } from 'mongoose'
+
+import { FileController } from '@/application/controllers/fileController'
 import { appConfig } from '@/infrastructure/config/config'
 
-import { FileDoc } from '../models/File'
+import File, { FileDoc } from '../models/File'
+import User, { UserDoc } from '../models/User'
 
 export class FileService {
     // Функция для создания папки
@@ -72,6 +76,56 @@ export class FileService {
             })
             // Удаляем саму папку после удаления её содержимого
             fs.rmdirSync(path)
+        }
+    }
+
+    // Для Пет проекта. Файлы хранятся 1 день, потом удаляются
+    static async deleteOutdatedFiles(userId: string) {
+        try {
+            // Находим файлы, которые устарели и нужно удалить
+            const outdatedFiles = await File.find({
+                user: userId,
+                date: { $lt: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+            })
+            const user: UserDoc | null = await User.findOne({
+                _id: userId,
+            })
+
+            // Удаляем каждый устаревший файл
+            await Promise.all(
+                outdatedFiles.map(async (file) => {
+                    // Находим родительскую папку
+                    const parentFolder = await File.findOne({
+                        _id: file.parent,
+                    })
+
+                    // Рекурсивно удаляем всех дочерних элементов
+                    await this.deleteFile(file)
+
+                    // Рекурсивно удаляем всех дочерних элементов
+                    await FileController.deleteChildFiles(file)
+
+                    // Удаляем модель файла из базы данных
+                    await file.deleteOne()
+
+                    if (parentFolder && parentFolder.childs) {
+                        // Удаляем идентификатор удаленного файла из массива childs родительской папки
+                        parentFolder.childs = parentFolder.childs.filter(
+                            (childId) =>
+                                childId.toString() !== file._id.toString(),
+                        ) as [Types.ObjectId]
+
+                        await parentFolder.save()
+                    }
+                    if (user && file.size && user.usedSpace) {
+                        user.usedSpace -= file.size
+                        // Сохраняем пользователя поскольку мы меняли у него поля
+                        await user.save()
+                    }
+                }),
+            )
+        } catch (error) {
+            console.error('Error deleting outdated files:', error)
         }
     }
 }

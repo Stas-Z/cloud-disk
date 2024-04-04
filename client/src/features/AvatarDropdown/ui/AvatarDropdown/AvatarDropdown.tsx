@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { getUserData, userActions } from '@/entities/User'
+import Lang from '@/shared/assets/icons/lang.svg'
 import LogoutIcon from '@/shared/assets/icons/logout.svg'
 import UsersIcon from '@/shared/assets/icons/menu-users.svg'
 import { getRouteProfile } from '@/shared/const/router'
@@ -21,13 +22,18 @@ interface AvatarDropdownProps {
 
 export const AvatarDropdown = memo((props: AvatarDropdownProps) => {
     const { className } = props
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const userData = useSelector(getUserData)
 
     const onLogout = useCallback(() => {
         dispatch(userActions.logout())
     }, [dispatch])
+
+    const toggle = async () => {
+        i18n.changeLanguage(i18n.language === 'ru' ? 'en' : 'ru')
+        document.documentElement.lang = i18n.language
+    }
 
     if (!userData || !userData.id) {
         return null
@@ -41,6 +47,12 @@ export const AvatarDropdown = memo((props: AvatarDropdownProps) => {
         },
         {
             id: '2',
+            Icon: Lang,
+            content: t('dropLanguage'),
+            onClick: toggle,
+        },
+        {
+            id: '3',
             Icon: LogoutIcon,
             content: t('Sign out'),
             onClick: onLogout,
