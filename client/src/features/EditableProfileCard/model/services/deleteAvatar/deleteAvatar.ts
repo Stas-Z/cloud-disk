@@ -6,7 +6,7 @@ import { User, initAuthData } from '@/entities/User'
 import { fetchProfileData } from '../fetchProfileData/fetchProfileData'
 
 export const deleteAvatar = createAsyncThunk<User, void, ThunkConfig<string>>(
-    'editableProfileCard/deleteAvatar',
+    'profile/deleteAvatar',
     async (_, thunkAPI) => {
         const { extra, rejectWithValue, dispatch } = thunkAPI
 

@@ -10,19 +10,19 @@ import { Skeleton } from '../Skeleton'
 
 interface AvatarProps {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description Avatar image source.
+     * @description Источник изображения аватара.
      */
     src?: string
     /**
-     * @description Avatar width and height.
+     * @description Ширина и высота аватара.
      */
     size?: number
     /**
-     * @description An alternative text description of the image.
+     * @description Альтернативное текстовое описание изображения.
      */
     alt?: string
 }

@@ -1,7 +1,7 @@
 import { memo } from 'react'
 
 /**
- * @description typedMemo is a wrapper around React.memo that allows you to pass
- * generic types to the component.
+ * @description typedMemo — это оболочка React.memo, которая позволяет передавать
+ * в компонент generic типы.
  */
 export const typedMemo: <T>(Component: T) => T = memo

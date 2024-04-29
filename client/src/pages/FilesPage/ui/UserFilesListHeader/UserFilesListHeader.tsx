@@ -1,4 +1,4 @@
-import { MutableRefObject, memo, useCallback, useRef } from 'react'
+import { memo, useCallback } from 'react'
 
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -11,7 +11,7 @@ import {
     defaultBreadcrumb,
 } from '@/entities/Breadcrumbs'
 import { fileActions, getCurrentDir } from '@/entities/File'
-import { deleteLastDirScroll } from '@/features/ScrollSave'
+import { deleteDirScroll } from '@/features/ScrollSave'
 import { UserFilesFilters } from '@/features/UserFilesFilters'
 import ArrowBack from '@/shared/assets/icons/arrow-back.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
@@ -35,7 +35,6 @@ export const UserFilesListHeader = memo((props: UserFilesListHeaderProps) => {
     const { className } = props
     const { t } = useTranslation()
     const dispatch = useAppDispatch()
-    const timerRef = useRef() as MutableRefObject<ReturnType<typeof setTimeout>>
 
     const currentDir = useSelector(getCurrentDir)
     const lastName = useSelector(getLastBreadcrumbName)
@@ -49,10 +48,7 @@ export const UserFilesListHeader = memo((props: UserFilesListHeaderProps) => {
 
         dispatch(breadcrumbsActions.setBreadcrumbs(breadcrumbsWithoutLast))
 
-        clearTimeout(timerRef.current)
-        timerRef.current = setTimeout(() => {
-            dispatch(deleteLastDirScroll())
-        }, 100)
+        dispatch(deleteDirScroll(lastFileId))
     }, [breadcrumbsWithoutLast, dispatch, filesWithoutLast, lastFileId])
 
     const titleName =
@@ -62,6 +58,7 @@ export const UserFilesListHeader = memo((props: UserFilesListHeaderProps) => {
         (id: string | null) => {
             dispatch(fileActions.setCurrentDir(id))
             dispatch(filesPageActions.sliceDirStackById(id as string))
+            dispatch(deleteDirScroll(id as string))
         },
         [dispatch],
     )

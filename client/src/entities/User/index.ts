@@ -1,7 +1,5 @@
 export { ProfileCard } from './ui/ProfileCard/ProfileCard'
 
-export { getUserEmail } from './model/selectors/getUserEmail/getUserEmail'
-
 export { initAuthData } from './model/services/initAuthData'
 
 export {

@@ -25,7 +25,6 @@ import { Text } from '@/shared/ui/Text'
 import cls from './FileToolBar.module.scss'
 import { truncateFileName } from '../../../../entities/File/model/lib/truncateFileName/truncateFileName'
 import {
-    getfileToolbarError,
     getfileToolbarIsDeleting,
     getfileToolbarIsDownloading,
 } from '../../model/selectors/fileToolbarSelectors'
@@ -46,9 +45,6 @@ export const FileToolBar = memo((props: FileToolBarProps) => {
 
     const isDeleting = useSelector(getfileToolbarIsDeleting)
     const isDownloading = useSelector(getfileToolbarIsDownloading)
-
-    // const message = useSelector(getfileToolbarMessage)
-    const error = useSelector(getfileToolbarError)
 
     const currentDir = useSelector(getCurrentDir)
     const selectedFile = useSelector(getSelectedFile)

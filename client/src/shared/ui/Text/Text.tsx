@@ -18,34 +18,34 @@ export type TextSize = 's' | 'm' | 'l'
 
 interface TextProps {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description The text of the title
+     * @description Текст заголовка.
      */
     title?: string
     /**
-     * @description The text to display
+     * @description Основной текст.
      */
     text?: string
     /**
-     * @description The variant of the text. Changes the color
+     * @description Вариант текста. Меняет цвет текста.
      * @default 'primary'
      */
     variant?: TextVariant
     /**
-     * @description The text alignment
+     * @description Выравнивание текста.
      * @default 'left'
      */
     align?: TextAlign
     /**
-     * @description The size of the text
+     * @description Размер текста.
      * @default 'm'
      */
     size?: TextSize
     /**
-     * @description font-weight: bold;
+     * @description Font-weight свойство css.
      */
     bold?: boolean
 }

@@ -13,52 +13,64 @@ import { Icon } from '../../../Icon'
 import { HStack } from '../../../Stack'
 
 export interface ListBoxItem<T extends string> {
+    /**
+     * @description Значение опции.
+     */
     value: T
+    /**
+     * @description Содержимое опции.
+     */
     content: ReactNode
+    /**
+     * @description Флаг делает опцию неактивной.
+     */
     disabled?: boolean
+    /**
+     * @description Компонент иконка опции.
+     */
     Icon?: React.VFC<React.SVGProps<SVGSVGElement>>
 }
 
 interface ListBoxProps<T extends string> {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description List of items to render in ListBox
+     * @description Список элементов для отображения в ListBox.
      */
     items?: ListBoxItem<T>[]
     /**
-     * @description The value of items in ListBox
+     * @description Значение элементов в ListBox.
      */
     value?: T
     /**
-     * @description The selected value in listbox
+     * @description Выбранное значение в списке ListBox.
      */
     defaultValue?: string
     /**
-     * @description Callback to change value
+     * @description Callback для изменения значения.
      */
     onChange: (value: T) => void
     /**
-     * @description Flag to disable listbox.
+     * @description Флаг для отключения списка.
      */
     readonly?: boolean
     /**
-     * @description Direction of dropdown
+     * @description Направление раскрывающегося списка.
      * @default 'bottom_right'
      */
     direction?: DropdownDirection
     /**
-     * @description Label for the ListBox
+     * @description Label для ListBox.
      */
     label?: string
     /**
-     * @description Content to render on the left side
+     * @description Содержимое для отображения на левой стороне.
      */
     addonLeft?: ReactNode
     /**
-     * @description Content to render on the right side of input
+     * @description Содержимое для отображения на правой стороне.
      */
     addonRight?: ReactNode
 }

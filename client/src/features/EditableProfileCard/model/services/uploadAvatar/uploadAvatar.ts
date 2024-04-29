@@ -6,7 +6,7 @@ import { User, initAuthData } from '@/entities/User'
 import { fetchProfileData } from '../fetchProfileData/fetchProfileData'
 
 export const uploadAvatar = createAsyncThunk<User, File, ThunkConfig<string>>(
-    'editableProfileCard/uploadAvatar',
+    'profile/uploadAvatar',
     async (file, thunkAPI) => {
         const { extra, rejectWithValue, dispatch } = thunkAPI
 

@@ -9,27 +9,27 @@ import { Portal } from '../Portal'
 
 interface ModalProps {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description Modal content
+     * @description Содержимое модульного окна.
      */
     children?: ReactNode
     /**
-     * @description Flag to show/hide modal
+     * @description Флаг для отображения/скрытия модального окна.
      */
     isOpen?: boolean
     /**
-     * @description Callback to close modal
+     * @description Callback для закрытия модального окна.
      */
     onClose?: () => void
     /**
-     * @description Flag to render modal only when it is open
+     * @description Флаг, для отрисовки модального окна, только тогда, когда оно открыто.
      */
     lazy?: boolean
     /**
-     * @description Flag to show overlay
+     * @description Флаг для отображения overlay.
      */
     overlay?: boolean
 }

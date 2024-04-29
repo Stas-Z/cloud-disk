@@ -1,4 +1,4 @@
-export { getLoginState } from './model/selectors/getLoginState/getLoginState'
+export { LoginFormAsync } from './ui/LoginForm/LoginForm.async'
 
 export { authMiddleware } from './model/middleware/authMiddleware/authMiddleware'
 

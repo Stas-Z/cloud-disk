@@ -25,65 +25,65 @@ export type ButtonSize = 's' | 'm' | 'l' | 'xl'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description Button variant. Responsible for button's color and border.
+     * @description Вариант кнопки. Отвечает за цвет и границу кнопки.
      * @default 'outline'
      */
     variant?: ButtonVariant
     /**
-     * @description Flag to make button squared.
+     * @description Флаг, чтобы сделать кнопку квадратной.
      */
     square?: boolean
     /**
-     * @description Flag to make border button round.
+     * @description Флаг, чтобы сделать кнопку круглой.
      */
     round?: boolean
     /**
-     * @description Button size. Responsible for button's text size.
+     * @description Размер кнопки. Отвечает за размер текста кнопки.
      * @default 'm'
      */
     size?: ButtonSize
     /**
-     * @description Flag to disable button.
+     * @description Флаг для отключения кнопки.
      */
     disabled?: boolean
     /**
-     * @description Button content
+     * @description Содержимое кнопки.
      */
     children?: ReactNode
     /**
-     * @description Flag to make button's width 100%.
+     * @description Флаг, чтобы сделать ширину кнопки равной 100%.
      */
     fullWidth?: boolean
     /**
-     * Content to render on the left side of input
+     * @description Содержимое для отображения в левой части кнопки.
      * @example
      * <Button addonLeft={<Icon Svg={SearchIcon} />} />
      */
     addonLeft?: ReactNode
     /**
-     * Content to render on the right side of input
+     * @description Содержимое для отображения в правой части кнопки.
      * @example
      * <Button addonRight={<Icon Svg={SearchIcon} />} />
      */
     addonRight?: ReactNode
     /**
-     * @description Button color.
+     * @description Цвет кнопки.
      */
     color?: ButtonColor
     /**
-     * @description Button color.
+     * @description Цвет текста.
      */
     textColor?: ButtonTextColor
     /**
-     * @description Button shadow.
+     * @description Флаг, чтобы отобразить тень кнопки.
      */
     shadow?: boolean
     /**
-     * @description Style for loading button.
+     * @description Флаг, чтобы отобразить стиль загрузки кнопки.
      */
     isLoading?: boolean
 }

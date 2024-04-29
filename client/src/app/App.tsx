@@ -14,8 +14,6 @@ import AppRouter from './providers/router/ui/AppRouter'
 
 interface AppProps {
     className?: string
-    // wrapperRef: MutableRefObject<HTMLDivElement>
-    // onScroll: () => void
 }
 
 const App = memo((props: AppProps) => {
@@ -28,12 +26,7 @@ const App = memo((props: AppProps) => {
 
     const authData = useSelector(getUserAuthData)
     return (
-        <div
-            // ref={wrapperRef}
-            id="app"
-            className={classNames('app', {}, [className])}
-            // onScroll={onScroll}
-        >
+        <div id="app" className={classNames('app', {}, [className])}>
             <Suspense fallback="">
                 {authData && <Navbar />}
                 <ContentLayout

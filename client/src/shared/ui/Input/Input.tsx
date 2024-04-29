@@ -30,47 +30,47 @@ type VariantType = 'filled' | 'outlined' | 'search'
 
 interface InputProps extends HTMLInputProps {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description The value in Input
+     * @description Значение в инпуте.
      */
     value?: string | number
     /**
-     * @description Callback to change value in input
+     * @description Callback для изменения значения в инпуте.
      */
     onChange?: (value: string) => void
     /**
-     * @description Flag to disable Input and to add readonly class
+     * @description Флаг для отключения ввода и добавления класса readonly.
      */
     readonly?: boolean
     /**
-     * Content to render on the left side of input
+     * @description Содержимое для отображения в левой части инпута.
      * @example
      * <Input addonLeft={<Icon Svg={SearchIcon} />} />
      */
     addonLeft?: ReactNode
     /**
-     * Content to render on the right side of input
+     * @description Содержимое для отображения в правой части инпута.
      * @example
      * <Input addonRight={<Icon Svg={SearchIcon} />} />
      */
     addonRight?: ReactNode
     /**
-     * @description Label for input
+     * @description Label для инпута.
      */
     label?: string
     /**
-     * @description The height of input
+     * @description Высота инпута.
      */
     size?: InputSize
     /**
-     * @description design of input
+     * @description Вариант инпута. Отвечает за стили инпута.
      */
     variant?: VariantType
     /**
-     * @description Flag to enable focus
+     * @description Флаг для включения фокусировки.
      */
     focus?: boolean
 }

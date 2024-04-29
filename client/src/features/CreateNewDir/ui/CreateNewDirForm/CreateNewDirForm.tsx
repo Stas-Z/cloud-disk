@@ -7,6 +7,10 @@ import { getCurrentDir, fileActions, getFileName } from '@/entities/File'
 import { noticeActions } from '@/entities/Notice'
 import Close from '@/shared/assets/icons/close.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
+import {
+    DynamicModuleLoader,
+    ReducersList,
+} from '@/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader'
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
 import { Button } from '@/shared/ui/Button'
 import { Icon } from '@/shared/ui/Icon'
@@ -16,12 +20,16 @@ import { Text } from '@/shared/ui/Text'
 
 import cls from './CreateNewDirForm.module.scss'
 import { createFileDir } from '../../model/services/createFileDir/createFileDir'
+import { createNewDirReducer } from '../../model/slices/createNewDirSlice'
+
+const initialReducers: ReducersList = {
+    createNewDir: createNewDirReducer,
+}
 
 export interface CreateNewDirFormProps {
     className?: string
     isOpen?: boolean
     onSuccess: () => void
-    onAccept?: (name: string, parent: string) => void
     isLoading?: boolean
     error?: string
     showError?: boolean
@@ -35,7 +43,6 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
         onSuccess,
         isLoading,
         error,
-        onAccept,
         showError,
         showErrorHandler,
     } = props
@@ -89,49 +96,51 @@ const CreateNewDirForm = (props: CreateNewDirFormProps) => {
     }, [onKeyDown, isOpen])
 
     return (
-        <VStack
-            className={classNames(cls.newDirForm, {}, [className])}
-            justify="between"
-        >
-            <Text
-                title={t('Enter the folder name')}
-                size="s"
-                bold
-                className={cls.title}
-            />
-            <HStack className={cls.close}>
-                <Icon Svg={Close} clickable onClick={onSuccess} />
-            </HStack>
-            <VStack gap="8" max>
-                <HStack max className={cls.input}>
-                    <Input
-                        value={t(fileName)}
-                        onChange={onChangeFoldername}
-                        placeholder={t('New Folder')}
-                        variant="outlined"
-                        focus
-                    />
+        <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount>
+            <VStack
+                className={classNames(cls.newDirForm, {}, [className])}
+                justify="between"
+            >
+                <Text
+                    title={t('Enter the folder name')}
+                    size="s"
+                    bold
+                    className={cls.title}
+                />
+                <HStack className={cls.close}>
+                    <Icon Svg={Close} clickable onClick={onSuccess} />
                 </HStack>
-                <HStack max className={cls.error}>
-                    {error && showError && (
-                        <Text text={t(error)} variant="error" size="s" />
-                    )}
+                <VStack gap="8" max>
+                    <HStack max className={cls.input}>
+                        <Input
+                            value={t(fileName)}
+                            onChange={onChangeFoldername}
+                            placeholder={t('New Folder')}
+                            variant="outlined"
+                            focus
+                        />
+                    </HStack>
+                    <HStack max className={cls.error}>
+                        {error && showError && (
+                            <Text text={t(error)} variant="error" size="s" />
+                        )}
+                    </HStack>
+                </VStack>
+
+                <HStack max justify="end">
+                    <Button
+                        onClick={onSaveClick}
+                        className={cls.loginBtn}
+                        disabled={isLoading}
+                        variant="filled"
+                        color="yellow"
+                        isLoading={isLoading}
+                    >
+                        {t('Save')}
+                    </Button>
                 </HStack>
             </VStack>
-
-            <HStack max justify="end">
-                <Button
-                    onClick={onSaveClick}
-                    className={cls.loginBtn}
-                    disabled={isLoading}
-                    variant="filled"
-                    color="yellow"
-                    isLoading={isLoading}
-                >
-                    {t('Save')}
-                </Button>
-            </HStack>
-        </VStack>
+        </DynamicModuleLoader>
     )
 }
 export default memo(CreateNewDirForm)

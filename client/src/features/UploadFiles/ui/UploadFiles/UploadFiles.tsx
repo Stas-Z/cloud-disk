@@ -20,11 +20,7 @@ import { VStack } from '@/shared/ui/Stack'
 
 import cls from './UploadFiles.module.scss'
 import { fileUploadHelper } from '../../model/lib/helpers/fileUploadHelper/fileUploadHelper'
-import {
-    getUploadFilesError,
-    getUploadFilesIsLoading,
-    getUploadFilesOnSucces,
-} from '../../model/selectors/uploadFilesSelectors'
+import { getUploadFilesIsLoading } from '../../model/selectors/uploadFilesSelectors'
 import { uploadFilesReducer } from '../../model/slices/uploadFilesSlice'
 
 interface UploadFilesProps {
@@ -40,11 +36,8 @@ export const UploadFiles = memo((props: UploadFilesProps) => {
     const { t } = useTranslation()
     const dispatch = useAppDispatch()
     const currentDir = useSelector(getCurrentDir)
-    const error = useSelector(getUploadFilesError)
 
     const isUploading = useSelector(getUploadFilesIsLoading)
-
-    const onSucces = useSelector(getUploadFilesOnSucces)
 
     const openFilePicker = useCallback(() => {
         document.getElementById('fileInput')?.click()

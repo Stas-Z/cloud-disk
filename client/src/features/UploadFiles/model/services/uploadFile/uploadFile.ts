@@ -8,7 +8,7 @@ import { getUserDiskSpace, initAuthData } from '@/entities/User'
 // eslint-disable-next-line fsd-pathcheker/layer-imports
 import { uploadBarService, uploaderBarActions } from '@/features/UploaderBar'
 
-export interface uploadFileProps {
+interface uploadFileProps {
     file: File
     dirId: string
     updateList?: boolean

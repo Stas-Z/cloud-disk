@@ -10,33 +10,33 @@ export type CardBorder = 'round' | 'default' | 'partial'
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description Card content
+     * @description Содержимое карточки.
      */
     children: ReactNode
     /**
-     * @description Card theme. Responsible for card's color and border.
+     * @description Вариант карточки. Отвечает за цвет и границу карточки.
      * @default 'normal'
      */
     variant?: CardVariant
     /**
-     * @description Flag to make card width 100%.
+     * @description Флаг, чтобы сделать ширину карточки 100 %.
      */
     max?: boolean
     /**
-     * @description Flag to make card height 100%.
+     * @description Флаг, чтобы сделать высоту карточки 100 %.
      */
     fullHeight?: boolean
     /**
-     * @description Sets padding.
+     * @description Добавляет внутренние отступы.
      * @default '8'
      */
     padding?: CardPadding
     /**
-     * @description Sets border-radius.
+     * @description Задает радиус углов.
      * @default 'default'
      */
     border?: CardBorder

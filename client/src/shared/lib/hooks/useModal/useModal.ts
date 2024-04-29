@@ -13,7 +13,7 @@ interface useModalProps {
 }
 
 /**
- * @description Reusable hook for modal components (modal/drawer)
+ * @description Переиспользуемый хук для модальных компонентов (modal)
  * @param onClose
  * @param isOpen
  * @param animationDelay

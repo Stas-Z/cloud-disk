@@ -7,9 +7,21 @@ import cls from './AppLogo.module.scss'
 import { HStack } from '../Stack'
 
 interface AppLogoProps {
+    /**
+     * @description Дополнительный класс.
+     */
     className?: string
+    /**
+     * @description Ширина.
+     */
     width?: number
+    /**
+     * @description Высота.
+     */
     height?: number
+    /**
+     * @description Цвет.
+     */
     color?: string
 }
 

@@ -10,20 +10,20 @@ import popupCls from '../../styles/popup.module.scss'
 
 interface PopoverProps {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description Children of trigger Button component
+     * @description Дочерние элементы компонента кнопки триггера.
      */
     trigger: ReactNode
     /**
-     * @description Direction of dropdown
+     * @description Направление раскрывающегося списка.
      * @default 'bottom_right'
      */
     direction?: DropdownDirection
     /**
-     * Popover content
+     * @description Содержимое Popover.
      */
     children: ReactNode
 }

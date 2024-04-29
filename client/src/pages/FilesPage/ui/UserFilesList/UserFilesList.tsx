@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect } from 'react'
 
-import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import {
@@ -38,8 +37,6 @@ export const UserFilesList = memo((props: UserFilesProps) => {
 
     const currentDir = useSelector(getCurrentDir)
     const view = useSelector(getFileFiltersView)
-
-    const { t } = useTranslation()
 
     useEffect(() => {
         dispatch(initFilesPage())

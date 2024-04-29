@@ -5,6 +5,9 @@ import { classNames } from '@/shared/lib/classNames/classNames'
 import cls from './Loader.module.scss'
 
 interface LoaderProps {
+    /**
+     * @description Дополнительный класс.
+     */
     className?: string
 }
 

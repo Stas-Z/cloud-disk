@@ -8,7 +8,7 @@ export const deleteLastDirScroll = createAsyncThunk<
     ScrollSave,
     void,
     ThunkConfig<string>
->('file/deleteLastDirScroll', async (_, thunkAPI) => {
+>('scroll/deleteLastDirScroll', async (_, thunkAPI) => {
     const { rejectWithValue, getState } = thunkAPI
     try {
         const { scroll } = (getState() as StateSchema).scroll

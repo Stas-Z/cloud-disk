@@ -11,3 +11,19 @@
 .menu {
     position: relative;
 }
+
+.addButton {
+    position: relative;
+    border-radius: 10px;
+    font-weight: 600;
+
+    div {
+        position: absolute;
+        width: 38px;
+        left: 0;
+    }
+}
+
+.icon {
+    color: black;
+}

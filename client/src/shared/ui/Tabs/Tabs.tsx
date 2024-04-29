@@ -12,19 +12,19 @@ export interface TabItem {
 
 interface TabsProps {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description The tabs items to display
+     * @description Элементы вкладки для отображения.
      */
     tabs: TabItem[]
     /**
-     * @description The value of Tab
+     * @description Значение вкладки.
      */
     value: string
     /**
-     * @description Called when a tab is clicked
+     * @description Вызывается при нажатии на вкладку.
      * @param {TabItem} tab
      */
     onTabClick: (tab: TabItem) => void

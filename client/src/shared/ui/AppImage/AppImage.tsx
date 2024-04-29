@@ -7,8 +7,17 @@ import {
 } from 'react'
 
 interface AppImageProps extends ImgHTMLAttributes<HTMLImageElement> {
+    /**
+     * @description Дополнительный класс.
+     */
     className?: string
+    /**
+     * @description заглушка, показывается пока не загрузиться изображение.
+     */
     fallback?: ReactElement
+    /**
+     * @description заглушка, показывается если изображение нету.
+     */
     errorFallback?: ReactElement
 }
 
@@ -50,9 +59,5 @@ export const AppImage = memo((props: AppImageProps) => {
         )
     }
 
-    return (
-        <div className={className} {...otherProps}>
-            <img className={className} src={src} alt={alt} {...otherProps} />
-        </div>
-    )
+    return <img className={className} src={src} alt={alt} {...otherProps} />
 })

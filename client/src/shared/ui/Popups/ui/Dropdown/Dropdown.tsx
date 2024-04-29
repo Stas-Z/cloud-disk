@@ -11,34 +11,52 @@ import { Icon } from '../../../Icon'
 import popupCls from '../../styles/popup.module.scss'
 
 export interface DropdownItem {
+    /**
+     * @description Флаг делает опцию неактивной.
+     */
     disabled?: boolean
+    /**
+     * @description Содержимое опции.
+     */
     content?: ReactNode
+    /**
+     * @description Callback нажатия на опцию.
+     */
     onClick?: () => void
+    /**
+     * @description Ссылка опции.
+     */
     href?: string
+    /**
+     * @description Id опции.
+     */
     id?: string
+    /**
+     * @description Компонент иконка опции.
+     */
     Icon?: React.VFC<React.SVGProps<SVGSVGElement>>
 }
 
 interface DropdownProps {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description List of items to render in dropdown
+     * @description Список элементов для отображения в раскрывающемся списке.
      */
     items: DropdownItem[]
     /**
-     * @description Children of trigger Button component
+     * @description Дочерние элементы компонента кнопки триггера.
      */
     trigger: ReactNode
     /**
-     * @description Direction of dropdown
+     * @description Направление раскрывающегося списка.
      * @default 'bottom_right'
      */
     direction?: DropdownDirection
     /**
-     * @description User info: avatar and email adress
+     * @description Информация о пользователе: аватар и адрес электронной почты.
      */
     addonTop?: ReactNode
 }

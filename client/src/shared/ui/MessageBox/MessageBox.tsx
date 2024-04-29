@@ -10,10 +10,21 @@ import { HStack, VStack } from '../Stack'
 import { Text } from '../Text'
 
 interface MessageBoxProps {
+    /**
+     * @description Дополнительный класс.
+     */
     className?: string
+    /**
+     * @description Флаг, который показывает что файл удаляется.
+     */
     isDeleting?: boolean
-    isLoading?: boolean
+    /**
+     * @description Флаг, который показывает что файл загружается.
+     */
     isUploading?: boolean
+    /**
+     * @description Флаг, который показывает что файл скачивается.
+     */
     isDownloading?: boolean
 }
 
@@ -21,12 +32,11 @@ export const MessageBox = memo((props: MessageBoxProps) => {
     const {
         className,
         isDeleting = false,
-        isLoading = false,
         isUploading = false,
         isDownloading = false,
     } = props
     const { t } = useTranslation()
-    const isOpen = isDeleting || isLoading || isUploading || isDownloading
+    const isOpen = isDeleting || isUploading || isDownloading
 
     const [isMounted, setIsMounted] = useState(false)
 
@@ -53,7 +63,6 @@ export const MessageBox = memo((props: MessageBoxProps) => {
                     {isDeleting && (
                         <Text text={t('Deleting')} variant="white" />
                     )}
-                    {isLoading && <Text text={t('Loading')} variant="white" />}
                     {isDownloading && (
                         <Text text={t('Downloading')} variant="white" />
                     )}

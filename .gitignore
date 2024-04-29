@@ -12,5 +12,5 @@ server/node_modules
 # env
 server/config/config.env
 
-server/files
-server/static
+server/files/**
+server/static/**

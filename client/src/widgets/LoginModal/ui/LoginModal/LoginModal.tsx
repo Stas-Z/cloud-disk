@@ -1,12 +1,12 @@
 import { Suspense } from 'react'
 
+import { LoginFormAsync } from '@/features/AuthorizationForm'
 import { LangSwitcher } from '@/features/LangSwitcher'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { Card } from '@/shared/ui/Card'
 import { Modal } from '@/shared/ui/Modal'
 
 import cls from './LoginModal.module.scss'
-import { LoginFormAsync } from '../../../../features/AuthorizationForm/ui/LoginForm/LoginForm.async'
 
 interface LoginModalProps {
     className?: string

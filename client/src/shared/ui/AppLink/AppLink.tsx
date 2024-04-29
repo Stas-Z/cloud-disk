@@ -9,51 +9,51 @@ import cls from './AppLink.module.scss'
 export type AppLinkVariant = 'primary' | 'red'
 
 interface AppLinkProps extends LinkProps {
-  /**
-   * @description additional class.
-   */
-  className?: string
-  /**
-   * @description AppLink variant. Responsible for AppLink's color.
-   * @default 'primary'
-   */
-  variant?: AppLinkVariant
-  /**
-   * @description AppLink content
-   */
-  children?: ReactNode
-  /**
-   * ClassName for active link
-   */
-  activeClassName?: string
+    /**
+     * @description Дополнительный класс.
+     */
+    className?: string
+    /**
+     * @description Вариант AppLink. Отвечает за цвет AppLink.
+     * @default 'primary'
+     */
+    variant?: AppLinkVariant
+    /**
+     * @description Содержимое AppLink.
+     */
+    children?: ReactNode
+    /**
+     * ClassName для активной ссылки.
+     */
+    activeClassName?: string
 }
 
 const AppLink = forwardRef(
-  (props: AppLinkProps, ref: Ref<HTMLAnchorElement>) => {
-    const {
-      to,
-      className,
-      children,
-      variant = 'primary',
-      activeClassName = '',
-      ...otherProps
-    } = props
-
-    return (
-      <NavLink
-        ref={ref}
-        to={to}
-        className={({ isActive }) =>
-          classNames(cls.appLink, { [activeClassName]: isActive }, [
+    (props: AppLinkProps, ref: Ref<HTMLAnchorElement>) => {
+        const {
+            to,
             className,
-            cls[variant],
-          ])
-        }
-        {...otherProps}
-      >
-        {children}
-      </NavLink>
-    )
-  },
+            children,
+            variant = 'primary',
+            activeClassName = '',
+            ...otherProps
+        } = props
+
+        return (
+            <NavLink
+                ref={ref}
+                to={to}
+                className={({ isActive }) =>
+                    classNames(cls.appLink, { [activeClassName]: isActive }, [
+                        className,
+                        cls[variant],
+                    ])
+                }
+                {...otherProps}
+            >
+                {children}
+            </NavLink>
+        )
+    },
 )
 export default memo(AppLink)

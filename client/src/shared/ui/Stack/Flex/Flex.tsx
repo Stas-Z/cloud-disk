@@ -1,9 +1,9 @@
 import { CSSProperties, ElementType, useMemo } from 'react'
 
 import { Mods, classNames } from '@/shared/lib/classNames/classNames'
+import { PolymorphicComponentProp } from '@/shared/types/polymorphic'
 
 import cls from './Flex.module.scss'
-import { PolymorphicComponentProp } from '../../../types/polymorphic'
 
 export type FlexJustify = 'start' | 'center' | 'end' | 'between' | 'around'
 export type FlexAlign = 'start' | 'center' | 'end' | 'unset'
@@ -56,50 +56,49 @@ const positionClasses: Record<FlexPosition, string> = {
 
 export interface FlexProps {
     /**
-     * @description additional class.
+     * @description Дополнительный класс.
      */
     className?: string
     /**
-     * @description Justify content css property
+     * @description Justify content свойство css.
      */
     justify?: FlexJustify
     /**
-     * @description Align items css property
+     * @description Align items свойство css.
      */
     align?: FlexAlign
     /**
-     * @description Flex direction css property
+     * @description Flex direction свойство css.
      */
     direction?: FlexDirection
     /**
-     * @description Gap between flex items
+     * @description Gap между flex items.
      */
     gap?: FlexGap
     /**
-     * @description Gap between flex items
+     * @description Position свойство css.
      */
     position?: FlexPosition
     /**
-     * @description Flag to set width: 100%
+     * @description Флаг, чтобы установить ширину 100%.
      */
     max?: boolean
     /**
-     * @description Flag to set height: 100%
+     * @description Флаг, чтобы установить высоту 100%.
      */
     maxHeight?: boolean
     /**
-     * @description Flag to flex-wrap
+     * @description Flex-wrap свойство css.
      * @default 'nowrap'
      */
     wrap?: FlexWrap
     /**
-     * @description Flag to inline-flex ;
-     * @default 'nowrap'
+     * @description Флаг, чтобы установить inline-flex.
+     * @default 'false'
      */
     inline?: boolean
     /**
-     * @description Flex-grow css property;
-     * @default 'nowrap'
+     * @description Flex-grow свойство css.
      */
     flexGrow?: number
 }

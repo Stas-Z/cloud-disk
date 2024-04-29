@@ -1,6 +1,5 @@
 import { memo, useCallback } from 'react'
 
-import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import { classNames } from '@/shared/lib/classNames/classNames'
@@ -24,7 +23,6 @@ interface BreadcrumbsProps {
 
 export const BreadcrumbsList = memo((props: BreadcrumbsProps) => {
     const { className, onClick } = props
-    const { t } = useTranslation()
     const dispatch = useAppDispatch()
 
     const breadcrumbAll = useSelector(getBreadcrumbs)

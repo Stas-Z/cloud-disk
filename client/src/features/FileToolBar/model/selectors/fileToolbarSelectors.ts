@@ -8,9 +8,3 @@ export const getfileToolbarIsDeleting = (state: StateSchema) =>
 
 export const getfileToolbarIsDownloading = (state: StateSchema) =>
     state.toolbar?.isDownloading || false
-
-export const getfileToolbarError = (state: StateSchema) =>
-    state.toolbar?.error || ''
-
-export const getfileToolbarMessage = (state: StateSchema) =>
-    state.toolbar?.message || ''

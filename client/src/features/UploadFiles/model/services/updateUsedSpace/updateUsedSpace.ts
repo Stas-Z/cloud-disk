@@ -11,7 +11,7 @@ export const updateUsedSpace = createAsyncThunk<
     void,
     UpdateUsedSpaceProps,
     ThunkConfig<string>
->('user/updateUsedSpace', async ({ fileSize }, thunkAPI) => {
+>('uploadFiles/updateUsedSpace', async ({ fileSize }, thunkAPI) => {
     const { extra, rejectWithValue, dispatch } = thunkAPI
 
     try {

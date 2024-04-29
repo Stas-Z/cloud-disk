@@ -1,15 +1,9 @@
-import {
-    DragEvent,
-    MutableRefObject,
-    ReactNode,
-    useEffect,
-    useRef,
-} from 'react'
+import { DragEvent, ReactNode, useEffect } from 'react'
 
 import { useSelector } from 'react-redux'
 
 import { StateSchema } from '@/app/providers/StoreProvider'
-import { getCurrentDir } from '@/entities/File'
+import { getCurrentDir, getFileIsLoading } from '@/entities/File'
 import { getScrollSaveByDir } from '@/features/ScrollSave'
 import { classNames } from '@/shared/lib/classNames/classNames'
 
@@ -18,7 +12,6 @@ import cls from './Page.module.scss'
 interface PageProps {
     className?: string
     children: ReactNode
-    onScrollEnd?: () => void
     restoreScroll?: boolean
     onDragEnter?: (e: DragEvent<HTMLDivElement>) => void
     onDragLeave?: (e: DragEvent<HTMLDivElement>) => void
@@ -29,7 +22,6 @@ export const Page = (props: PageProps) => {
     const {
         className,
         children,
-        onScrollEnd,
         restoreScroll = false,
         onDragEnter,
         onDragLeave,
@@ -37,16 +29,13 @@ export const Page = (props: PageProps) => {
     } = props
 
     const currentDir = useSelector(getCurrentDir)
-
-    const triggerRef = useRef() as MutableRefObject<HTMLDivElement>
-    const wrapperRef = useRef() as MutableRefObject<HTMLDivElement>
-
+    const isLoading = useSelector(getFileIsLoading)
     const scrollPosition = useSelector((state: StateSchema) =>
         getScrollSaveByDir(state, currentDir),
     )
 
     useEffect(() => {
-        if (restoreScroll) {
+        if (restoreScroll && !isLoading) {
             setTimeout(() => {
                 const target = document.getElementById(
                     `list-item-${scrollPosition}`,
@@ -58,23 +47,18 @@ export const Page = (props: PageProps) => {
                         block: 'center',
                     })
                 }
-            }, 100)
+            }, 200)
         }
-    }, [currentDir, restoreScroll, scrollPosition])
+    }, [isLoading, restoreScroll, scrollPosition])
 
     return (
         <main
-            ref={wrapperRef}
             className={classNames(cls.page, {}, [className])}
             onDragEnter={onDragEnter}
             onDragLeave={onDragLeave}
             onDragOver={onDragOver}
         >
             {children}
-
-            {onScrollEnd ? (
-                <div className={cls.trigger} ref={triggerRef} />
-            ) : null}
         </main>
     )
 }

@@ -62,21 +62,18 @@ export const ProfileCard = memo((props: ProfileCardProps) => {
                     {t('Avatar')}
                 </Label>
                 <HStack position="relative">
-                    <Avatar
-                        src={avatar}
-                        size={48}
-                        className={cls.avatar}
-                        {...bindHover}
-                    />
-                    {onDeleteAvatar && isHover && (
-                        <HStack className={cls.close} {...bindHover}>
-                            <Icon
-                                Svg={Close}
-                                clickable
-                                onClick={onDeleteAvatar}
-                            />
-                        </HStack>
-                    )}
+                    <HStack {...bindHover}>
+                        <Avatar src={avatar} size={48} className={cls.avatar} />
+                        {onDeleteAvatar && isHover && (
+                            <HStack className={cls.close} {...bindHover}>
+                                <Icon
+                                    Svg={Close}
+                                    clickable
+                                    onClick={onDeleteAvatar}
+                                />
+                            </HStack>
+                        )}
+                    </HStack>
                     <div>
                         <Button
                             className={cls.uploadButton}
