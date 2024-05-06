@@ -93,7 +93,7 @@
 
 Запросы на сервер отправляются с помощью [Async Thunk](./src/shared/api/api.ts).
 
-Для асинхронного подключения редюсеров (чтобы не тянуть их в общий бандл) используется [DynamicModuleLoader](/src/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader.tsx).
+Для асинхронного подключения редюсеров (чтобы не тянуть их в общий бандл) используется [DynamicModuleLoader](./src/shared/lib/components/DynamicModuleLoader/DynamicModuleLoader.tsx).
 
 ---
 
