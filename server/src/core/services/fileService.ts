@@ -91,6 +91,8 @@ export class FileService {
                 _id: userId,
             })
 
+            if (!outdatedFiles) return
+
             // Удаляем каждый устаревший файл
             await Promise.all(
                 outdatedFiles.map(async (file) => {
