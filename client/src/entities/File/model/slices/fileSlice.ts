@@ -42,7 +42,7 @@ export const fileSlice = createSlice({
         builder
             .addCase(fetchFilesList.pending, (state, action) => {
                 state.isLoading = true
-                state.error = undefined
+                state.error = ''
                 if (action.meta.arg.replace) {
                     filesAdapter.removeAll(state)
                 }

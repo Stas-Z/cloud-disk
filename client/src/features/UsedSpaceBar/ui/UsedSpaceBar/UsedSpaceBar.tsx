@@ -23,7 +23,7 @@ export const UsedSpaceBar = memo((props: UsedSpaceBarProps) => {
     const freeSpace = Math.round((usedSpace / diskSpace) * 100)
 
     const disk = sizeFormat(diskSpace)
-    const used = sizeFormat(usedSpace)
+    const used = sizeFormat(diskSpace - usedSpace)
 
     return (
         <div className={classNames(cls.usedSpaceBar, {}, [className])}>

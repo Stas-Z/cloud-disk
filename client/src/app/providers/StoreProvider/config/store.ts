@@ -53,8 +53,5 @@ export function createReduxStore(
             }).concat(authMiddleware),
     })
 
-    // @ts-ignore
-    store.reducerManager = reducerManager
-
-    return store
+    return { ...store, reducerManager }
 }

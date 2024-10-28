@@ -10,7 +10,7 @@ const initialState: NoticeSchema = {
 }
 
 export const noticeSlice = createSlice({
-    name: 'user',
+    name: 'notice',
     initialState,
     reducers: {
         setNoticeFileName: (state, action: PayloadAction<string>) => {
