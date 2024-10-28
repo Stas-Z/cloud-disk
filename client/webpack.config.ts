@@ -9,7 +9,7 @@ import {
     type BuildPaths,
 } from './config/build/types/config'
 
-function getApiUrl(mode: BuildMode, apiUrl?: string, staticUrl?: boolean) {
+function getApiUrl(mode: BuildMode, apiUrl?: string) {
     if (apiUrl) {
         return apiUrl
     }

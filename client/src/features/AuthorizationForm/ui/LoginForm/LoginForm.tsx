@@ -138,6 +138,7 @@ const LoginForm = (props: LoginFormProps) => {
                     disabled={isLoading}
                     shadow
                     round
+                    isLoading={isLoading}
                 >
                     {buttonText}
                 </Button>
