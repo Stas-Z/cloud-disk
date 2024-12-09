@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 
 import bcrypt from 'bcryptjs'
 import { Request, Response } from 'express'
@@ -226,13 +227,19 @@ export class UserController {
             const oldAvatarName = user.avatar
             if (oldAvatarName) {
                 fs.unlinkSync(
-                    `${appConfig.staticPath}\\${user.id}\\${oldAvatarName}`,
+                    path.join(
+                        appConfig.staticPath,
+                        user.id.toString(),
+                        oldAvatarName,
+                    ),
                 )
             }
 
             const avatarName = `${uuidv4()}.jpg`
 
-            file.mv(`${appConfig.staticPath}\\${user.id}\\${avatarName}`)
+            file.mv(
+                path.join(appConfig.staticPath, user.id.toString(), avatarName),
+            )
 
             user.avatar = avatarName
 
@@ -253,7 +260,13 @@ export class UserController {
                 return res.status(400).json({ message: 'User not found' })
             }
 
-            fs.unlinkSync(`${appConfig.staticPath}\\${user.id}\\${user.avatar}`)
+            fs.unlinkSync(
+                path.join(
+                    appConfig.staticPath,
+                    user.id.toString(),
+                    user.avatar || '',
+                ),
+            )
 
             user.avatar = undefined
 

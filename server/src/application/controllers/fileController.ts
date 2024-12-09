@@ -1,5 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import fs from 'fs'
+import path from 'path'
 
 import archiver from 'archiver'
 import { Request, Response } from 'express'
@@ -38,7 +39,7 @@ export class FileController {
                 await FileService.createDir(file)
             } else {
                 // В обратном случае {родительский путь}\{имя файла}
-                file.path = `${parentFile.path}\\${file.name}`
+                file.path = path.join(parentFile.path || '', file.name)
                 await FileService.createDir(file)
                 // Пушим id только что созданного нового файла в массив родительского фаила childs
                 parentFile.childs?.push(file._id)
@@ -132,12 +133,17 @@ export class FileController {
             }
 
             // Путь файла
-            const path = parent
-                ? `${appConfig.filePath}\\${user._id}\\${parent.path}\\${file.name}`
-                : `${appConfig.filePath}\\${user._id}\\${file.name}`
+            const pathToFile = parent
+                ? path.join(
+                      appConfig.filePath,
+                      user._id.toString(),
+                      parent.path || '',
+                      file.name,
+                  )
+                : path.join(appConfig.filePath, user._id.toString(), file.name)
 
             // Проверяем если есть уже такой файл, по такому-то пути
-            if (fs.existsSync(path)) {
+            if (fs.existsSync(pathToFile)) {
                 return res.status(400).json({ message: 'File already exists' })
             }
 
@@ -151,7 +157,7 @@ export class FileController {
             }
 
             // Перемещаем файл по пути созданному выше
-            file?.mv(path)
+            file?.mv(pathToFile)
 
             // Получаем тип файла, его расширение
             const type = file?.name.split('.').pop()
@@ -159,7 +165,8 @@ export class FileController {
             let newFilePath = file.name
             // Если есть родитель, добавляем в путь
             if (parent) {
-                newFilePath = `${parent.path}\\${file.name}`
+                // newFilePath = `${parent.path}\\${file.name}`
+                newFilePath = path.join(parent.path || '', file.name)
             }
 
             // Создаём модель файла и передаём все необходимые параметры
@@ -282,17 +289,26 @@ export class FileController {
                                     })
 
                                 // Путь файла
-                                const path = parent
-                                    ? `${appConfig.filePath}\\${user._id}\\${parent.path}\\${file.name}`
-                                    : `${appConfig.filePath}\\${user._id}\\${file.name}`
+                                const pathToFile = parent
+                                    ? path.join(
+                                          appConfig.filePath,
+                                          user._id.toString(),
+                                          parent.path || '',
+                                          file.name,
+                                      )
+                                    : path.join(
+                                          appConfig.filePath,
+                                          user._id.toString(),
+                                          file.name,
+                                      )
 
                                 // Проверяем, существует ли уже такой файл по указанному пути
-                                if (fs.existsSync(path)) {
+                                if (fs.existsSync(pathToFile)) {
                                     throw new Error('File already exists')
                                 }
 
                                 // Перемещаем файл по пути созданному выше
-                                file?.mv(path)
+                                file?.mv(pathToFile)
 
                                 // Получаем тип файла, его расширение
                                 const type = file?.name.split('.').pop()
@@ -300,7 +316,11 @@ export class FileController {
                                 let newFilePath = file.name
                                 // Если есть родитель, добавляем в путь
                                 if (parent) {
-                                    newFilePath = `${parent.path}\\${file.name}`
+                                    // newFilePath = `${parent.path}\\${file.name}`
+                                    newFilePath = path.join(
+                                        parent.path || '',
+                                        file.name,
+                                    )
                                 }
 
                                 // Создаём модель файла и передаём все необходимые параметры

@@ -1,6 +1,7 @@
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-promise-executor-return */
 import fs from 'fs'
+import path from 'path'
 
 import { Types } from 'mongoose'
 
@@ -20,10 +21,18 @@ export class FileService {
         const { staticPath } = appConfig
         // Путь к файлу который мы будем создавать: {хранилище}\{папка пользователя(id)}\{путь к файлу}
         let totalFilePath: string
-        totalFilePath = `${filePath}\\${file.user}\\${file.path}`
+        totalFilePath = path.join(
+            filePath,
+            file.user?.toString() || '',
+            file.path || '',
+        )
         if (staticFolder) {
             // Cоздания статической папки
-            totalFilePath = `${staticPath}\\${file.user}\\${file.path}`
+            totalFilePath = path.join(
+                staticPath,
+                file.user?.toString() || '',
+                file.path || '',
+            )
         }
         return new Promise<{ message: string }>((resolve, reject) => {
             try {
@@ -59,7 +68,11 @@ export class FileService {
 
     static getPath(file: FileDoc) {
         // Получение физического пути до файла
-        return `${appConfig.filePath}\\${file.user}\\${file.path}`
+        return path.join(
+            appConfig.filePath,
+            file.user?.toString() || '',
+            file.path || '',
+        )
     }
 
     static deleteFolderRecursive(path: string) {
