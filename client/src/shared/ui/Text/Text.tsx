@@ -48,6 +48,10 @@ interface TextProps {
      * @description Font-weight свойство css.
      */
     bold?: boolean
+    /**
+     * @description text-overflow свойство css.
+     */
+    ellipsis?: boolean
 }
 
 type HeaderTagType = 'h1' | 'h2' | 'h3'
@@ -72,6 +76,7 @@ export const Text = memo((props: TextProps) => {
         align = 'left',
         size = 'm',
         bold,
+        ellipsis,
     } = props
 
     const HeaderTag = mapSizeToHeaderTag[size]
@@ -93,7 +98,17 @@ export const Text = memo((props: TextProps) => {
             )}
         >
             {title && <HeaderTag className={cls.title}>{title}</HeaderTag>}
-            {text && <p className={cls.text}>{text}</p>}
+            {text && (
+                <p
+                    className={classNames(
+                        cls.text,
+                        { [cls.ellipsis]: ellipsis },
+                        [],
+                    )}
+                >
+                    {text}
+                </p>
+            )}
         </div>
     )
 })

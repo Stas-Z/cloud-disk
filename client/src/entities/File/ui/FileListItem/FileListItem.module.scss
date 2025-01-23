@@ -23,8 +23,13 @@
     width: 100%;
     user-select: none;
     max-width: 350px;
+}
 
-    // overflow: hidden;
+@media (width <= 980px) {
+    .title {
+        max-width: 259px;
+        padding-right: 15px;
+    }
 }
 
 .shareLink {

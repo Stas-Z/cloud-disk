@@ -73,7 +73,12 @@ export const FileListItem = memo((props: FileListItemProps) => {
                 justify="between"
             >
                 <HStack max flexGrow={1}>
-                    <Text text={file.name} size="s" className={cls.title} />
+                    <Text
+                        text={file.name}
+                        size="s"
+                        className={cls.title}
+                        ellipsis
+                    />
                 </HStack>
                 <HStack justify="end" max gap="16" className={cls.infoBlock}>
                     {/* // TODO: */}

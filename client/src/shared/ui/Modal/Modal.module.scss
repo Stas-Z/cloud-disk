@@ -12,18 +12,20 @@
 .content {
     padding: 20px;
     border-radius: 16px;
-    max-width: 60%;
     animation-name: close-modal;
     animation-duration: 0.5s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     z-index: var(--modal-z-index);
     background: var(--light-bg);
+    width: 100%;
+    max-width: 390px;
 }
 
 @media (width <= 768px) {
     .content {
-        max-width: 80%;
+        max-width: 390px;
+        margin: 0 20px;
     }
 }
 
