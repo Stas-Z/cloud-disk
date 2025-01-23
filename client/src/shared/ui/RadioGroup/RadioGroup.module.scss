@@ -1,0 +1,68 @@
+.label {
+    font-size: 12px;
+    line-height: 34px;
+    margin-left: 26px;
+    opacity: 0.3;
+    text-transform: uppercase;
+}
+
+.options {
+    box-sizing: border-box;
+    padding-left: 26px;
+    width: 100%;
+    display: inline-block;
+    user-select: none;
+}
+
+.optionItem {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+}
+
+.radioBox {
+    background-color: #ebebeb;
+    border-radius: 50%;
+    transition: background 0.1s linear;
+    height: 20px;
+    width: 20px;
+    top: 3px;
+    position: relative;
+
+    &::after {
+        background-color: white;
+        border-radius: 50%;
+        content: '';
+        opacity: 0;
+        position: absolute;
+        transform: scale(0.1);
+        transition:
+            opacity 0.1s,
+            transform 0.2s;
+        height: 8px;
+        width: 8px;
+        left: calc(50% - 8px / 2);
+        top: calc(50% - 8px / 2);
+    }
+}
+
+.checked {
+    background-color: #ffdc60;
+
+    &::after {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.optionsIcon {
+    margin-right: 10px;
+    display: flex;
+    color: #ebebeb;
+}
+
+.active {
+    color: black;
+}

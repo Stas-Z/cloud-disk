@@ -1,0 +1,32 @@
+.sidebarItem {
+    text-transform: uppercase;
+    display: flex;
+    position: relative;
+    padding-left: 30px;
+    padding-right: 10px;
+    height: 40px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    align-items: center;
+    margin-top: 15px;
+    color: var(--icon);
+
+    &:hover {
+        background: #ebebeb;
+        color: inherit;
+    }
+}
+
+.active {
+    background: #ebebeb;
+}
+
+.icon {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    height: 40px;
+    width: 40px;
+}

@@ -82,5 +82,9 @@
   "byte": "байт",
   "Free from": "Свободно {{used}} из {{disk}}",
   "Not enough disk space": "Не хватает места на диске",
-  "dropLanguage": "Русский"
+  "dropLanguage": "Русский",
+  "View": "ВИД",
+  "Sort by": "Сортировать по",
+  "New folder": "Создать папку",
+  "Upload files": "Загрузить файлы"
 }

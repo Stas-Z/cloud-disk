@@ -19,6 +19,7 @@ import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch
 import { Icon } from '@/shared/ui/Icon'
 import { HStack, VStack } from '@/shared/ui/Stack'
 import { Text } from '@/shared/ui/Text'
+import { MobileAddFileBlock } from '@/widgets/MobileAddFileBlock'
 
 import cls from './UserFilesListHeader.module.scss'
 import {
@@ -79,7 +80,10 @@ export const UserFilesListHeader = memo((props: UserFilesListHeaderProps) => {
                     )}
                     <Text title={titleName} bold />
                 </HStack>
-                <UserFilesFilters />
+                <HStack align="center" gap="16">
+                    <MobileAddFileBlock />
+                    <UserFilesFilters />
+                </HStack>
             </HStack>
         </VStack>
     )

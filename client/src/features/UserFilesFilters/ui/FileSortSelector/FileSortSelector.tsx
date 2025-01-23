@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
@@ -6,8 +6,11 @@ import { FileSortFiled } from '@/entities/File'
 import ArrowIcon from '@/shared/assets/icons/arrow-bottom-small.svg'
 import ListMenu from '@/shared/assets/icons/list-menu.svg'
 import { classNames } from '@/shared/lib/classNames/classNames'
+import { useDevice } from '@/shared/lib/hooks/useDevice/useDevice'
+import { useDrawer } from '@/shared/ui/Drawer'
 import { Icon } from '@/shared/ui/Icon'
 import { ListBox, ListBoxItem } from '@/shared/ui/Popups/ui/ListBox/ListBox'
+import { RadioGroup } from '@/shared/ui/RadioGroup'
 
 import cls from './FileSortSelector.module.scss'
 
@@ -20,6 +23,9 @@ interface FileSortSelectorProps {
 export const FileSortSelector = memo((props: FileSortSelectorProps) => {
     const { className, onChangeSort, sort } = props
     const { t } = useTranslation()
+
+    const isMobile = useDevice()
+    const closeDrawer = useDrawer()
 
     const sortFieldOptions: ListBoxItem<FileSortFiled>[] = useMemo(
         () => [
@@ -42,6 +48,26 @@ export const FileSortSelector = memo((props: FileSortSelectorProps) => {
         ],
         [t],
     )
+
+    const onChange = useCallback(
+        (newSort: FileSortFiled) => {
+            onChangeSort(newSort)
+            closeDrawer()
+        },
+        [closeDrawer, onChangeSort],
+    )
+
+    if (isMobile) {
+        return (
+            <RadioGroup
+                onChange={onChange}
+                value={sort}
+                items={sortFieldOptions}
+                label={t('Sort by')}
+                className={cls.radioGrup}
+            />
+        )
+    }
 
     return (
         <div className={classNames(cls.fileSortSelector, {}, [className])}>

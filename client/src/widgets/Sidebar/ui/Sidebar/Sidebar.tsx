@@ -28,17 +28,11 @@ export const Sidebar = memo((props: SidebarProps) => {
     const dispatch = useAppDispatch()
 
     const [isAuthModal, setIsAuthModal] = useState(false)
-    const [showError, setShowError] = useState(false)
-
-    const showErrorHandler = useCallback(() => {
-        setShowError(true)
-    }, [])
 
     const sidebarItemsList = useSidebarItems()
 
     const onCloseModal = useCallback(() => {
         setIsAuthModal(false)
-        setShowError(false)
     }, [])
 
     const onShowModal = useCallback(() => {
@@ -81,8 +75,6 @@ export const Sidebar = memo((props: SidebarProps) => {
                                     <CreateNewDirModal
                                         isOpen={isAuthModal}
                                         onClose={onCloseModal}
-                                        showErrorHandler={showErrorHandler}
-                                        showError={showError}
                                     />
                                 </VStack>
                             </HStack>

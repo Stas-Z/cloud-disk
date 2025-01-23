@@ -6,8 +6,9 @@ import { getUserAuthData, initAuthData } from '@/entities/User'
 import { ContentLayout } from '@/shared/layouts/ContentLayout'
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch'
+import { useDevice } from '@/shared/lib/hooks/useDevice/useDevice'
 import { Navbar } from '@/widgets/Navbar'
-import { Sidebar } from '@/widgets/Sidebar'
+import { Sidebar, SidebarMobile } from '@/widgets/Sidebar'
 
 import { ErrorBoundary } from './providers/ErrorBoundary'
 import AppRouter from './providers/router/ui/AppRouter'
@@ -19,6 +20,7 @@ interface AppProps {
 const App = memo((props: AppProps) => {
     const { className } = props
     const dispatch = useAppDispatch()
+    const isMobile = useDevice()
 
     useEffect(() => {
         dispatch(initAuthData())
@@ -31,7 +33,7 @@ const App = memo((props: AppProps) => {
                 {authData && <Navbar />}
                 <ContentLayout
                     switchOn={authData}
-                    sidebar={<Sidebar />}
+                    sidebar={isMobile ? <SidebarMobile /> : <Sidebar />}
                     content={
                         <ErrorBoundary>
                             <AppRouter />

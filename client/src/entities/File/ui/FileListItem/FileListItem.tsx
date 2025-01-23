@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 import { classNames } from '@/shared/lib/classNames/classNames'
 import { Icon } from '@/shared/ui/Icon'
@@ -22,6 +22,22 @@ export const FileListItem = memo((props: FileListItemProps) => {
     const { className, file, onClickHandler, openDirHandler, isSelected } =
         props
 
+    const [lastTap, setLastTap] = useState(0)
+    const doubleClickDelay = 300
+
+    const handleTouchEnd = () => {
+        const currentTime = Date.now()
+        const timeDifference = currentTime - lastTap
+
+        if (timeDifference < doubleClickDelay && timeDifference > 0) {
+            openDirHandler?.()
+        } else {
+            onClickHandler?.()
+        }
+
+        setLastTap(currentTime)
+    }
+
     const date = file.date?.slice(0, 10)
     const time = file.date?.slice(11, 16)
 
@@ -40,6 +56,7 @@ export const FileListItem = memo((props: FileListItemProps) => {
             gap="16"
             align="center"
             onDoubleClick={openDirHandler}
+            onTouchEnd={handleTouchEnd}
             id={`list-item-${file._id}`}
             onClick={onClickHandler}
         >
@@ -58,7 +75,7 @@ export const FileListItem = memo((props: FileListItemProps) => {
                 <HStack max flexGrow={1}>
                     <Text text={file.name} size="s" className={cls.title} />
                 </HStack>
-                <HStack justify="end" max gap="16">
+                <HStack justify="end" max gap="16" className={cls.infoBlock}>
                     {/* // TODO: */}
                     {/* <HStack max align="center" justify="end" gap="4">
                         <Icon Svg={ViewIcon} />

@@ -22,7 +22,6 @@ router.post(
     UserValidator.userOptions(),
     UserController.updateUser,
 )
-
 router.get('/auth', authMiddleware, UserController.Authorization)
 router.get('/profile', authMiddleware, UserController.getUser)
 

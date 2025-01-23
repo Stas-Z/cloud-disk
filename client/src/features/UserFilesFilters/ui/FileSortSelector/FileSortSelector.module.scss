@@ -15,3 +15,12 @@
 .fileListBox {
     padding-left: 3px;
 }
+
+.radioGrup {
+    &::after {
+        border-bottom: 1px solid rgb(0 0 0 / 5%);
+        content: '';
+        display: block;
+        margin: 6px 0;
+    }
+}

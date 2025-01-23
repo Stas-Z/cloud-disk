@@ -11,3 +11,9 @@
 .gridGag {
     width: 109px;
 }
+
+@media (width <= 541px) {
+    .fileListBig {
+        justify-content: space-around;
+    }
+}

@@ -26,8 +26,16 @@
         width: 90px;
         margin-left: -5px;
     }
+
+    padding: 12px;
 }
 
 .selected {
     background-color: var(--selected);
+}
+
+@media (width <= 541px) {
+    .bigGrid {
+        padding: 0;
+    }
 }

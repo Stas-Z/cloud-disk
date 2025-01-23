@@ -4,6 +4,13 @@
     width: 360px;
 }
 
+@media (width <= 768px) {
+    .loginForm {
+        max-width: 360px;
+        width: 100%;
+    }
+}
+
 .input {
     margin-top: 10px;
 }

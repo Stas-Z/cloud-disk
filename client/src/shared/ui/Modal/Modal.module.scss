@@ -21,6 +21,12 @@
     background: var(--light-bg);
 }
 
+@media (width <= 768px) {
+    .content {
+        max-width: 80%;
+    }
+}
+
 .opened {
     pointer-events: auto;
     opacity: 1;

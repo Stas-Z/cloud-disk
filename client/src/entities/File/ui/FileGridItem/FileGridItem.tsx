@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 import { Mods, classNames } from '@/shared/lib/classNames/classNames'
 import { Icon } from '@/shared/ui/Icon'
@@ -29,6 +29,22 @@ export const FileGridItem = memo((props: FileGridItemProps) => {
         view,
     } = props
 
+    const [lastTap, setLastTap] = useState(0)
+    const doubleClickDelay = 300
+
+    const handleTouchEnd = () => {
+        const currentTime = Date.now()
+        const timeDifference = currentTime - lastTap
+
+        if (timeDifference < doubleClickDelay && timeDifference > 0) {
+            openDirHandler?.()
+        } else {
+            onClickHandler?.()
+        }
+
+        setLastTap(currentTime)
+    }
+
     const big = view === 'big'
     const grid = view === 'grid'
 
@@ -50,6 +66,7 @@ export const FileGridItem = memo((props: FileGridItemProps) => {
             className={classNames(cls.fileGridItem, mods, [className])}
             align="center"
             onDoubleClick={openDirHandler}
+            onTouchEnd={handleTouchEnd}
             id={`list-item-${file._id}`}
             onClick={onClickHandler}
             gap="8"

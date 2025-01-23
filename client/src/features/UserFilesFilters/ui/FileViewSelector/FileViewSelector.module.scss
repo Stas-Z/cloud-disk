@@ -15,3 +15,12 @@
 .iconLeft {
     margin: 0 5px 0 10px;
 }
+
+.radioGrup {
+    &::after {
+        border-bottom: 1px solid rgb(0 0 0 / 5%);
+        content: '';
+        display: block;
+        margin: 6px 0;
+    }
+}

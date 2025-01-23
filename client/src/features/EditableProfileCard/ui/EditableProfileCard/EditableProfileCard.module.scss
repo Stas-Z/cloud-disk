@@ -1,3 +1,9 @@
 .editableProfileCard {
     max-width: 600px;
 }
+
+@media screen and (width <= 812px) {
+    .editableProfileCard {
+        padding: 0 20px;
+    }
+}

@@ -4,4 +4,6 @@ export { uploadFilesArrays } from './model/services/uploadFilesArray/uploadFiles
 
 export { UploadFiles } from './ui/UploadFiles/UploadFiles'
 
+export { UploadFilesMobile } from './ui/UploadFilesMobile/UploadFilesMobile'
+
 export type { UploadFilesSchema } from './model/types/uploadFilesSchema'

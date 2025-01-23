@@ -38,3 +38,9 @@
 .selected {
     background-color: var(--selected);
 }
+
+@media (width <= 980px) {
+    .infoBlock {
+        display: none;
+    }
+}

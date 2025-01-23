@@ -1,4 +1,4 @@
-import { Suspense, memo } from 'react'
+import { Suspense, memo, useCallback, useState } from 'react'
 
 import { useSelector } from 'react-redux'
 
@@ -15,28 +15,36 @@ interface CreateNewDirProps {
     className?: string
     isOpen: boolean
     onClose: () => void
-    showErrorHandler?: () => void
-    showError?: boolean
 }
 
 export const CreateNewDirModal = memo((props: CreateNewDirProps) => {
-    const { className, isOpen, onClose, showErrorHandler, showError } = props
+    const { className, isOpen, onClose } = props
+
+    const [showError, setShowError] = useState(false)
+    const showErrorHandler = useCallback(() => {
+        setShowError(true)
+    }, [])
 
     const isLoading = useSelector(getDirIsLoading)
     const error = useSelector(getFileError)
+
+    const onCloseModal = useCallback(() => {
+        onClose()
+        setShowError(false)
+    }, [onClose])
 
     return (
         <Modal
             className={classNames('', {}, [className])}
             isOpen={isOpen}
-            onClose={onClose}
+            onClose={onCloseModal}
             lazy
             overlay
         >
             <Suspense fallback="">
                 <CreateNewDirFormAsync
                     error={error}
-                    onSuccess={onClose}
+                    onSuccess={onCloseModal}
                     showError={showError}
                     showErrorHandler={showErrorHandler}
                     isLoading={isLoading}

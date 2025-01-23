@@ -8,6 +8,19 @@
     box-shadow: var(--shadow-color);
 }
 
+@media (width <= 980px) {
+    .contentLayout {
+        box-shadow: none;
+        margin: 0 10px;
+    }
+}
+
+@media (width <= 440px) {
+    .contentLayout {
+        margin: 0;
+    }
+}
+
 .sidebar {
     width: 272px;
     border-radius: var(--border-radius) 0 0 var(--border-radius);

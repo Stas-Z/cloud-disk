@@ -83,5 +83,9 @@
   "byte": "byte",
   "Free from": "Free {{used}} from {{disk}}",
   "Not enough disk space": "Not enough disk space",
-  "dropLanguage": "English"
+  "dropLanguage": "English",
+  "View": "VIEW",
+  "Sort by": "Sort by",
+  "New folder": "New folder",
+  "Upload files": "Upload files"
 }
