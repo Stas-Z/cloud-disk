@@ -9,6 +9,14 @@
     border-radius: 10px;
 }
 
+@media (width <= 768px) {
+    .uploader {
+        bottom: 0;
+        right: 0;
+        width: 100%;
+    }
+}
+
 .uploaderHeader {
     height: 56px;
     background-color: var(--antracit);
@@ -16,6 +24,12 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     overflow: hidden;
+}
+
+@media (width <= 768px) {
+    .uploaderHeader {
+        border-radius: 0;
+    }
 }
 
 .uploadedProgress {
@@ -47,4 +61,10 @@
     overflow: hidden auto;
     padding-top: 4px;
     width: 100%;
+}
+
+@media (width <= 768px) {
+    .uploaderList {
+        height: calc(100vh - 140px);
+    }
 }
